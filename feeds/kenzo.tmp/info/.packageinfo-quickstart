@@ -1,0 +1,21 @@
+Source-Makefile: feeds/kenzo/quickstart/Makefile
+
+Package: quickstart
+Submenu: Web Servers/Proxies
+Version: 0.9.8-r1
+Depends: +libc @(x86_64||aarch64||arm) +shadow-utils +shadow-useradd +mount-utils +block-mount +lsblk +e2fsprogs +parted +smartmontools +smartd +mdadm +ip-full +ubus +uci +bash
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: Quickstart, the quick start.
+Maintainer: 
+Source: quickstart-binary-0.9.8.tar.gz
+URL: https://easepi.linkease.com/
+Type: ipkg
+Description:   Quickstart is a dashboard & user guide
+@@
+
+

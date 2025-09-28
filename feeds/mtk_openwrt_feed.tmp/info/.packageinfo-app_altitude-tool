@@ -1,0 +1,21 @@
+Source-Makefile: feeds/mtk_openwrt_feed/feed/app/altitude-tool/Makefile
+
+Package: altitude-tool
+Submenu: Applications
+Default: y
+Version: 1
+Depends: +libc python3 python3-requests
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: MTK Properties
+Category: MTK Properties
+Repository: base
+Title: Altitude Tool
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   Altitude-tool
+@@
+
+

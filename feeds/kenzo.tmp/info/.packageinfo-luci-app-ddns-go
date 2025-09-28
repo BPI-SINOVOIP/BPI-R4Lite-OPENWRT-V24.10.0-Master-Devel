@@ -1,0 +1,40 @@
+Source-Makefile: feeds/kenzo/luci-app-ddns-go/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-ddns-go
+Submenu: 3. Applications
+Version: 1.4.5-r20240409
+Depends: +libc +ddns-go +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for Dynamic ddns-go Client
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI Support for Dynamic ddns-go Client
+@@
+
+Package: luci-i18n-ddns-go-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-ddns-go
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-ddns-go - zh-cn translation
+Maintainer: 
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-ddns-go - 简体中文 (Chinese Simplified)
+@@
+
+

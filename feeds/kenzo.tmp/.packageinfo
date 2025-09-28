@@ -1,0 +1,1539 @@
+Source-Makefile: feeds/kenzo/UnblockNeteaseMusic/Makefile
+
+Package: UnblockNeteaseMusic
+Version: 0.27.8-patch.1-r1
+Depends: +libc +node
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: multimedia
+Category: Multimedia
+Repository: base
+Title: Revive Netease Cloud Music (NodeJS)
+Maintainer: 
+Source: UnblockNeteaseMusic-0.27.8-patch.1.tar.gz
+URL: https://github.com/nondanee/UnblockNeteaseMusic
+Type: ipkg
+Description: Revive Netease Cloud Music (NodeJS)
+@@
+
+
+Source-Makefile: feeds/kenzo/adguardhome/Makefile
+Build-Depends: golang/host
+
+Package: adguardhome
+Version: 0.107.60-r1
+Depends: +libc @(aarch64||arm||i386||i686||loongarch64||mips||mips64||mips64el||mipsel||powerpc64||riscv64||x86_64) +ca-bundle
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: Network-wide ads and trackers blocking DNS server
+Maintainer: Dobroslaw Kijowski <dobo90@gmail.com>
+Source: adguardhome-0.107.60.tar.gz
+License: GPL-3.0-only
+LicenseFiles: LICENSE.txt
+URL: https://github.com/AdguardTeam/AdGuardHome
+Type: ipkg
+Description:   Free and open source, powerful network-wide ads and trackers blocking DNS server.
+@@
+
+
+Source-Makefile: feeds/kenzo/alist/Makefile
+Build-Depends: golang/host
+
+Package: alist
+Submenu: Web Servers/Proxies
+Version: 3.44.0-r1
+Depends: +libc @(aarch64||arm||i386||i686||loongarch64||mips||mips64||mips64el||mipsel||powerpc64||riscv64||x86_64) +ca-bundle
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: A file list program that supports multiple storage
+Maintainer: sbwml <admin@cooluc.com>
+Source: alist-3.44.0.tar.gz
+License: GPL-3.0
+URL: http://www.alistgo.com
+Type: ipkg
+Description:   A file list program that supports multiple storage, powered by Gin and Solidjs.
+@@
+
+
+Source-Makefile: feeds/kenzo/aliyundrive-webdav/Makefile
+
+Package: aliyundrive-webdav
+Version: 2.3.3-r1
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: multimedia
+Category: Multimedia
+Repository: base
+Title: WebDAV server for AliyunDrive
+Maintainer: messense <messense@icloud.com>
+Source: aliyundrive-webdav-v2.3.3.-unknown-linux-musl.tar.gz
+License: MIT
+URL: https://github.com/messense/aliyundrive-webdav
+Type: ipkg
+Description:   WebDAV server for AliyunDrive.
+@@
+
+
+Source-Makefile: feeds/kenzo/ddns-go/Makefile
+Build-Depends: golang/host
+
+Package: ddns-go
+Submenu: Web Servers/Proxies
+Version: 6.9.1-r1
+Depends: +libc @(aarch64||arm||i386||i686||loongarch64||mips||mips64||mips64el||mipsel||powerpc64||riscv64||x86_64) +ca-bundle
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: A Linux web GUI client of ddns-go
+Maintainer: Tianling Shen <cnsztl@immortalwrt.org>
+Require-User: ddns-go:ddns-go
+Source: ddns-go-6.9.1.tar.gz
+License: MIT
+LicenseFiles: LICENSE
+URL: https://github.com/jeessy2/ddns-go
+Type: ipkg
+Description:   ddns-go is a automatically obtain your public IPv4 or IPv6 address and resolve it to the corresponding domain name service,
+  support Alidns Dnspod Cloudflare Hicloud Callback Baiducloud porkbun GoDaddy Google Domains.
+@@
+
+
+Source-Makefile: feeds/kenzo/ddnsto/Makefile
+
+Package: ddnsto
+Submenu: Web Servers/Proxies
+Version: 3.0.4-r-7
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: DDNS.to - the reverse proxy
+Maintainer: 
+Source: ddnsto-binary-3.0.4.tar.gz
+URL: https://www.ddnsto.com/
+Type: ipkg
+Description:   DDNS.to is a reverse proxy
+@@
+
+
+Source-Makefile: feeds/kenzo/filebrowser/Makefile
+Build-Depends: golang/host node/host
+
+Package: filebrowser
+Version: 2.32.0-r1
+Depends: +libc @(aarch64||arm||i386||i686||loongarch64||mips||mips64||mips64el||mipsel||powerpc64||riscv64||x86_64)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: utils
+Category: Utilities
+Repository: base
+Title: Web File Browser
+Maintainer: kenzo <kenzok8@gmail.com>
+Source: filebrowser-2.32.0.tar.gz
+License: Apache-2.0
+LicenseFiles: LICENSE
+URL: https://github.com/filebrowser/filebrowser
+Type: ipkg
+Description:   filebrowser provides a file managing interface within a specified directory
+  and it can be used to upload, delete, preview, rename and edit your files.
+  It allows the creation of multiple users and each user can have its own directory.
+  It can be used as a standalone app or as a middleware.
+@@
+
+
+Source-Makefile: feeds/kenzo/gost/Makefile
+Build-Depends: golang/host
+
+Package: gost
+Version: 2.12.0-r1
+Depends: +libc @(aarch64||arm||i386||i686||loongarch64||mips||mips64||mips64el||mipsel||powerpc64||riscv64||x86_64) +ca-bundle
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: GO Simple Tunnel
+Maintainer: Tianling Shen <cnsztl@immortalwrt.org>
+Source: gost-2.12.0.tar.gz
+License: MIT
+LicenseFiles: LICENSE
+URL: https://github.com/ginuerzh/gost
+Type: ipkg
+Description: GO Simple Tunnel
+@@
+
+
+Source-Makefile: feeds/kenzo/lua-maxminddb/Makefile
+
+Package: lua-maxminddb
+Submenu: Lua
+Version: 0.2-r2
+Depends: +libc +lua +libmaxminddb
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: lang
+Category: Languages
+Repository: base
+Title: libmaxminddb bindings for lua
+Maintainer: 
+Source: lua-maxminddb-0.2.tar.zst
+License: MIT
+LicenseFiles: LICENSE
+URL: https://github.com/fabled/lua-maxminddb
+Type: ipkg
+Description: libmaxminddb bindings for lua
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-adguardhome/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-adguardhome
+Submenu: 3. Applications
+Version: x
+Depends: +libc +ca-certs +curl +wget-ssl +PACKAGE_luci-app-adguardhome_INCLUDE_binary:adguardhome +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI app for AdGuardHome
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description:    LuCI support for AdGuardHome
+@@
+Config:
+config PACKAGE_luci-app-adguardhome_INCLUDE_binary
+	bool "Include Binary File"
+	default y
+@@
+
+Package: luci-i18n-adguardhome-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-adguardhome
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-adguardhome - zh-cn translation
+Maintainer: <https://github.com/rufengsuixing/luci-app-adguardhome>
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-adguardhome - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-advanced/Makefile
+
+Package: luci-app-advanced
+Submenu: 3. Applications
+Version: 1.20-r20220218
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for advanced and filebrowser
+Maintainer: 
+Source: 
+Type: ipkg
+Description: LuCI Support for advanced and filebrowser
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-aliddns/Makefile
+
+Package: luci-app-aliddns
+Submenu: 3. Applications
+Version: 0.4.2-r1
+Depends: +libc +openssl-util +curl
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for aliddns
+Maintainer: honwen <https://github.com/honwen/>
+Source: 
+License: MIT
+LicenseFiles: LICENSE
+Type: ipkg
+Description: 	LuCI Support for ALiDDNS.
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-alist/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-alist
+Submenu: 3. Applications
+Version: 1.0.13-r1
+Depends: +libc +alist +luci-compat +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for alist
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for alist
+@@
+
+Package: luci-i18n-alist-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-alist
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-alist - zh-cn translation
+Maintainer: 
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-alist - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-aliyundrive-webdav/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-aliyundrive-webdav
+Submenu: 3. Applications
+Version: 2.3.3-r1
+Depends: +libc +aliyundrive-webdav +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for aliyundrive-webdav
+Maintainer: OpenWrt LuCI community
+Source: 
+License: MIT
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI Support for aliyundrive-webdav
+@@
+
+Package: luci-i18n-aliyundrive-webdav-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: 2.3.3-1
+Depends: +libc luci-app-aliyundrive-webdav
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-aliyundrive-webdav - zh-cn translation
+Maintainer: messense <messense@icloud.com>
+Source: 
+License: MIT
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-aliyundrive-webdav - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-amlogic/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-amlogic
+Submenu: 3. Applications
+Version: 3.1.251-r1
+Depends: +libc @(aarch64||arm) +bash +blkid +block-mount +busybox +curl +dosfstools +e2fsprogs +fdisk +jq +losetup +luci +luci-lib-nixio +lsblk +parted +perl +pv +uuidgen +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for Amlogic, Allwinner and Rockchip related boxs
+Maintainer: OpenWrt LuCI community
+Source: 
+License: GPL-2.0 License
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for Amlogic, Allwinner and Rockchip related boxs
+@@
+
+Package: luci-i18n-amlogic-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-amlogic
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-amlogic - zh-cn translation
+Maintainer: ophub <https://github.com/ophub/luci-app-amlogic>
+Source: 
+License: GPL-2.0 License
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-amlogic - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-argon-config/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-argon-config
+Submenu: 3. Applications
+Version: 1.0-r20230608
+Depends: +libc +luci-theme-argon
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI app for Argon theme configuration
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI app for Argon theme configuration
+@@
+
+Package: luci-i18n-argon-config-es
+Default: LUCI_LANG_es||(ALL&&m)
+Version: x
+Depends: +libc luci-app-argon-config
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-argon-config - es translation
+Maintainer: jerrykuku <jerrykuku@qq.com>
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-argon-config - Español (Spanish)
+@@
+
+Package: luci-i18n-argon-config-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-argon-config
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-argon-config - zh-cn translation
+Maintainer: jerrykuku <jerrykuku@qq.com>
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-argon-config - 简体中文 (Chinese Simplified)
+@@
+
+Package: luci-i18n-argon-config-zh-tw
+Default: LUCI_LANG_zh_Hant||(ALL&&m)
+Version: x
+Depends: +libc luci-app-argon-config
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-argon-config - zh-tw translation
+Maintainer: jerrykuku <jerrykuku@qq.com>
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-argon-config - 繁體中文 (Chinese Traditional)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-argone-config/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-argone-config
+Submenu: 3. Applications
+Version: 1.2-r2
+Depends: +libc +luci-compat +luci-theme-argone +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI page for Argone Config
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI page for Argone Config
+@@
+
+Package: luci-i18n-argone-config-es
+Default: LUCI_LANG_es||(ALL&&m)
+Version: x
+Depends: +libc luci-app-argone-config
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-argone-config - es translation
+Maintainer: jerrykuku <jerrykuku@qq.com>
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-argone-config - Español (Spanish)
+@@
+
+Package: luci-i18n-argone-config-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-argone-config
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-argone-config - zh-cn translation
+Maintainer: jerrykuku <jerrykuku@qq.com>
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-argone-config - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-clash/Makefile
+
+Package: luci-app-clash
+Submenu: 3. Applications
+Version: v1.8.0
+Depends: +libc +luci-base +wget +iptables +coreutils-base64 +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +curl +jsonfilter +ca-bundle +iptables-mod-tproxy +kmod-tun
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI app for clash
+Maintainer: frainzy1477
+Source: 
+Type: ipkg
+Description: 	Luci Interface for clash.
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-ddns-go/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-ddns-go
+Submenu: 3. Applications
+Version: 1.4.5-r20240409
+Depends: +libc +ddns-go +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for Dynamic ddns-go Client
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI Support for Dynamic ddns-go Client
+@@
+
+Package: luci-i18n-ddns-go-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-ddns-go
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-ddns-go - zh-cn translation
+Maintainer: 
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-ddns-go - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-ddnsto/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-ddnsto
+Submenu: 3. Applications
+Version: 3.0.4-r0
+Depends: +libc +ddnsto +block-mount +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for ddnsto
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for ddnsto
+@@
+
+Package: luci-i18n-ddnsto-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-ddnsto
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-ddnsto - zh-cn translation
+Maintainer: 
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-ddnsto - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-design-config/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-design-config
+Submenu: 3. Applications
+Version: x
+Depends: +libc +luci-compat +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI page for Design Config
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI page for Design Config
+@@
+
+Package: luci-i18n-design-config-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-design-config
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-design-config - zh-cn translation
+Maintainer: gngpp <gngppz@gmail.com>
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-design-config - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-dnsfilter/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-dnsfilter
+Submenu: 3. Applications
+Version: 1.0-r14
+Depends: +libc +curl +dnsmasq-full +ipset +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for DNSFilter
+Maintainer: OpenWrt LuCI community
+Source: 
+License: GPLv2
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for DNSFilter
+@@
+
+Package: luci-i18n-dnsfilter-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-dnsfilter
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-dnsfilter - zh-cn translation
+Maintainer: small_5 kiddin9
+Source: 
+License: GPLv2
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-dnsfilter - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-dockerman/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-dockerman
+Submenu: 3. Applications
+Version: v0.5.26-r1
+Depends: +libc @(aarch64||arm||x86_64) +luci-compat +luci-lib-docker +luci-lib-ip +docker +dockerd +cgroupfs-mount +ttyd +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for docker
+Maintainer: OpenWrt LuCI community
+Source: 
+License: AGPL-3.0
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI Support for docker
+@@
+
+Package: luci-i18n-dockerman-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-dockerman
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-dockerman - zh-cn translation
+Maintainer: lisaac <lisaac.cn@gmail.com> Florian Eckert <fe@dev.tdt.de>
+Source: 
+License: AGPL-3.0
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-dockerman - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-easymesh/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-easymesh
+Submenu: 3. Applications
+Version: 2.0-r1
+Depends: +libc +kmod-cfg80211 +batctl-default +kmod-batman-adv +wpad-mesh-openssl +dawn +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for easymesh
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI Support for easymesh
+@@
+
+Package: luci-i18n-easymesh-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-easymesh
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-easymesh - zh-cn translation
+Maintainer: 
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-easymesh - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-eqos/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-eqos
+Submenu: 3. Applications
+Version: x
+Depends: +libc +luci-base +tc +kmod-sched-core +kmod-ifb +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: EQOS - LuCI interface
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: EQOS - LuCI interface
+@@
+
+Package: luci-i18n-eqos-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-eqos
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-eqos - zh-cn translation
+Maintainer: Jianhui Zhao <jianhuizhao329@gmail.com> GaryPang <https://github.com/garypang13/luci-app-eqos>
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-eqos - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-fileassistant/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-fileassistant
+Submenu: 3. Applications
+Version: x
+Depends: +libc +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for Fileassistant
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for Fileassistant
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-filebrowser/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-filebrowser
+Submenu: 3. Applications
+Version: snapshot-r118071b
+Depends: +libc +filebrowser +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for FileBrowser
+Maintainer: OpenWrt LuCI community
+Source: 
+License: GPLv3
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI Support for FileBrowser
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-gost/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-gost
+Submenu: 3. Applications
+Version: 1.0-r1
+Depends: +libc +gost +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for Gost
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for Gost
+@@
+
+Package: luci-i18n-gost-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-gost
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-gost - zh-cn translation
+Maintainer: ImmortalWrt
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-gost - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-ikoolproxy/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-ikoolproxy
+Submenu: 3. Applications
+Version: 3.8.5-r20250314
+Depends: +libc +koolproxy +openssl-util +ipset +dnsmasq-full +@BUSYBOX_CONFIG_DIFF +iptables-mod-nat-extra +wget +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for koolproxy
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for koolproxy
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-ikoolproxy/koolproxy/Makefile
+
+Package: koolproxy
+Version: 3.8.5-r0
+Depends: +libc @(aarch64||arm||i386||mips||mipsel||x86_64)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: multimedia
+Category: Multimedia
+Repository: base
+Title: koolproxy bin is from koolshare
+Maintainer: 
+Source: 
+URL: https://github.com/houzi-/CDN
+Type: ipkg
+Description: koolproxy bin is from koolshare
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-istorex/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-istorex
+Submenu: 3. Applications
+Version: 0.6.6-r1
+Depends: +libc +luci-app-quickstart +luci-app-store +luci-lib-taskd +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: IstoreX
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: IstoreX
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-lucky/luci-app-lucky/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-lucky
+Submenu: 3. Applications
+Version: 1.2.0-r8
+Depends: +libc +lucky +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for Dynamic lucky Client
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI Support for Dynamic lucky Client
+@@
+
+Package: luci-i18n-lucky-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-lucky
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-lucky - zh-cn translation
+Maintainer: 
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-lucky - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-lucky/lucky/Makefile
+
+Package: lucky
+Version: 2.15.10-r1
+Depends: +libc @(i386||x86_64||arm||aarch64||mipsel||mips)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: Lucky gdy
+Maintainer: GDY666 <gdy666@foxmail.com>
+Source: 
+License: GPL-3.0-only
+LicenseFiles: LICENSE
+URL: https://github.com/gdy666/lucky
+Type: ipkg
+Description:   Main functions of Lucky: ipv4/ipv6 portforward,ddns,IOT wake on lan ,reverse proxy and more...
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-partexp/luci-app-partexp/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-partexp
+Submenu: 3. Applications
+Version: 1.3.1-r20250326
+Depends: +libc +fdisk +block-mount +bc +blkid +parted +btrfs-progs +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for Automatic Partition Mount
+Maintainer: OpenWrt LuCI community
+Source: 
+License: Apache-2.0
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI Support for Automatic Partition Mount
+@@
+
+Package: luci-i18n-partexp-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-partexp
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-partexp - zh-cn translation
+Maintainer: Sirpdboy <herboy2008@gmail.com>
+Source: 
+License: Apache-2.0
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-partexp - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-quickstart/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-quickstart
+Submenu: 3. Applications
+Version: 0.8.17-1
+Depends: +libc +quickstart +luci-app-store +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for quickstart 
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for quickstart 
+@@
+
+Package: luci-i18n-quickstart-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-quickstart
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-quickstart - zh-cn translation
+Maintainer: 
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-quickstart - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-smartdns/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-smartdns
+Submenu: 3. Applications
+Version: 1.2024.45-r1
+Depends: +libc +smartdns +luci-compat +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI for smartdns
+Maintainer: OpenWrt LuCI community
+Source: 
+License: GPL-3.0-or-later
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description:    Provides Luci for smartdns
+@@
+
+Package: luci-i18n-smartdns-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-smartdns
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-smartdns - zh-cn translation
+Maintainer: Nick Peng <pymumu@gmail.com>
+Source: 
+License: GPL-3.0-or-later
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-smartdns - 简体中文 (Chinese Simplified)
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-store/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-store
+Submenu: 3. Applications
+Version: 0.1.27-4
+Depends: +libc +curl +opkg +luci-base +tar +libuci-lua +mount-utils +luci-lib-taskd +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI based ipk store
+Maintainer: OpenWrt LuCI community
+Source: istore-ui-v0.1.27-2.tar.gz
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description:    luci-app-store is a ipk store developed by LinkEase team
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-unblockneteasemusic/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-unblockneteasemusic
+Submenu: 3. Applications
+Version: 2.14-r3
+Depends: +libc +dnsmasq-full +ipset +node @(PACKAGE_libustream-mbedtls||PACKAGE_libustream-openssl||PACKAGE_libustream-wolfssl) +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for UnblockNeteaseMusic
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for UnblockNeteaseMusic
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-app-wechatpush/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-serverchan
+Submenu: 3. Applications
+Version: 2.06.2-r10
+Depends: +libc +iputils-arping +curl +jq +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for serverchan
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for serverchan
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-lib-taskd/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-lib-taskd
+Submenu: 6. Libraries
+Version: 1.0.23
+Depends: +libc +luci-lib-xterm +taskd +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Task library
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: Task library
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-lib-xterm/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-lib-xterm
+Submenu: 6. Libraries
+Version: 4.18.0
+Depends: +libc +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Xterm.js library
+Maintainer: OpenWrt LuCI community
+Source: 
+License: MIT
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: Xterm.js library
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-theme-alpha/Makefile
+
+Package: luci-theme-alpha
+Submenu: 9. Themes
+Version: 3.9.4-beta-r9
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCi Theme For OpenWrt And Alpha OS ONLY - Alpha
+Maintainer: 
+Source: 
+URL: http://facebook.com/derisamedia/
+Type: ipkg
+Description: LuCi Theme For OpenWrt And Alpha OS ONLY - Alpha
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-theme-argon/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-theme-argon
+Submenu: 4. Themes
+Version: 2.4.2-r20250207
+Depends: +libc +curl +jsonfilter +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Argon Theme
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: Argon Theme
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-theme-argone/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-theme-argone
+Submenu: 4. Themes
+Version: 1.8.3-r5
+Depends: +libc +curl +jsonfilter +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Argone kenzo
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: Argone kenzo
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-theme-atmaterial_new/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-theme-atmaterial_new
+Submenu: 4. Themes
+Version: 1.2-r2
+Depends: +libc +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Atmaterial_new kenzo
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: Atmaterial_new kenzo
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-theme-design/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-theme-design
+Submenu: 4. Themes
+Version: 5.8.0-20240106-r1
+Depends: +libc +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Design Theme
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: Design Theme
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-theme-ifit/Makefile
+
+Package: luci-theme-ifit
+Submenu: 4. Themes
+Version: 1.5.2-r1
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Ifit Theme
+Maintainer: 
+Source: 
+URL: https://github.com/kenzok8/luci-theme-ifit
+Type: ipkg
+Description: Ifit Theme
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-theme-opentopd/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-theme-opentopd
+Submenu: 4. Themes
+Version: 1.6.0-r20230207
+Depends: +libc +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI luci-theme-opentopd theme
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI luci-theme-opentopd theme
+@@
+
+
+Source-Makefile: feeds/kenzo/luci-theme-tomato/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-theme-tomato
+Submenu: 4. Themes
+Version: x
+Depends: +libc +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Tomato new kenzo
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: Tomato new kenzo
+@@
+
+
+Source-Makefile: feeds/kenzo/quickstart/Makefile
+
+Package: quickstart
+Submenu: Web Servers/Proxies
+Version: 0.9.8-r1
+Depends: +libc @(x86_64||aarch64||arm) +shadow-utils +shadow-useradd +mount-utils +block-mount +lsblk +e2fsprogs +parted +smartmontools +smartd +mdadm +ip-full +ubus +uci +bash
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: Quickstart, the quick start.
+Maintainer: 
+Source: quickstart-binary-0.9.8.tar.gz
+URL: https://easepi.linkease.com/
+Type: ipkg
+Description:   Quickstart is a dashboard & user guide
+@@
+
+
+Source-Makefile: feeds/kenzo/smartdns/Makefile
+
+Package: smartdns
+Version: 46.1-r1
+Depends: +libc +libpthread +libopenssl
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: smartdns server
+Maintainer: Nick Peng <pymumu@gmail.com>
+Source: smartdns-46.1.tar.gz
+License: GPL-3.0-or-later
+LicenseFiles: LICENSE
+URL: https://www.github.com/pymumu/smartdns/
+Type: ipkg
+Description: SmartDNS is a local DNS server which accepts DNS query requests from local network clients,
+gets DNS query results from multiple upstream DNS servers concurrently, and returns the fastest IP to clients.
+Unlike dnsmasq's all-servers, smartdns returns the fastest IP, and encrypt DNS queries with DoT or DoH.
+@@
+
+
+Source-Makefile: feeds/kenzo/taskd/Makefile
+
+Package: taskd
+Version: 1.0.3-r2
+Depends: +libc +procd +script-utils +coreutils +coreutils-stty
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: utils
+Category: Utilities
+Repository: base
+Title: Simple Task Manager
+Maintainer: jjm2473 <jjm2473@gmail.com>
+Source: 
+Type: ipkg
+Description: 	Simple Task Manager based on procd
+@@
+
+

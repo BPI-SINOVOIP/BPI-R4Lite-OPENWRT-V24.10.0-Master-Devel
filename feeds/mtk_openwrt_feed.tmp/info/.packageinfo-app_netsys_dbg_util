@@ -1,0 +1,20 @@
+Source-Makefile: feeds/mtk_openwrt_feed/feed/app/netsys_dbg_util/Makefile
+
+Package: netsys_dbg_util
+Submenu: Misc
+Version: 1-
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: MTK Properties
+Category: MTK Properties
+Repository: base
+Title: mtk netsys debug utility
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   mtk netsys debug utility for dumping all of netsys registers
+@@
+
+

@@ -1,0 +1,21 @@
+Source-Makefile: feeds/kenzo/luci-theme-alpha/Makefile
+
+Package: luci-theme-alpha
+Submenu: 9. Themes
+Version: 3.9.4-beta-r9
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCi Theme For OpenWrt And Alpha OS ONLY - Alpha
+Maintainer: 
+Source: 
+URL: http://facebook.com/derisamedia/
+Type: ipkg
+Description: LuCi Theme For OpenWrt And Alpha OS ONLY - Alpha
+@@
+
+

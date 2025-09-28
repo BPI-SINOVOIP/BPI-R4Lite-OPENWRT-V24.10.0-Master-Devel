@@ -1,0 +1,20 @@
+Source-Makefile: feeds/mtk_openwrt_feed/feed/app/mii_mgr/Makefile
+
+Package: mii_mgr
+Submenu: Applications
+Version: 1
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: MTK Properties
+Category: MTK Properties
+Repository: base
+Title: mii_mgr/mii_mgr_cl45
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   An mdio r/w phy regs program.
+@@
+
+

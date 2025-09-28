@@ -1,0 +1,20 @@
+Source-Makefile: feeds/mtk_openwrt_feed/feed/app/quick_track/Makefile
+
+Package: quick_track
+Submenu: Applications
+Version: 2025.02.12~3cdeae1f679915d6b9b5aeb4d28de3ceb74f6dfd-r1.0
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: MTK Properties
+Category: MTK Properties
+Repository: base
+Title: QT Tool
+Maintainer: 
+Source: quick_track-2025.02.12~3cdeae1f679915d6b9b5aeb4d28de3ceb74f6dfd.tar.zst
+Type: ipkg
+Description:   QT Tool daemon
+@@
+
+

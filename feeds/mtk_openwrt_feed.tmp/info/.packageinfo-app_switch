@@ -1,0 +1,20 @@
+Source-Makefile: feeds/mtk_openwrt_feed/feed/app/switch/Makefile
+
+Package: switch
+Submenu: Applications
+Version: 1
+Depends: +libc +libnl-tiny
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: MTK Properties
+Category: MTK Properties
+Repository: base
+Title: Command to config switch
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   An program to config switch.
+@@
+
+

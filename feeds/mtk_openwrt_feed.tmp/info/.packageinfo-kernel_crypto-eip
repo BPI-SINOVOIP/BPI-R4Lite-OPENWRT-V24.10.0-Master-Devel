@@ -1,0 +1,155 @@
+Source-Makefile: feeds/mtk_openwrt_feed/feed/kernel/crypto-eip/Makefile
+
+Package: kmod-crypto-eip
+Submenu: Drivers
+Default: y
+Version: <LINUX_VERSION>-r1
+Depends: @TARGET_mediatek
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: EIP-197 Crypto Engine Driver
+Maintainer: 
+Source: 
+Type: ipkg
+Kernel-Config: CONFIG_CRYPTO_HW=y CONFIG_CRYPTO_AUTHENC=y CONFIG_CRYPTO_AES=y CONFIG_CRYPTO_AEAD=y CONFIG_CRYPTO_DES=y CONFIG_CRYPTO_MD5=y CONFIG_CRYPTO_SHA1=y CONFIG_CRYPTO_SHA256=y CONFIG_CRYPTO_SHA512=y CONFIG_CRYPTO_SHA3=y CONFIG_CRYPTO_HMAC=y CONFIG_INET_ESP=y CONFIG_INET6_ESP=y CONFIG_INET_ESP_OFFLOAD=y CONFIG_INET6_ESP_OFFLOAD=y CONFIG_XFRM_USER=y
+Description:   Enable crypto engine to accelerate encrypt/decrypt. Support look aside
+  mode (semi-HW) and inline mode (pure-HW). Look aside mode is bind with
+  Linux Crypto API and support AES, DES, SHA1, and SHA2 algorithms. In-
+  line mode only support ESP Tunnel mode (single tunnel) now.
+@@
+Config:
+	source "/storage/workspace/Banana-Devel/Banana-Pi-R4Lite/openwrt-github-devel/openwrt_mtk-openwrt-feeds_basecode/mtk-openwrt-feeds/feed/kernel/crypto-eip/Config.in"
+@@
+
+Package: kmod-crypto-eip-inline
+Submenu: Drivers
+Version: <LINUX_VERSION>-r1
+Depends: @CRYPTO_OFFLOAD_INLINE kmod-crypto-eip kmod-crypto-eip-ddk kmod-crypto-eip-ddk-ksupport kmod-crypto-eip-ddk-ctrl kmod-crypto-eip-ddk-ctrl-app kmod-crypto-eip-ddk-engine +kmod-pce
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: EIP-197 Crypto Engine Inline Driver
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   EIP197 inline mode. HW offload for IPsec ESP Tunnel mode.
+@@
+
+Package: kmod-crypto-eip-autoload
+Submenu: Drivers
+Version: <LINUX_VERSION>-r1
+Depends: kmod-crypto-eip-inline
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: EIP-197 Crypto Engine Driver Autoload
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   EIP197 Driver Autoload.
+@@
+
+Package: kmod-crypto-eip-ddk
+Submenu: Drivers
+Version: <LINUX_VERSION>-r1
+Depends: kmod-crypto-eip
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: MTK EIP DDK
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   Porting DDK source code to package.
+@@
+
+Package: kmod-crypto-eip-ddk-ksupport
+Submenu: Drivers
+Version: <LINUX_VERSION>-r1
+Depends: @CRYPTO_OFFLOAD_INLINE kmod-crypto-eip
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: MTK EIP DDK Kernel Support
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   Porting DDK source code to package.
+@@
+
+Package: kmod-crypto-eip-ddk-ctrl
+Submenu: Drivers
+Version: <LINUX_VERSION>-r1
+Depends: @CRYPTO_OFFLOAD_INLINE kmod-crypto-eip-ddk-ksupport
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: MTK EIP DDK Global Control Driver
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   Porting DDK source code to package.
+@@
+
+Package: kmod-crypto-eip-ddk-ctrl-app
+Submenu: Drivers
+Version: <LINUX_VERSION>-r1
+Depends: @CRYPTO_OFFLOAD_INLINE kmod-crypto-eip-ddk-ctrl
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: MTK EIP DDK Global Control App
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   Porting DDK source code to package.
+@@
+
+Package: kmod-crypto-eip-ddk-engine
+Submenu: Drivers
+Version: <LINUX_VERSION>-r1
+Depends: @CRYPTO_OFFLOAD_INLINE kmod-crypto-eip-ddk-ctrl-app
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: MTK EIP DDK engine
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   Porting DDK source code to package.
+@@
+
+Package: crypto-eip-inline-fw
+Version: 1
+Depends: +libc @CRYPTO_OFFLOAD_INLINE
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: firmware
+Category: Firmware
+Repository: base
+Title: Mediatek EIP Firmware
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   Load firmware for EIP197 inline mode.
+@@
+
+

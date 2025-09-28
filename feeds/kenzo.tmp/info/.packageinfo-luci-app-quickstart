@@ -1,0 +1,40 @@
+Source-Makefile: feeds/kenzo/luci-app-quickstart/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-quickstart
+Submenu: 3. Applications
+Version: 0.8.17-1
+Depends: +libc +quickstart +luci-app-store +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for quickstart 
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for quickstart 
+@@
+
+Package: luci-i18n-quickstart-zh-cn
+Default: LUCI_LANG_zh_Hans||(ALL&&m)
+Version: x
+Depends: +libc luci-app-quickstart
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: luci-app-quickstart - zh-cn translation
+Maintainer: 
+Source: 
+Type: ipkg
+Hidden: 1
+Description:     Translation for luci-app-quickstart - 简体中文 (Chinese Simplified)
+@@
+
+

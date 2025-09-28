@@ -1,0 +1,20 @@
+Source-Makefile: feeds/mtk_openwrt_feed/feed/app/ethswbox/Makefile
+
+Package: ethswbox
+Submenu: Applications
+Version: 1
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: MTK Properties
+Category: MTK Properties
+Repository: base
+Title: Mxl series Ethernet Switch Configuration Utility
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   This package provides utility to control Mxl series switches
+@@
+
+

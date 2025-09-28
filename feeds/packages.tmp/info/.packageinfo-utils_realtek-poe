@@ -1,0 +1,20 @@
+Source-Makefile: feeds/packages/utils/realtek-poe/Makefile
+
+Package: realtek-poe
+Version: 0~ea32075ae41874043eeed14156755a4c0f114582-r1
+Depends: +libc +libubox +libubus +libuci
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: Realtek PoE Switch Port daemon
+Maintainer: Martin Kennedy <hurricos@gmail.com>
+Source: realtek-poe-0~ea32075ae41874043eeed14156755a4c0f114582.tar.zst
+License: GPL-2.0
+Type: ipkg
+Description: Realtek PoE Switch Port daemon
+@@
+
+

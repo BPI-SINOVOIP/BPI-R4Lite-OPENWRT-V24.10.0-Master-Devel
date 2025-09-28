@@ -1,0 +1,22 @@
+Source-Makefile: feeds/kenzo/luci-theme-argone/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-theme-argone
+Submenu: 4. Themes
+Version: 1.8.3-r5
+Depends: +libc +curl +jsonfilter +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Argone kenzo
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: Argone kenzo
+@@
+
+

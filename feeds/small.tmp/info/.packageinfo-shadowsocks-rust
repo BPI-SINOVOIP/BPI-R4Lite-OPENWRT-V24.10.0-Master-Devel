@@ -1,0 +1,103 @@
+Source-Makefile: feeds/small/shadowsocks-rust/Makefile
+
+Package: shadowsocks-rust-sslocal
+Submenu: Web Servers/Proxies
+Version: 1.23.0-r1
+Depends: +libc @(aarch64||arm||i386||mips||mipsel||x86_64) @!(TARGET_x86_geode||TARGET_x86_legacy)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocks-rust sslocal
+Maintainer: Tianling Shen <cnsztl@immortalwrt.org>
+Source: dummy
+License: MIT
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocks/shadowsocks-rust
+Type: ipkg
+Description: shadowsocks-rust sslocal
+@@
+
+Package: shadowsocks-rust-ssmanager
+Submenu: Web Servers/Proxies
+Version: 1.23.0-r1
+Depends: +libc @(aarch64||arm||i386||mips||mipsel||x86_64) @!(TARGET_x86_geode||TARGET_x86_legacy)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocks-rust ssmanager
+Maintainer: Tianling Shen <cnsztl@immortalwrt.org>
+Source: dummy
+License: MIT
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocks/shadowsocks-rust
+Type: ipkg
+Description: shadowsocks-rust ssmanager
+@@
+
+Package: shadowsocks-rust-ssserver
+Submenu: Web Servers/Proxies
+Version: 1.23.0-r1
+Depends: +libc @(aarch64||arm||i386||mips||mipsel||x86_64) @!(TARGET_x86_geode||TARGET_x86_legacy)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocks-rust ssserver
+Maintainer: Tianling Shen <cnsztl@immortalwrt.org>
+Source: dummy
+License: MIT
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocks/shadowsocks-rust
+Type: ipkg
+Description: shadowsocks-rust ssserver
+@@
+
+Package: shadowsocks-rust-ssurl
+Submenu: Web Servers/Proxies
+Version: 1.23.0-r1
+Depends: +libc @(aarch64||arm||i386||mips||mipsel||x86_64) @!(TARGET_x86_geode||TARGET_x86_legacy)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocks-rust ssurl
+Maintainer: Tianling Shen <cnsztl@immortalwrt.org>
+Source: dummy
+License: MIT
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocks/shadowsocks-rust
+Type: ipkg
+Description: shadowsocks-rust ssurl
+@@
+
+Package: shadowsocks-rust-ssservice
+Submenu: Web Servers/Proxies
+Version: 1.23.0-r1
+Depends: +libc @(aarch64||arm||i386||mips||mipsel||x86_64) @!(TARGET_x86_geode||TARGET_x86_legacy)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocks-rust ssservice
+Maintainer: Tianling Shen <cnsztl@immortalwrt.org>
+Source: dummy
+License: MIT
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocks/shadowsocks-rust
+Type: ipkg
+Description: shadowsocks-rust ssservice
+@@
+
+

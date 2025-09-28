@@ -1,0 +1,20 @@
+Source-Makefile: feeds/kenzo/UnblockNeteaseMusic/Makefile
+
+Package: UnblockNeteaseMusic
+Version: 0.27.8-patch.1-r1
+Depends: +libc +node
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: multimedia
+Category: Multimedia
+Repository: base
+Title: Revive Netease Cloud Music (NodeJS)
+Maintainer: 
+Source: UnblockNeteaseMusic-0.27.8-patch.1.tar.gz
+URL: https://github.com/nondanee/UnblockNeteaseMusic
+Type: ipkg
+Description: Revive Netease Cloud Music (NodeJS)
+@@
+
+

@@ -1,0 +1,22 @@
+Source-Makefile: feeds/small/nikki/Makefile
+Build-Depends: golang/host
+
+Package: nikki
+Version: 2025.04.19~d5243adf8911563677d3bd190b82623c93e554b7-r1
+Depends: +libc @(aarch64||arm||i386||i686||loongarch64||mips||mips64||mips64el||mipsel||powerpc64||riscv64||x86_64) +ca-bundle +curl +yq firewall4 +ip-full +kmod-inet-diag +kmod-nft-socket +kmod-nft-tproxy +kmod-tun
+Conflicts: 
+Menu-Depends: 
+Provides: nikki mihomo
+Section: net
+Category: Network
+Repository: base
+Title: A rule based proxy in Go.
+Maintainer: Joseph Mory <morytyann@gmail.com>
+Source: nikki-2025.04.19~d5243adf8911563677d3bd190b82623c93e554b7.tar.zst
+License: GPL3.0+
+URL: https://wiki.metacubex.one
+Type: ipkg
+Description:   A rule based proxy in Go.
+@@
+
+

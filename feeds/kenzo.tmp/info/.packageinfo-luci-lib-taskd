@@ -1,0 +1,22 @@
+Source-Makefile: feeds/kenzo/luci-lib-taskd/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-lib-taskd
+Submenu: 6. Libraries
+Version: 1.0.23
+Depends: +libc +luci-lib-xterm +taskd +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: Task library
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: Task library
+@@
+
+

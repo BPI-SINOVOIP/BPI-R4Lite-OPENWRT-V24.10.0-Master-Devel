@@ -1,0 +1,22 @@
+Source-Makefile: feeds/kenzo/luci-app-unblockneteasemusic/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-unblockneteasemusic
+Submenu: 3. Applications
+Version: 2.14-r3
+Depends: +libc +dnsmasq-full +ipset +node @(PACKAGE_libustream-mbedtls||PACKAGE_libustream-openssl||PACKAGE_libustream-wolfssl) +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI support for UnblockNeteaseMusic
+Maintainer: OpenWrt LuCI community
+Source: 
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI support for UnblockNeteaseMusic
+@@
+
+

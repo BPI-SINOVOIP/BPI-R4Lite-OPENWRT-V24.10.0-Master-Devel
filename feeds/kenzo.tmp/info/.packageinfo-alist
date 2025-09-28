@@ -1,0 +1,23 @@
+Source-Makefile: feeds/kenzo/alist/Makefile
+Build-Depends: golang/host
+
+Package: alist
+Submenu: Web Servers/Proxies
+Version: 3.44.0-r1
+Depends: +libc @(aarch64||arm||i386||i686||loongarch64||mips||mips64||mips64el||mipsel||powerpc64||riscv64||x86_64) +ca-bundle
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: A file list program that supports multiple storage
+Maintainer: sbwml <admin@cooluc.com>
+Source: alist-3.44.0.tar.gz
+License: GPL-3.0
+URL: http://www.alistgo.com
+Type: ipkg
+Description:   A file list program that supports multiple storage, powered by Gin and Solidjs.
+@@
+
+

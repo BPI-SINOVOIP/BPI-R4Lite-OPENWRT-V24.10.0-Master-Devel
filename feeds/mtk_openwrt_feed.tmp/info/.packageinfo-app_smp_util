@@ -1,0 +1,19 @@
+Source-Makefile: feeds/mtk_openwrt_feed/feed/app/smp_util/Makefile
+
+Package: smp_util
+Version: 1-
+Depends: +libc 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: mtk smp utility
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   mtk smp util to init iptables rule for flowblock
+@@
+
+

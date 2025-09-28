@@ -1,0 +1,103 @@
+Source-Makefile: feeds/small/shadowsocksr-libev/Makefile
+
+Package: shadowsocksr-libev-ssr-check
+Submenu: Web Servers/Proxies
+Version: 2.5.3-r1
+Depends: +libc +libev +libsodium +libopenssl +libpthread +libpcre2 +libudns +zlib +libopenssl-legacy
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocksr-libev ssr-check
+Maintainer: 
+Source: shadowsocksr-libev-2.5.3.tar.gz
+License: GPL-3.0
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocksrr/shadowsocksr-libev
+Type: ipkg
+Description: shadowsocksr-libev ssr-check
+@@
+
+Package: shadowsocksr-libev-ssr-local
+Submenu: Web Servers/Proxies
+Version: 2.5.3-r1
+Depends: +libc +libev +libsodium +libopenssl +libpthread +libpcre2 +libudns +zlib +libopenssl-legacy
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocksr-libev ssr-local
+Maintainer: 
+Source: shadowsocksr-libev-2.5.3.tar.gz
+License: GPL-3.0
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocksrr/shadowsocksr-libev
+Type: ipkg
+Description: shadowsocksr-libev ssr-local
+@@
+
+Package: shadowsocksr-libev-ssr-nat
+Submenu: Web Servers/Proxies
+Version: 2.5.3-r1
+Depends: +libc +libev +libsodium +libopenssl +libpthread +libpcre2 +libudns +zlib +libopenssl-legacy
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocksr-libev ssr-nat
+Maintainer: 
+Source: shadowsocksr-libev-2.5.3.tar.gz
+License: GPL-3.0
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocksrr/shadowsocksr-libev
+Type: ipkg
+Description: shadowsocksr-libev ssr-nat
+@@
+
+Package: shadowsocksr-libev-ssr-redir
+Submenu: Web Servers/Proxies
+Version: 2.5.3-r1
+Depends: +libc +libev +libsodium +libopenssl +libpthread +libpcre2 +libudns +zlib +libopenssl-legacy
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocksr-libev ssr-redir
+Maintainer: 
+Source: shadowsocksr-libev-2.5.3.tar.gz
+License: GPL-3.0
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocksrr/shadowsocksr-libev
+Type: ipkg
+Description: shadowsocksr-libev ssr-redir
+@@
+
+Package: shadowsocksr-libev-ssr-server
+Submenu: Web Servers/Proxies
+Version: 2.5.3-r1
+Depends: +libc +libev +libsodium +libopenssl +libpthread +libpcre2 +libudns +zlib +libopenssl-legacy
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: shadowsocksr-libev ssr-server
+Maintainer: 
+Source: shadowsocksr-libev-2.5.3.tar.gz
+License: GPL-3.0
+LicenseFiles: LICENSE
+URL: https://github.com/shadowsocksrr/shadowsocksr-libev
+Type: ipkg
+Description: shadowsocksr-libev ssr-server
+@@
+
+

@@ -1,0 +1,22 @@
+Source-Makefile: feeds/kenzo/luci-app-lucky/lucky/Makefile
+
+Package: lucky
+Version: 2.15.10-r1
+Depends: +libc @(i386||x86_64||arm||aarch64||mipsel||mips)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: Lucky gdy
+Maintainer: GDY666 <gdy666@foxmail.com>
+Source: 
+License: GPL-3.0-only
+LicenseFiles: LICENSE
+URL: https://github.com/gdy666/lucky
+Type: ipkg
+Description:   Main functions of Lucky: ipv4/ipv6 portforward,ddns,IOT wake on lan ,reverse proxy and more...
+@@
+
+

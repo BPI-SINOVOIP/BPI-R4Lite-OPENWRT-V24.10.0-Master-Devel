@@ -1,0 +1,23 @@
+Source-Makefile: feeds/small/chinadns-ng/Makefile
+
+Package: chinadns-ng
+Submenu: IP Addresses and Names
+Version: 2025.03.27-r1
+Depends: +libc @(aarch64||arm||i386||mips||mipsel||mips64||x86_64) +ipset
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: ChinaDNS next generation, refactoring with epoll and ipset.
+Maintainer: sbwml <admin@cooluc.com>
+Source: chinadns-ng-2025.03.27-
+License: AGPL-3.0-only
+LicenseFiles: LICENSE
+URL: https://github.com/zfl9/chinadns-ng
+Type: ipkg
+Description: ChinaDNS next generation, refactoring with epoll and ipset.
+@@
+
+

@@ -1,0 +1,23 @@
+Source-Makefile: feeds/kenzo/luci-app-filebrowser/Makefile
+Build-Depends: lua/host luci-base/host LUCI_CSSTIDY:csstidy/host LUCI_SRCDIET:luasrcdiet/host 
+
+Package: luci-app-filebrowser
+Submenu: 3. Applications
+Version: snapshot-r118071b
+Depends: +libc +filebrowser +luci-lua-runtime
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: luci
+Category: LuCI
+Repository: base
+Title: LuCI Support for FileBrowser
+Maintainer: OpenWrt LuCI community
+Source: 
+License: GPLv3
+URL: https://github.com/openwrt/luci
+Type: ipkg
+Description: LuCI Support for FileBrowser
+@@
+
+

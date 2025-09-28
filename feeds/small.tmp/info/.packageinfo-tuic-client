@@ -1,0 +1,22 @@
+Source-Makefile: feeds/small/tuic-client/Makefile
+
+Package: tuic-client
+Submenu: Web Servers/Proxies
+Version: 1.0.0-r1
+Depends: +libc @USE_MUSL @(aarch64||arm||i386||x86_64) @!(TARGET_x86_geode||TARGET_x86_legacy)
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: net
+Category: Network
+Repository: base
+Title: Delicately-TUICed 0-RTT proxy protocol
+Maintainer: Tianling Shen <cnsztl@immortalwrt.org>
+Source: dummy
+LicenseFiles: LICENSE
+URL: https://github.com/EAimTY/tuic/
+Type: ipkg
+Description: Delicately-TUICed 0-RTT proxy protocol
+@@
+
+

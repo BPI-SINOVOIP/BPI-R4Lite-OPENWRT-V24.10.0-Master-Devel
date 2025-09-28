@@ -1,0 +1,35 @@
+Source-Makefile: feeds/mtk_openwrt_feed/feed/kernel/fips-debugfs/Makefile
+
+Package: kmod-fips-debugfs
+Submenu: Drivers
+Version: <LINUX_VERSION>-r1
+Depends: 
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: MTK interface for fips test
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   Interface for gcm/gmac fips test.
+@@
+
+Package: kmod-fips-debugfs-autoload
+Submenu: Drivers
+Version: <LINUX_VERSION>-r1
+Depends: kmod-fips-debugfs
+Conflicts: 
+Menu-Depends: 
+Provides: 
+Section: kernel
+Category: MTK Properties
+Title: FIPS Interface Auto Load
+Maintainer: 
+Source: 
+Type: ipkg
+Description:   FIPS test interface auto load on system boot process.
+@@
+
+

@@ -1,0 +1,313 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-04-25 05:53+0000\n"
+"Last-Translator: 大王叫我来巡山 "
+"<hamburger2048@users.noreply.hosted.weblate.org>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/openwrt/luciapplicationsattendedsysupgrade/zh_Hans/>\n"
+"Language: zh_Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.11.1-dev\n"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:21
+msgid "Address"
+msgstr "地址"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:22
+msgid "Address of the sysupgrade server"
+msgstr "系统更新服务器地址"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:50
+msgid "Advanced Mode"
+msgstr "高级模式"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:11
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:664
+#: applications/luci-app-attendedsysupgrade/root/usr/share/luci/menu.d/luci-app-attendedsysupgrade.json:3
+msgid "Attended Sysupgrade"
+msgstr "值守式系统更新"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:12
+msgid "Attendedsysupgrade Configuration."
+msgstr "值守式系统更新配置。"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:557
+msgid "Board Name / Profile"
+msgstr "主板名称/配置"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:164
+msgid "Build Date"
+msgstr "构建日期"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:241
+msgid "Building Firmware..."
+msgstr "构建固件中…"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:67
+msgid "Calculating package hash"
+msgstr "计算软件包的哈希值"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:204
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:572
+msgid "Cancel"
+msgstr "取消"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:35
+msgid "Client"
+msgstr "客户端"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:285
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:422
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:477
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:620
+msgid "Close"
+msgstr "关闭"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:70
+msgid "Completed generating firmware image"
+msgstr "已完成生成固件映像"
+
+#: applications/luci-app-attendedsysupgrade/root/usr/share/luci/menu.d/luci-app-attendedsysupgrade.json:24
+msgid "Configuration"
+msgstr "配置"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:471
+msgid "Could not reach API at \"%s\". Please try again later."
+msgstr "无法访问位于 “%s” 的 API，请稍后再试。"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:565
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:679
+msgid "Currently running: %s - %s"
+msgstr "当前版本：%s - %s"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:337
+msgid "Download"
+msgstr "下载"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:175
+msgid "Download firmware image"
+msgstr "下载固件镜像"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:74
+msgid "Downloading ImageBuilder archive"
+msgstr "下载 ImageBuilder 存档中"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:383
+msgid "Downloading firmware from server to browser"
+msgstr "正从服务器下载固件到浏览器"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:379
+msgid "Downloading..."
+msgstr "下载中…"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:289
+msgid "Error building the firmware image"
+msgstr "构建固件镜像时出错"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:467
+msgid "Error connecting to upgrade server"
+msgstr "连接至升级服务器时出错"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:420
+msgid "Error during download of firmware. Please try again"
+msgstr "固件下载出错，请重试"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:71
+msgid "Failed to generate firmware image"
+msgstr "生成固件映像失败"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:166
+msgid "Filename"
+msgstr "文件名"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:168
+msgid "Filesystem"
+msgstr "文件系统"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:68
+msgid "Generating firmware image"
+msgstr "正在生成固件的映像文件"
+
+#: applications/luci-app-attendedsysupgrade/root/usr/share/rpcd/acl.d/luci-app-attendedsysupgrade.json:3
+msgid "Grant UCI access to LuCI app attendedsysupgrade"
+msgstr "授予访问 LuCI 应用 attendedsysupgrade 的权限"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:214
+msgid "Install firmware image"
+msgstr "安装固件镜像"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:429
+msgid "Installing the sysupgrade. Do not unpower device!"
+msgstr "正在更新系统，请勿切断电源！"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:425
+msgid "Installing..."
+msgstr "安装中…"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:200
+msgid "Keep settings and retain the current configuration"
+msgstr "保留当前配置"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:562
+msgid "New firmware upgrade available"
+msgstr "有新固件版本可供更新"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:611
+msgid "No upgrade available"
+msgstr "无升级可用"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:30
+msgid ""
+"Other ASU server instances that rebuild a requested image. Allows to compare "
+"checksums and verify that the results are the same."
+msgstr ""
+"其他重建所请求映像文件的 ASU 服务器实例。允许比较校验和并验证结果相同。"
+
+#: applications/luci-app-attendedsysupgrade/root/usr/share/luci/menu.d/luci-app-attendedsysupgrade.json:15
+msgid "Overview"
+msgstr "概览"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:558
+msgid "Packages"
+msgstr "软件包"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:267
+msgid "Please report the error message and request"
+msgstr "请报告错误信息和请求"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:160
+msgid "Profile"
+msgstr "配置文件"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:245
+msgid "Progress: %s%% %s"
+msgstr "进度：%s%% %s"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:231
+msgid "Queued..."
+msgstr "队列中…"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:28
+msgid "Rebuilders"
+msgstr "重建程序"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:178
+msgid "Rebuilds"
+msgstr "重建"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:63
+msgid "Received build request"
+msgstr "收到构建请求"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:269
+msgid "Request Data:"
+msgstr "请求数据："
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:605
+msgid "Request firmware image"
+msgstr "请求固件镜像"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:235
+msgid "Request in build queue position %s"
+msgstr "构建队列位置 %s 中的请求"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:154
+msgid "SHA256"
+msgstr "SHA-256"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:690
+msgid "Search for firmware upgrade"
+msgstr "搜索固件更新"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:42
+msgid "Search for new sysupgrades on opening the tab"
+msgstr "打开此标签页时搜索新的系统更新"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:41
+msgid "Search on opening"
+msgstr "打开时进行搜索"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:458
+msgid "Searching for an available sysupgrade of %s - %s"
+msgstr "正在搜索 %s - %s 的可用系统更新"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:454
+msgid "Searching..."
+msgstr "搜索中…"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:15
+msgid "Server"
+msgstr "服务器"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:263
+msgid "Server response: %s"
+msgstr "服务器响应：%s"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:75
+msgid "Setting Up ImageBuilder"
+msgstr "设置映像构建程序"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:64
+msgid "Setting up ImageBuilder"
+msgstr "设置映像构建程序"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/configuration.js:51
+msgid "Show advanced options like package list modification"
+msgstr "显示高级选项，如软件包列表更改"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:69
+msgid "Signing images"
+msgstr "映像签名"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:219
+msgid "Successfully created firmware image"
+msgstr "已成功创建固件镜像"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:162
+msgid "Target"
+msgstr "目标"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:668
+msgid ""
+"The attended sysupgrade service allows to upgrade vanilla and custom "
+"firmware images easily."
+msgstr "值守式系统升级服务可让您轻松升级原版和自定义固件镜像。"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:614
+msgid "The device runs the latest firmware version %s - %s"
+msgstr "此设备正运行最新的固件版本 %s - %s"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:674
+msgid ""
+"This is done by building a new firmware on demand via an online service."
+msgstr "这是通过按需构建新固件的在线服务来实现的。"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:405
+msgid "Uploading firmware from browser to device"
+msgstr "正将固件从浏览器上传到设备"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:401
+msgid "Uploading..."
+msgstr "上传中…"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:66
+msgid "Validating package selection"
+msgstr "验证软件包选择"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:65
+msgid "Validating revision"
+msgstr "验证修订版本"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:152
+msgid "Version"
+msgstr "版本"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:417
+msgid "Wrong checksum"
+msgstr "错误的校验和"
+
+#: applications/luci-app-attendedsysupgrade/htdocs/luci-static/resources/view/attendedsysupgrade/overview.js:542
+msgid "[installed] %s"
+msgstr "[已安装] %s"
