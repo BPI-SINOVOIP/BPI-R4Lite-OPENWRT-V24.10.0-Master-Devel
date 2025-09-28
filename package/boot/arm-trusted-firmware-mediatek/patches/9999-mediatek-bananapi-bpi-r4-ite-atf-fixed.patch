@@ -1,0 +1,113 @@
+diff -aurN a/fdts/mt7987-spi2-nand.dts b/fdts/mt7987-spi2-nand.dts
+--- a/fdts/mt7987-spi2-nand.dts	1970-01-01 00:00:00.000000000 +0000
++++ b/fdts/mt7987-spi2-nand.dts	2025-04-09 04:06:07.000000000 +0000
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2024, MediaTek Inc. All rights reserved.
++ */
++/dts-v1/;
++
++/ {
++	soc {
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		qspi: spi@11009800 {
++			compatible = "mediatek,ipm-spi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0x11009800 0x1000>;
++			status = "okay";
++
++			flash0: spiflash@0 {
++				compatible = "spi-flash";
++				reg = <0>;
++				spi-tx-bus-width = <4>;
++				spi-rx-bus-width = <4>;
++				spi-cpol = <1>;
++				spi-cpha = <1>;
++				spi-max-frequency = <52000000>;
++				sample-sel = <0>;
++				tick-dly = <2>;
++				inter-loopback = <0>;
++				#address-cells = <1>;
++				#size-cells = <1>;
++			};
++		};
++	};
++};
+diff -aurN a/fdts/mt7987-spi2-nor.dts b/fdts/mt7987-spi2-nor.dts
+--- a/fdts/mt7987-spi2-nor.dts	1970-01-01 00:00:00.000000000 +0000
++++ b/fdts/mt7987-spi2-nor.dts	2025-04-09 04:04:01.000000000 +0000
+@@ -0,0 +1,33 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2024, MediaTek Inc. All rights reserved.
++ */
++/dts-v1/;
++
++/ {
++	soc {
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		qspi: spi@11009800 {
++			compatible = "mediatek,ipm-spi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0x11009800 0x1000>;
++			status = "okay";
++
++			flash0: spiflash@0 {
++				compatible = "spi-flash";
++				reg = <0>;
++				spi-tx-bus-width = <4>;
++				spi-rx-bus-width = <4>;
++				spi-cpol = <1>;
++				spi-cpha = <1>;
++				tick-dly = <2>;
++				spi-max-frequency = <52000000>;
++				#address-cells = <1>;
++				#size-cells = <1>;
++			};
++		};
++	};
++};
+diff -aurN a/plat/mediatek/mt7987/bl2/bl2_dev_spi_nor.c b/plat/mediatek/mt7987/bl2/bl2_dev_spi_nor.c
+--- a/plat/mediatek/mt7987/bl2/bl2_dev_spi_nor.c	2025-07-01 09:00:47.293049162 +0000
++++ b/plat/mediatek/mt7987/bl2/bl2_dev_spi_nor.c	2025-07-01 09:02:38.492765012 +0000
+@@ -7,8 +7,8 @@
+ #include <stdint.h>
+ #include <boot_spi.h>
+ 
+-#define FIP_BASE			0x250000
+-#define FIP_SIZE			0x80000
++#define FIP_BASE			0x260000
++#define FIP_SIZE			0x140000
+ 
+ #define MTK_QSPI_SRC_CLK		CB_MPLL_D2
+ 
+diff -aurN a/plat/mediatek/mt7987/bl2/bl2.mk b/plat/mediatek/mt7987/bl2/bl2.mk
+--- a/plat/mediatek/mt7987/bl2/bl2.mk	2025-02-12 14:38:59.000000000 +0000
++++ b/plat/mediatek/mt7987/bl2/bl2.mk	2025-04-09 04:09:08.000000000 +0000
+@@ -88,7 +88,7 @@
+ ifeq ($(BOOT_DEVICE),nor)
+ $(eval $(call BL2_BOOT_NOR))
+ BL2_SOURCES		+=	$(MTK_PLAT_SOC)/bl2/bl2_dev_spi_nor.c
+-DTS_NAME		:=	mt7987-spi2
++DTS_NAME		:=	mt7987-spi2-nor
+ endif # END OF BOOTDEVICE = nor
+ 
+ ifeq ($(BOOT_DEVICE),emmc)
+@@ -108,8 +108,8 @@
+ ifeq ($(BOOT_DEVICE),spim-nand)
+ $(eval $(call BL2_BOOT_SPI_NAND,0,0))
+ BL2_SOURCES		+=	$(MTK_PLAT_SOC)/bl2/bl2_dev_spi_nand.c
+-NAND_TYPE		?=	spim:2k+64
+-DTS_NAME		:=	mt7987-spi0
++NAND_TYPE		?=	spim:2k+128
++DTS_NAME		:=	mt7987-spi2-nand
+ $(eval $(call BL2_BOOT_NAND_TYPE_CHECK,$(NAND_TYPE),spim:2k+64 spim:2k+128 spim:4k+256))
+ endif # END OF BOOTDEVICE = spim-nand
+ 

@@ -1,0 +1,3377 @@
+diff -aurN a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite.dtsi b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite.dtsi
+--- a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite.dtsi	1970-01-01 00:00:00.000000000 +0000
++++ b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite.dtsi	2025-06-28 10:46:50.000000000 +0000
+@@ -0,0 +1,110 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/dts-v1/;
++#include "mt7987a.dtsi"
++#include "mt7987-pinctrl.dtsi"
++#include "mt7987a-u-boot.dtsi"
++#include "mt7987-netsys-u-boot.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/linux-event-codes.h>
++
++/ {
++	model = "BananaPi BPI-R4-Lite";
++	compatible = "mediatek,mt7987", "bananapi,bpi-r4-lite";
++
++	chosen {
++		stdout-path = &uart0;
++	};
++
++        reg_1p8v: regulator-1p8v {
++                compatible = "regulator-fixed";
++                regulator-name = "fixed-1.8V";
++                regulator-min-microvolt = <1800000>;
++                regulator-max-microvolt = <1800000>;
++                regulator-boot-on;
++                regulator-always-on;
++        };
++
++        reg_3p3v: regulator-3p3v {
++                compatible = "regulator-fixed";
++                regulator-name = "fixed-3.3V";
++                regulator-min-microvolt = <3300000>;
++                regulator-max-microvolt = <3300000>;
++                regulator-boot-on;
++                regulator-always-on;
++        };
++
++	keys {
++		compatible = "gpio-keys";
++
++		wps {
++			label = "reset";
++			linux,code = <KEY_RESTART>;
++			gpios = <&pio 0 GPIO_ACTIVE_LOW>;
++		};
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		led_status_sys: led-sys {
++			label = "led-sys:statuas";
++			gpios = <&pio 3 GPIO_ACTIVE_HIGH>;
++		};
++        };
++};
++
++&uart0 {
++	status = "okay";
++	clocks = <&clkxtal>;
++};
++
++&eth0 {
++        status = "okay";
++        pinctrl-names = "default";
++        pinctrl-0 = <&mdio0_pins>;
++        phy-mode = "2500base-x";
++        mediatek,switch = "auto";
++        reset-gpios = <&pio 42 GPIO_ACTIVE_HIGH>;
++
++        fixed-link {
++                speed = <2500>;
++                full-duplex;
++                pause;
++        };
++};
++
++&eth1 {
++        status = "okay";
++        pinctrl-names = "i2p5gbe-led";
++        pinctrl-0 = <&i2p5gbe_led0_pins>;
++        phy-mode = "xgmii";
++        phy-handle = <&phy15>;
++
++        phy15: ethernet-phy@15 {
++                compatible = "ethernet-phy-ieee802.3-c45";
++                reg = <15>;
++                phy-mode = "xgmii";
++        };
++};
++
++/* Disable spi0/spi1 node since MSDC shares pins with spi0 and spi1*/
++&spi0 {
++        status = "disabled";
++};
++
++&spi1 {
++        status = "disabled";
++};
++
++&pcie0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pcie0_pins>;
++	status = "okay";
++};
++
++&pcie1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pcie1_pins>;
++	status = "disabled";
++};
+diff -aurN a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-emmc.dts b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-emmc.dts
+--- a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-emmc.dts	1970-01-01 00:00:00.000000000 +0000
++++ b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-emmc.dts	2025-06-28 07:59:46.000000000 +0000
+@@ -0,0 +1,56 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/dts-v1/;
++#include "mt7987a-bananapi_bpi-r4-lite.dtsi"
++
++/ {
++	model = "BananaPi BPI-R4-Lite";
++	compatible = "mediatek,mt7987", "bananapi,bpi-r4-lite-emmc";
++
++	bl2_verify {
++		bl2_compatible = "emmc";
++	};
++};
++
++&spi2 {
++        pinctrl-names = "default";
++        pinctrl-0 = <&spi2_flash_pins>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        status = "okay";
++        must_tx;
++        enhance_timing;
++        dma_ext;
++        ipm_design;
++        support_quad;
++        tick_dly = <2>;
++        sample_sel = <0>;
++
++	/delete-node/ flash@0;
++        spi_nor@0 {
++                compatible = "jedec,spi-nor";
++                reg = <0>;
++                spi-max-frequency = <52000000>;
++                spi-rx-bus-width = <4>;
++                spi-tx-bus-width = <4>;
++        };
++};
++
++&mmc0 {
++        pinctrl-names = "default", "state_uhs";
++        pinctrl-0 = <&mmc_pins_default>;
++        pinctrl-1 = <&mmc_pins_uhs>;
++        bus-width = <8>;
++        max-frequency = <48000000>;
++        cap-mmc-highspeed;
++	cap-mmc-hw-reset;
++        mmc-hs200-1_8v;
++        mmc-hs400-1_8v;
++        hs400-ds-delay = <0x12814>;
++        vqmmc-supply = <&reg_3p3v>;
++        vmmc-supply = <&reg_3p3v>;
++        non-removable;
++        no-sd;
++        no-sdio;
++        status = "okay";
++};
+diff -aurN a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-sd.dts b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-sd.dts
+--- a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-sd.dts	1970-01-01 00:00:00.000000000 +0000
++++ b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-sd.dts	2025-06-29 05:42:32.000000000 +0000
+@@ -0,0 +1,68 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/dts-v1/;
++#include "mt7987a-bananapi_bpi-r4-lite.dtsi"
++
++/ {
++	model = "BananaPi BPI-R4-Lite";
++	compatible = "mediatek,mt7987", "bananapi,bpi-r4-lite-sd";
++
++	bl2_verify {
++		bl2_compatible = "sd";
++	};
++};
++
++&spi2 {
++        pinctrl-names = "default";
++        pinctrl-0 = <&spi2_flash_pins>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        status = "okay";
++        must_tx;
++        enhance_timing;
++        dma_ext;
++        ipm_design;
++        support_quad;
++        tick_dly = <2>;
++        sample_sel = <0>;
++
++	/delete-node/ flash@0;
++	spi_nand@0 {
++		compatible = "spi-nand";
++                reg = <0>;
++                spi-max-frequency = <52000000>;
++                spi-rx-bus-width = <4>;
++                spi-tx-bus-width = <4>;
++
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			partition@0 {
++				label = "bl2";
++				reg = <0x0 0x200000>;
++			};
++
++			partition@200000 {
++				label = "ubi";
++				reg = <0x200000 0xfe00000>;
++				compatible = "linux,ubi";
++			};
++		};
++	};
++};
++
++&mmc0 {
++        pinctrl-names = "default", "state_uhs";
++        pinctrl-0 = <&sd_pins_default>;
++        pinctrl-1 = <&sd_pins_uhs>;
++        bus-width = <4>;
++        max-frequency = <50000000>;
++        cap-sd-highspeed;
++        vmmc-supply = <&reg_3p3v>;
++        vqmmc-supply = <&reg_3p3v>;
++        no-mmc;
++        no-sdio;
++        status = "okay";
++};
+diff -aurN a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-snor.dts b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-snor.dts
+--- a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-snor.dts	1970-01-01 00:00:00.000000000 +0000
++++ b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-snor.dts	2025-07-01 07:17:35.947294188 +0000
+@@ -0,0 +1,77 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/dts-v1/;
++#include "mt7987a-bananapi_bpi-r4-lite.dtsi"
++
++/ {
++	model = "BananaPi BPI-R4-Lite";
++	compatible = "mediatek,mt7987", "bananapi,bpi-r4-lite-snor";
++
++	bl2_verify {
++		bl2_compatible = "nor";
++	};
++};
++
++&spi2 {
++        pinctrl-names = "default";
++        pinctrl-0 = <&spi2_flash_pins>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        status = "okay";
++        must_tx;
++        enhance_timing;
++        dma_ext;
++        ipm_design;
++        support_quad;
++        tick_dly = <2>;
++        sample_sel = <0>;
++
++	/delete-node/ flash@0;
++        spi_nor@0 {
++                compatible = "jedec,spi-nor";
++                reg = <0>;
++                spi-max-frequency = <52000000>;
++                spi-rx-bus-width = <4>;
++                spi-tx-bus-width = <4>;
++
++		partition@00000 {
++                        label = "BL2";
++                        reg = <0x00000 0x0050000>;
++                };
++                partition@40000 {
++                        label = "u-boot-env";
++                        reg = <0x50000 0x0010000>;
++                };
++                partition@50000 {
++                        label = "Factory";
++                        reg = <0x60000 0x0200000>;
++                };
++                partition@250000 {
++                        label = "FIP";
++                        reg = <0x260000 0x0140000>;
++                };
++                partition@2D0000 {
++                        label = "firmware";
++                        reg = <0x3A0000 0x1C60000>;
++                };
++        };
++};
++
++&mmc0 {
++        pinctrl-names = "default", "state_uhs";
++        pinctrl-0 = <&mmc_pins_default>;
++        pinctrl-1 = <&mmc_pins_uhs>;
++        bus-width = <8>;
++        max-frequency = <48000000>;
++        cap-mmc-highspeed;
++	cap-mmc-hw-reset;
++        mmc-hs200-1_8v;
++        mmc-hs400-1_8v;
++        hs400-ds-delay = <0x12814>;
++        vqmmc-supply = <&reg_3p3v>;
++        vmmc-supply = <&reg_3p3v>;
++        non-removable;
++        no-sd;
++        no-sdio;
++        status = "okay";
++};
+diff -aurN a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-spim-nand.dts b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-spim-nand.dts
+--- a/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-spim-nand.dts	1970-01-01 00:00:00.000000000 +0000
++++ b/arch/arm/dts/mt7987a-bananapi_bpi-r4-lite-spim-nand.dts	2025-06-29 05:42:42.000000000 +0000
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/dts-v1/;
++#include "mt7987a-bananapi_bpi-r4-lite.dtsi"
++
++/ {
++	model = "BananaPi BPI-R4-Lite";
++	compatible = "mediatek,mt7987", "bananapi,bpi-r4-lite-spim-nand";
++
++	bl2_verify {
++		bl2_compatible = "spim-nand";
++	};
++};
++
++&spi2 {
++        pinctrl-names = "default";
++        pinctrl-0 = <&spi2_flash_pins>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        status = "okay";
++        must_tx;
++        enhance_timing;
++        dma_ext;
++        ipm_design;
++        support_quad;
++        tick_dly = <2>;
++        sample_sel = <0>;
++
++	/delete-node/ flash@0;
++	spi_nand@0 {
++		compatible = "spi-nand";
++                reg = <0>;
++                spi-max-frequency = <52000000>;
++                spi-rx-bus-width = <4>;
++                spi-tx-bus-width = <4>;
++
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			partition@0 {
++				label = "bl2";
++				reg = <0x0 0x200000>;
++			};
++
++			partition@200000 {
++				label = "ubi";
++				reg = <0x200000 0xfe00000>;
++				compatible = "linux,ubi";
++			};
++		};
++	};
++};
++
++&mmc0 {
++        pinctrl-names = "default", "state_uhs";
++        pinctrl-0 = <&mmc_pins_default>;
++        pinctrl-1 = <&mmc_pins_uhs>;
++        bus-width = <8>;
++        max-frequency = <48000000>;
++        cap-mmc-highspeed;
++	cap-mmc-hw-reset;
++        mmc-hs200-1_8v;
++        mmc-hs400-1_8v;
++        hs400-ds-delay = <0x12814>;
++        vqmmc-supply = <&reg_3p3v>;
++        vmmc-supply = <&reg_3p3v>;
++        non-removable;
++        no-sd;
++        no-sdio;
++        status = "okay";
++};
+diff -aurN a/bananapi_bpi-r4-lite_emmc_env b/bananapi_bpi-r4-lite_emmc_env
+--- a/bananapi_bpi-r4-lite_emmc_env	1970-01-01 00:00:00.000000000 +0000
++++ b/bananapi_bpi-r4-lite_emmc_env	2025-06-30 03:08:39.000000000 +0000
+@@ -0,0 +1,60 @@
++ipaddr=192.168.1.1
++serverip=192.168.1.2
++loadaddr=0x48000000
++bootargs=console=ttyS0,115200n1 pci=pcie_bus_perf root=/dev/fit0 rootwait
++bootcmd=if pstore check ; then run boot_recovery ; else run boot_emmc ; fi
++bootconf=config-mt7987a-bananapi-bpi-r4-lite
++bootconf_base=config-mt7987a-bananapi-bpi-r4-lite
++bootconf_emmc=mt7987a-bananapi-bpi-r4-lite-emmc
++bootconf_sd=mt7987a-bananapi-bpi-r4-lite-sd
++bootconf_snand=mt7987a-bananapi-bpi-r4-lite-spim-nand
++bootconf_snor=mt7987a-bananapi-bpi-r4-lite-spim-nor
++bootconf_extra=mt7987a-bananapi-bpi-r4-lite-1pcie-2L
++bootdelay=0
++bootfile=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-initramfs-recovery.itb
++bootfile_bl2=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-emmc-preloader.bin
++bootfile_fip=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-emmc-bl31-uboot.fip
++bootfile_upg=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-squashfs-sysupgrade.itb
++bootled_pwr=led-sys:statuas
++bootled_rec=led-sys:statuas
++bootmenu_confirm_return=askenv - Press ENTER to return to menu ; bootmenu 60
++bootmenu_default=0
++bootmenu_delay=0
++bootmenu_title=      [0;34m( ( ( [1;39mOpenWrt[0;34m ) ) )  [0;36m[eMMC][0m
++bootmenu_0=Initialize environment.=run _firstboot
++bootmenu_0d=Run default boot command.=run boot_default
++bootmenu_1=Boot system via TFTP.=run boot_tftp ; run bootmenu_confirm_return
++bootmenu_2=Boot production system from eMMC.=run boot_production ; run bootmenu_confirm_return
++bootmenu_3=Boot recovery system from eMMC.=run boot_recovery ; run bootmenu_confirm_return
++bootmenu_4=Load production system via TFTP then write to eMMC.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_production ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
++bootmenu_5=Load recovery system via TFTP then write to eMMC.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_recovery ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
++bootmenu_6=[31mLoad BL31+U-Boot FIP via TFTP then write to eMMC.[0m=run boot_tftp_write_fip ; run bootmenu_confirm_return
++bootmenu_7=[31mLoad BL2 preloader via TFTP then write to eMMC.[0m=run boot_tftp_write_bl2 ; run bootmenu_confirm_return
++bootmenu_8=Reboot.=reset
++bootmenu_9=Reset all settings to factory defaults.=run reset_factory ; reset
++boot_first=if button reset ; then led $bootled_rec on ; run boot_tftp_recovery ; setenv flag_recover 1 ; run boot_default ; fi ; bootmenu
++boot_default=if env exists flag_recover ; then else run bootcmd ; fi ; run boot_recovery ; setenv replacevol 1 ; run boot_tftp_forever
++boot_production=led $bootled_pwr on ; run emmc_read_production && bootm $loadaddr#$bootconf#$bootconf_emmc#$bootconf_extra ; led $bootled_pwr off
++boot_recovery=led $bootled_rec on ; run emmc_read_recovery && bootm $loadaddr#$bootconf#$bootconf_emmc#$bootconf_extra ; led $bootled_rec off
++boot_emmc=run boot_production ; run boot_recovery
++boot_tftp_forever=led $bootled_rec on ; while true ; do run boot_tftp_recovery ; sleep 1 ; done
++boot_tftp_production=tftpboot $loadaddr $bootfile_upg && env exists replacevol && iminfo $loadaddr && run emmc_write_production ; if env exists noboot ; then else bootm $loadaddr#$bootconf#$bootconf_emmc#$bootconf_extra ; fi
++boot_tftp_recovery=tftpboot $loadaddr $bootfile && env exists replacevol && iminfo $loadaddr && run emmc_write_recovery ; if env exists noboot ; then else bootm $loadaddr#$bootconf#$bootconf_emmc ; fi
++boot_tftp_write_fip=tftpboot $loadaddr $bootfile_fip && run emmc_write_fip
++boot_tftp_write_bl2=tftpboot $loadaddr $bootfile_bl2 && run emmc_write_bl2
++boot_tftp=tftpboot $loadaddr $bootfile && bootm $loadaddr#$bootconf
++mmc_write_vol=imszb $loadaddr image_size && test 0x$image_size -le 0x$part_size && mmc erase 0x$part_addr 0x$image_size && mmc write $loadaddr 0x$part_addr 0x$image_size
++mmc_read_vol=mmc read $loadaddr $part_addr 0x100 && imszb $loadaddr image_size && test 0x$image_size -le 0x$part_size && mmc read $loadaddr 0x$part_addr 0x$image_size && setexpr filesize $image_size * 0x200
++part_default=production
++part_recovery=recovery
++reset_factory=eraseenv && reset
++emmc_read_production=part start mmc 0 $part_default part_addr && part size mmc 0 $part_default part_size && run mmc_read_vol
++emmc_read_recovery=part start mmc 0 $part_recovery part_addr && part size mmc 0 $part_recovery part_size && run mmc_read_vol
++emmc_write_bl2=mmc partconf 0 1 1 1 && mmc erase 0x0 0x400 && mmc write $fileaddr 0x0 0x400 ; mmc partconf 0 1 1 0
++emmc_write_fip=mmc erase 0x3400 0x2000 && mmc write $fileaddr 0x3400 0x2000 && mmc erase 0x2000 0x800
++emmc_write_production=part start mmc 0 $part_default part_addr && part size mmc 0 $part_default part_size && run mmc_write_vol
++emmc_write_recovery=part start mmc 0 $part_recovery part_addr && part size mmc 0 $part_recovery part_size && run mmc_write_vol
++_init_env=setenv _init_env ; setenv _create_env ; saveenv ; saveenv
++_firstboot=setenv _firstboot ; run _switch_to_menu ; run _init_env ; run boot_first
++_switch_to_menu=setenv _switch_to_menu ; setenv bootdelay 3 ; setenv bootmenu_delay 3 ; setenv bootmenu_0 $bootmenu_0d ; setenv bootmenu_0d ; run _bootmenu_update_title
++_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       [33m$ver[0m"
+diff -aurN a/bananapi_bpi-r4-lite_sdmmc_env b/bananapi_bpi-r4-lite_sdmmc_env
+--- a/bananapi_bpi-r4-lite_sdmmc_env	1970-01-01 00:00:00.000000000 +0000
++++ b/bananapi_bpi-r4-lite_sdmmc_env	2025-06-30 03:07:52.000000000 +0000
+@@ -0,0 +1,69 @@
++ipaddr=192.168.1.1
++serverip=192.168.1.2
++loadaddr=0x48000000
++bootargs=console=ttyS0,115200n1 pci=pcie_bus_perf root=/dev/fit0 rootwait
++bootcmd=if pstore check ; then run boot_recovery ; else run boot_sdmmc ; fi
++bootconf=config-mt7987a-bananapi-bpi-r4-lite
++bootconf_base=config-mt7987a-bananapi-bpi-r4-lite
++bootconf_emmc=mt7987a-bananapi-bpi-r4-lite-emmc
++bootconf_sd=mt7987a-bananapi-bpi-r4-lite-sd
++bootconf_snand=mt7987a-bananapi-bpi-r4-lite-spim-nand
++bootconf_snor=mt7987a-bananapi-bpi-r4-lite-spim-nor
++bootconf_extra=mt7987a-bananapi-bpi-r4-lite-1pcie-2L
++bootdelay=0
++bootfile=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-initramfs-recovery.itb
++bootfile_upg=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-squashfs-sysupgrade.itb
++bootled_pwr=led-sys:statuas
++bootled_rec=led-sys:statuas
++bootmenu_confirm_return=askenv - Press ENTER to return to menu ; bootmenu 60
++bootmenu_default=0
++bootmenu_delay=0
++bootmenu_title=      [0;34m( ( ( [1;39mOpenWrt[0;34m ) ) )  [0;36m[SD card][0m
++bootmenu_0=Initialize environment.=run _firstboot
++bootmenu_0d=Run default boot command.=run boot_default
++bootmenu_1=Boot system via TFTP.=run boot_tftp ; run bootmenu_confirm_return
++bootmenu_2=Boot production system from SD card.=run boot_production ; run bootmenu_confirm_return
++bootmenu_3=Boot recovery system from SD card.=run boot_recovery ; run bootmenu_confirm_return
++bootmenu_4=Load production system via TFTP then write to SD card.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_production ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
++bootmenu_5=Load recovery system via TFTP then write to SD card.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_recovery ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
++bootmenu_6=[31mInstall bootloader, recovery and production to NAND.[0m=if nand info ; then run ubi_init ; else echo "NAND not detected" ; fi ; run bootmenu_confirm_return
++bootmenu_7=Reboot.=reset
++bootmenu_8=Reset all settings to factory defaults.=run reset_factory ; reset
++boot_first=if button reset ; then led $bootled_rec on ; run boot_tftp_recovery ; setenv flag_recover 1 ; run boot_default ; fi ; bootmenu
++boot_default=if env exists flag_recover ; then else run bootcmd ; fi ; run boot_recovery ; setenv replacevol 1 ; run boot_tftp_forever
++boot_production=led $bootled_pwr on ; run sdmmc_read_production && bootm $loadaddr#$bootconf#$bootconf_sd#$bootconf_extra ; led $bootled_pwr off
++boot_recovery=led $bootled_rec on ; run sdmmc_read_recovery && bootm $loadaddr#$bootconf#$bootconf_sd ; led $bootled_rec off
++boot_sdmmc=run boot_production ; run boot_recovery
++boot_tftp_forever=led $bootled_rec on ; while true ; do run boot_tftp_recovery ; sleep 1 ; done
++boot_tftp_production=tftpboot $loadaddr $bootfile_upg && env exists replacevol && iminfo $loadaddr && run sdmmc_write_production ; if env exists noboot ; then else bootm $loadaddr#$bootconf#$bootconf_sd#$bootconf_extra ; fi
++boot_tftp_recovery=tftpboot $loadaddr $bootfile && env exists replacevol && iminfo $loadaddr && run sdmmc_write_recovery ; if env exists noboot ; then else bootm $loadaddr#$bootconf#$bootconf_sd ; fi
++boot_tftp=tftpboot $loadaddr $bootfile && bootm $loadaddr#$bootconf#$bootconf_sd
++mmc_write_vol=imszb $loadaddr image_size && test 0x$image_size -le 0x$part_size && mmc erase 0x$part_addr 0x$image_size && mmc write $loadaddr 0x$part_addr 0x$image_size
++mmc_read_vol=mmc read $loadaddr $part_addr 0x100 && imszb $loadaddr image_size && test 0x$image_size -le 0x$part_size && mmc read $loadaddr 0x$part_addr 0x$image_size && setexpr filesize $image_size * 0x200
++part_default=production
++part_recovery=recovery
++reset_factory=eraseenv && reset
++sdmmc_read_production=part start mmc 0 $part_default part_addr && part size mmc 0 $part_default part_size && run mmc_read_vol
++sdmmc_read_recovery=part start mmc 0 $part_recovery part_addr && part size mmc 0 $part_recovery part_size && run mmc_read_vol
++sdmmc_read_snand_bl2=part start mmc 0 install part_addr && mmc read $loadaddr $part_addr 0x400
++sdmmc_read_snand_fip=part start mmc 0 install part_addr && setexpr offset $part_addr + 0x800 && mmc read $loadaddr $offset 0x1000
++sdmmc_read_emmc_install=part start mmc 0 install part_addr && setexpr offset $part_addr + 0x3800 && mmc read $loadaddr $offset 0x4000
++sdmmc_write_production=part start mmc 0 $part_default part_addr && part size mmc 0 $part_default part_size && run mmc_write_vol
++sdmmc_write_recovery=part start mmc 0 $part_recovery part_addr && part size mmc 0 $part_recovery part_size && run mmc_write_vol
++snand_write_bl2=mtd erase bl2 && mtd write bl2 $loadaddr 0x0 0x80000 && mtd write bl2 $loadaddr 0x80000 0x80000 && mtd write bl2 $loadaddr 0x100000 0x80000 && mtd write bl2 $loadaddr 0x180000 0x80000
++ubi_create_env=ubi create ubootenv 0x100000 dynamic ; ubi create ubootenv2 0x100000 dynamic
++ubi_format=ubi detach ; mtd erase ubi && ubi part ubi
++ubi_init=run ubi_format && run ubi_init_bl && run ubi_create_env && run ubi_init_openwrt && run ubi_init_emmc_install
++ubi_init_openwrt=run sdmmc_read_recovery && iminfo $loadaddr && run ubi_write_recovery ; run sdmmc_read_production && iminfo $loadaddr && run ubi_write_production
++ubi_init_bl=run sdmmc_read_snand_bl2 && run snand_write_bl2 && run sdmmc_read_snand_fip && run ubi_write_fip
++ubi_init_emmc_install=run sdmmc_read_emmc_install && run ubi_write_emmc_install
++ubi_prepare_rootfs=if ubi check rootfs_data ; then else if env exists rootfs_data_max ; then ubi create rootfs_data $rootfs_data_max dynamic || ubi create rootfs_data - dynamic ; else ubi create rootfs_data - dynamic ; fi ; fi
++ubi_remove_rootfs=ubi check rootfs_data && ubi remove rootfs_data
++ubi_write_fip=run ubi_remove_rootfs ; ubi check fip && ubi remove fip ; ubi create fip 0x200000 static ; ubi write $loadaddr fip 0x200000
++ubi_write_emmc_install=ubi check emmc_install && ubi remove emmc_install ; ubi create emmc_install 0x800000 dynamic ; ubi write $loadaddr emmc_install 0x800000
++ubi_write_production=ubi check fit && ubi remove fit ; run ubi_remove_rootfs ; ubi create fit $filesize dynamic && ubi write $loadaddr fit $filesize
++ubi_write_recovery=ubi check recovery && ubi remove recovery ; run ubi_remove_rootfs ; ubi create recovery $filesize dynamic && ubi write $loadaddr recovery $filesize
++_init_env=setenv _init_env ; setenv _create_env ; saveenv ; saveenv
++_firstboot=setenv _firstboot ; run _switch_to_menu ; run _init_env ; run boot_first
++_switch_to_menu=setenv _switch_to_menu ; setenv bootdelay 3 ; setenv bootmenu_delay 3 ; setenv bootmenu_0 $bootmenu_0d ; setenv bootmenu_0d ; run _bootmenu_update_title
++_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       [33m$ver[0m"
+diff -aurN a/bananapi_bpi-r4-lite_snand_env b/bananapi_bpi-r4-lite_snand_env
+--- a/bananapi_bpi-r4-lite_snand_env	1970-01-01 00:00:00.000000000 +0000
++++ b/bananapi_bpi-r4-lite_snand_env	2025-06-30 03:13:39.000000000 +0000
+@@ -0,0 +1,72 @@
++ipaddr=192.168.1.1
++serverip=192.168.1.2
++loadaddr=0x48000000
++bootargs=console=ttyS0,115200n1 pci=pcie_bus_perf root=/dev/fit0 rootwait ubi.block=0,fit
++bootconf=config-mt7987a-bananapi-bpi-r4-lite
++bootconf_base=config-mt7987a-bananapi-bpi-r4-lite
++bootconf_emmc=mt7987a-bananapi-bpi-r4-lite-emmc
++bootconf_sd=mt7987a-bananapi-bpi-r4-lite-sd
++bootconf_snand=mt7987a-bananapi-bpi-r4-lite-spim-nand
++bootconf_snor=mt7987a-bananapi-bpi-r4-lite-spim-nor
++bootconf_extra=mt7987a-bananapi-bpi-r4-lite-1pcie-2L
++bootcmd=if pstore check ; then run boot_recovery ; else run boot_ubi ; fi
++bootdelay=0
++bootfile=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-initramfs-recovery.itb
++bootfile_bl2=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-snand-preloader.bin
++bootfile_fip=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-snand-bl31-uboot.fip
++bootfile_upg=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-squashfs-sysupgrade.itb
++bootled_pwr=led-sys:statuas
++bootled_rec=led-sys:statuas
++bootmenu_confirm_return=askenv - Press ENTER to return to menu ; bootmenu 60
++bootmenu_default=0
++bootmenu_delay=0
++bootmenu_title=      [0;34m( ( ( [1;39mOpenWrt[0;34m ) ) )  [0;36m[SPI-NAND][0m
++bootmenu_0=Initialize environment.=run _firstboot
++bootmenu_0d=Run default boot command.=run boot_default
++bootmenu_1=Boot system via TFTP.=run boot_tftp ; run bootmenu_confirm_return
++bootmenu_2=Boot production system from NAND.=run boot_production ; run bootmenu_confirm_return
++bootmenu_3=Boot recovery system from NAND.=run boot_recovery ; run bootmenu_confirm_return
++bootmenu_4=Load production system via TFTP then write to NAND.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_production ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
++bootmenu_5=Load recovery system via TFTP then write to NAND.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_recovery ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
++bootmenu_6=[31mLoad BL31+U-Boot FIP via TFTP then write to NAND.[0m=run boot_tftp_write_fip ; run bootmenu_confirm_return
++bootmenu_7=[31mLoad BL2 preloader via TFTP then write to NAND.[0m=run boot_tftp_write_bl2 ; run bootmenu_confirm_return
++bootmenu_8=[31mInstall bootloader, recovery and production to eMMC.[0m=if mmc partconf 0 ; then run emmc_init ; else echo "eMMC not detected" ; fi ; run bootmenu_confirm_return
++bootmenu_9=Reboot.=reset
++bootmenu_10=Reset all settings to factory defaults.=run reset_factory ; reset
++boot_first=if button reset ; then led $bootled_rec on ; run boot_tftp_recovery ; setenv flag_recover 1 ; run boot_default ; fi ; bootmenu
++boot_default=if env exists flag_recover ; then else run bootcmd ; fi ; run boot_recovery ; setenv replacevol 1 ; run boot_tftp_forever
++boot_production=led $bootled_pwr on ; run ubi_read_production && bootm $loadaddr#$bootconf#$bootconf_snand#$bootconf_extra ; led $bootled_pwr off
++boot_recovery=led $bootled_rec on ; run ubi_read_recovery && bootm $loadaddr#$bootconf#$bootconf_snand ; led $bootled_rec off
++boot_ubi=run boot_production ; run boot_recovery
++boot_tftp_forever=led $bootled_rec on ; while true ; do run boot_tftp_recovery ; sleep 1 ; done
++boot_tftp_production=tftpboot $loadaddr $bootfile_upg && env exists replacevol && iminfo $loadaddr && run ubi_write_production ; if env exists noboot ; then else bootm $loadaddr#$bootconf#$bootconf_snand#$bootconf_extra ; fi
++boot_tftp_recovery=tftpboot $loadaddr $bootfile && env exists replacevol && iminfo $loadaddr && run ubi_write_recovery ; if env exists noboot ; then else bootm $loadaddr#$bootconf#$bootconf_snand ; fi
++boot_tftp=tftpboot $loadaddr $bootfile && bootm $loadaddr#$bootconf#$bootconf_snand
++boot_tftp_write_fip=tftpboot $loadaddr $bootfile_fip && run ubi_write_fip && run reset_factory
++boot_tftp_write_bl2=tftpboot $loadaddr $bootfile_bl2 && run snand_write_bl2
++part_default=production
++part_recovery=recovery
++reset_factory=ubi part ubi ; mw $loadaddr 0x0 0x800 ; ubi write $loadaddr ubootenv 0x800 ; ubi write $loadaddr ubootenv2 0x800
++snand_write_bl2=mtd erase bl2 && mtd write bl2 $loadaddr 0x0 0x80000 && mtd write bl2 $loadaddr 0x80000 0x80000 && mtd write bl2 $loadaddr 0x100000 0x80000 && mtd write bl2 $loadaddr 0x180000 0x80000
++ubi_create_env=ubi check ubootenv || ubi create ubootenv 0x100000 dynamic ; ubi check ubootenv2 || ubi create ubootenv2 0x100000 dynamic
++ubi_prepare_rootfs=if ubi check rootfs_data ; then else if env exists rootfs_data_max ; then ubi create rootfs_data $rootfs_data_max dynamic || ubi create rootfs_data - dynamic ; else ubi create rootfs_data - dynamic ; fi ; fi
++ubi_read_production=ubi read $loadaddr fit && iminfo $loadaddr && run ubi_prepare_rootfs
++ubi_read_recovery=ubi check recovery && ubi read $loadaddr recovery
++ubi_read_emmc_install=ubi check emmc_install && ubi read $loadaddr emmc_install
++ubi_remove_rootfs=ubi check rootfs_data && ubi remove rootfs_data
++ubi_write_fip=run ubi_remove_rootfs ; ubi check fip && ubi remove fip ; ubi create fip 0x200000 static ; ubi write $loadaddr fip 0x200000
++ubi_write_production=ubi check fit && ubi remove fit ; run ubi_remove_rootfs ; ubi create fit $filesize dynamic && ubi write $loadaddr fit $filesize
++ubi_write_recovery=ubi check recovery && ubi remove recovery ; run ubi_remove_rootfs ; ubi create recovery $filesize dynamic && ubi write $loadaddr recovery $filesize
++mmc_write_vol=imszb $loadaddr image_size && test 0x$image_size -le 0x$part_size && mmc erase 0x$part_addr 0x$image_size && mmc write $loadaddr 0x$part_addr 0x$image_size
++emmc_init=mmc dev 0 && mmc bootbus 0 0 0 0 && run emmc_init_bl && run emmc_init_openwrt ; env default bootcmd ; saveenv ; saveenv
++emmc_init_bl=run ubi_read_emmc_install && setenv fileaddr $loadaddr && run emmc_write_bl2 && setexpr fileaddr $loadaddr + 0x100000 && run emmc_write_fip && setexpr fileaddr $loadaddr + 0x500000 && run emmc_write_hdr
++emmc_init_openwrt=run ubi_read_recovery && iminfo $loadaddr && run emmc_write_recovery ; run ubi_read_production && iminfo $loadaddr && run emmc_write_production
++emmc_write_bl2=mmc partconf 0 1 1 1 && mmc erase 0x0 0x400 && mmc write $fileaddr 0x0 0x400 ; mmc partconf 0 1 1 0
++emmc_write_fip=mmc erase 0x3400 0x2000 && mmc write $fileaddr 0x3400 0x2000 && mmc erase 0x2000 0x800
++emmc_write_hdr=mmc erase 0x0 0x40 && mmc write $fileaddr 0x0 0x40
++emmc_write_production=part start mmc 0 $part_default part_addr && part size mmc 0 $part_default part_size && run mmc_write_vol
++emmc_write_recovery=part start mmc 0 $part_recovery part_addr && part size mmc 0 $part_recovery part_size && run mmc_write_vol
++_init_env=setenv _init_env ; run ubi_create_env ; saveenv ; saveenv
++_firstboot=setenv _firstboot ; run _switch_to_menu ; run _init_env ; run boot_first
++_switch_to_menu=setenv _switch_to_menu ; setenv bootdelay 3 ; setenv bootmenu_delay 3 ; setenv bootmenu_0 $bootmenu_0d ; setenv bootmenu_0d ; run _bootmenu_update_title
++_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       [33m$ver[0m"
+diff -aurN a/bananapi_bpi-r4-lite_snor_env b/bananapi_bpi-r4-lite_snor_env
+--- a/bananapi_bpi-r4-lite_snor_env	1970-01-01 00:00:00.000000000 +0000
++++ b/bananapi_bpi-r4-lite_snor_env	2025-07-01 12:28:49.101325396 +0000
+@@ -0,0 +1,57 @@
++ipaddr=192.168.1.1
++serverip=192.168.1.2
++loadaddr=0x48000000
++bootargs=console=ttyS0,115200n1 pci=pcie_bus_perf root=/dev/fit0 rootwait ubi.block=0,fit
++bootconf=config-mt7987a-bananapi-bpi-r4-lite
++bootconf_base=config-mt7987a-bananapi-bpi-r4-lite
++bootconf_emmc=mt7987a-bananapi-bpi-r4-lite-emmc
++bootconf_sd=mt7987a-bananapi-bpi-r4-lite-sd
++bootconf_snand=mt7987a-bananapi-bpi-r4-lite-spim-nand
++bootconf_snor=mt7987a-bananapi-bpi-r4-lite-spim-nor
++bootconf_extra=mt7987a-bananapi-bpi-r4-lite-1pcie-2L
++bootcmd=if pstore check ; then run boot_recovery ; else run boot_mtd ; fi
++bootdelay=0
++bootfile=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-initramfs-recovery.itb
++bootfile_bl2=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-snor-preloader.bin
++bootfile_fip=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-snor-bl31-uboot.fip
++bootfile_upg=openwrt-mediatek-filogic-bananapi_bpi-r4-lite-squashfs-sysupgrade.itb
++bootled_pwr=led-sys:statuas
++bootled_rec=led-sys:statuas
++bootmenu_confirm_return=askenv - Press ENTER to return to menu ; bootmenu 60
++bootmenu_default=0
++bootmenu_delay=0
++bootmenu_title=      [0;34m( ( ( [1;39mOpenWrt[0;34m ) ) )  [0;36m[SPI-NAND][0m
++bootmenu_0=Initialize environment.=run _firstboot
++bootmenu_0d=Run default boot command.=run boot_default
++bootmenu_1=Boot system via TFTP.=run boot_tftp ; run bootmenu_confirm_return
++bootmenu_2=Boot production system from NOR.=run boot_production ; run bootmenu_confirm_return
++bootmenu_3=Boot recovery system from NOR.=run boot_recovery ; run bootmenu_confirm_return
++bootmenu_4=Load production system via TFTP then write to NOR.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_production ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
++bootmenu_5=Load recovery system via TFTP then write to NOR.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_recovery ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
++bootmenu_6=[31mLoad BL31+U-Boot FIP via TFTP then write to NOR.[0m=run boot_tftp_write_fip ; run bootmenu_confirm_return
++bootmenu_7=[31mLoad BL2 preloader via TFTP then write to NOR.[0m=run boot_tftp_write_bl2 ; run bootmenu_confirm_return
++bootmenu_8=Reboot.=reset
++boot_first=if button reset ; then led $bootled_rec on ; run boot_tftp_recovery ; setenv flag_recover 1 ; run boot_default ; fi ; bootmenu
++boot_default=if env exists flag_recover ; then else run bootcmd ; fi ; run boot_recovery ; setenv replacevol 1 ; run boot_tftp_forever
++boot_production=led $bootled_pwr on ; run mtd_read_production && bootm $loadaddr#$bootconf#$bootconf_snor#$bootconf_extra ; led $bootled_pwr off
++boot_recovery=led $bootled_rec on ; run mtd_read_recovery && bootm $loadaddr#$bootconf#$bootconf_snor ; led $bootled_rec off
++boot_mtd=run boot_production ; run boot_recovery
++boot_tftp_forever=led $bootled_rec on ; while true ; do run boot_tftp_recovery ; sleep 1 ; done
++boot_tftp_production=tftpboot $loadaddr $bootfile && env exists replacevol && iminfo $loadaddr && run mtd_write_production ; if env exists noboot ; then else bootm $loadaddr#$bootconf#$bootconf_snor#$bootconf_extra ; fi
++boot_tftp_recovery=tftpboot $loadaddr $bootfile && env exists replacevol && iminfo $loadaddr && run mtd_write_recovery ; if env exists noboot ; then else bootm $loadaddr#$bootconf#$bootconf_snor ; fi
++boot_tftp=tftpboot $loadaddr $bootfile && bootm $loadaddr#$bootconf#$bootconf_snor
++boot_tftp_write_fip=tftpboot $loadaddr $bootfile_fip && run mtd_write_fip && run reset_factory
++boot_tftp_write_bl2=tftpboot $loadaddr $bootfile_bl2 && run mtd_write_bl2
++part_default=production
++part_recovery=recovery
++reset_factory=mtd erase u-boot-env
++mtd_read_production=mtd read firmware $loadaddr && iminfo $loadaddr 
++mtd_read_recovery=mtd read firmware $loadaddr && iminfo $loadaddr
++mtd_write_bl2=mtd erase bl2 && mtd write bl2 $loadaddr 0x0 0x50000
++mtd_write_fip=mtd erase fip &&  mtd write fip $loadaddr 0 0x140000
++mtd_write_production=mtd erase firmware &&  mtd write firmware $loadaddr 0 $filesize
++mtd_write_recovery=mtd erase firmware &&  mtd write firmware $loadaddr 0 $filesize
++_init_env=setenv _init_env ; saveenv
++_firstboot=setenv _firstboot ; run _switch_to_menu ; run _init_env ; run boot_first
++_switch_to_menu=setenv _switch_to_menu ; setenv bootdelay 3 ; setenv bootmenu_delay 3 ; setenv bootmenu_0 $bootmenu_0d ; setenv bootmenu_0d ; run _bootmenu_update_title
++_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       [33m$ver[0m"
+diff -aurN a/configs/mt7987a_bananapi_bpi-r4-lite-emmc_defconfig b/configs/mt7987a_bananapi_bpi-r4-lite-emmc_defconfig
+--- a/configs/mt7987a_bananapi_bpi-r4-lite-emmc_defconfig	1970-01-01 00:00:00.000000000 +0000
++++ b/configs/mt7987a_bananapi_bpi-r4-lite-emmc_defconfig	2025-06-28 10:52:59.000000000 +0000
+@@ -0,0 +1,158 @@
++CONFIG_ARM=y
++CONFIG_SYS_HAS_NONCACHED_MEMORY=y
++CONFIG_POSITION_INDEPENDENT=y
++CONFIG_ARCH_MEDIATEK=y
++CONFIG_TEXT_BASE=0x41e00000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_ENV_SIZE=0x40000
++CONFIG_ENV_OFFSET=0x400000
++CONFIG_DEFAULT_DEVICE_TREE="mt7987a-bananapi_bpi-r4-lite-emmc"
++CONFIG_OF_LIBFDT_OVERLAY=y
++CONFIG_TARGET_MT7987=y
++CONFIG_PRE_CON_BUF_ADDR=0x4007EF00
++CONFIG_DEBUG_UART_BASE=0x11000000
++CONFIG_DEBUG_UART_CLOCK=40000000
++CONFIG_ENV_OFFSET_REDUND=0x440000
++CONFIG_SYS_LOAD_ADDR=0x48000000
++CONFIG_PCI=y
++CONFIG_DEBUG_UART=y
++CONFIG_AHCI=y
++CONFIG_FIT=y
++CONFIG_BOOTDELAY=30
++CONFIG_AUTOBOOT_KEYED=y
++CONFIG_AUTOBOOT_MENU_SHOW=y
++CONFIG_OF_SYSTEM_SETUP=y
++CONFIG_DEFAULT_FDT_FILE="mediatek/mt7987a-bananapi_bpi-r4-lite-emmc.dtb"
++CONFIG_SYS_CBSIZE=512
++CONFIG_SYS_PBSIZE=1049
++CONFIG_LOGLEVEL=7
++CONFIG_PRE_CONSOLE_BUFFER=y
++CONFIG_LOG=y
++# CONFIG_BOARD_LATE_INIT is not set
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="MT7987> "
++CONFIG_CMD_CPU=y
++CONFIG_CMD_LICENSE=y
++# CONFIG_CMD_BOOTEFI_BOOTMGR is not set
++CONFIG_CMD_BOOTMENU=y
++CONFIG_CMD_ASKENV=y
++CONFIG_CMD_ERASEENV=y
++CONFIG_CMD_ENV_FLAGS=y
++CONFIG_CMD_STRINGS=y
++CONFIG_CMD_DM=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_PWM=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_GPT=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_MTD=y
++CONFIG_CMD_PART=y
++CONFIG_CMD_PCI=y
++CONFIG_CMD_SF_TEST=y
++CONFIG_CMD_USB=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_TFTPSRV=y
++CONFIG_CMD_RARP=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_CDP=y
++CONFIG_CMD_SNTP=y
++CONFIG_CMD_DNS=y
++CONFIG_CMD_LINK_LOCAL=y
++CONFIG_CMD_PXE=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_PSTORE=y
++CONFIG_CMD_PSTORE_MEM_ADDR=0x42ff0000
++CONFIG_CMD_UUID=y
++CONFIG_CMD_HASH=y
++CONFIG_CMD_SMC=y
++CONFIG_EFI_PARTITION=y
++CONFIG_PARTITION_TYPE_GUID=y
++CONFIG_CMD_EXT4=y
++CONFIG_CMD_FAT=y
++CONFIG_CMD_FS_GENERIC=y
++CONFIG_CMD_FS_UUID=y
++CONFIG_CMD_UBI=y
++CONFIG_CMD_UBI_RENAME=y
++CONFIG_OF_EMBED=y
++CONFIG_ENV_OVERWRITE=y
++CONFIG_ENV_IS_IN_MMC=y
++CONFIG_SYS_REDUNDAND_ENVIRONMENT=y
++CONFIG_SYS_RELOC_GD_ENV_ADDR=y
++CONFIG_USE_DEFAULT_ENV_FILE=y
++CONFIG_DEFAULT_ENV_FILE="bananapi_bpi-r4-lite_emmc_env"
++CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG=y
++CONFIG_VERSION_VARIABLE=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_NETCONSOLE=y
++CONFIG_USE_IPADDR=y
++CONFIG_IPADDR="192.168.1.1"
++CONFIG_USE_SERVERIP=y
++CONFIG_SERVERIP="192.168.1.2"
++CONFIG_REGMAP=y
++CONFIG_SYSCON=y
++CONFIG_SCSI_AHCI=y
++CONFIG_AHCI_PCI=y
++CONFIG_MTK_AHCI=y
++CONFIG_BUTTON=y
++CONFIG_BUTTON_GPIO=y
++CONFIG_CLK=y
++CONFIG_GPIO_HOG=y
++CONFIG_LED=y
++CONFIG_LED_BLINK=y
++CONFIG_LED_GPIO=y
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_MTK=y
++CONFIG_MMC_HS200_SUPPORT=y
++CONFIG_MMC_MTK=y
++CONFIG_MTD=y
++CONFIG_DM_MTD=y
++CONFIG_MTD_SPI_NAND=y
++CONFIG_DM_SPI_FLASH=y
++CONFIG_SPI_FLASH_SFDP_SUPPORT=y
++CONFIG_SPI_FLASH_ATMEL=y
++CONFIG_SPI_FLASH_EON=y
++CONFIG_SPI_FLASH_GIGADEVICE=y
++CONFIG_SPI_FLASH_ISSI=y
++CONFIG_SPI_FLASH_MACRONIX=y
++CONFIG_SPI_FLASH_PUYA=y
++CONFIG_SPI_FLASH_SILICONKAISER=y
++CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
++CONFIG_SPI_FLASH_WINBOND=y
++CONFIG_SPI_FLASH_XMC=y
++CONFIG_SPI_FLASH_XTX=y
++CONFIG_SPI_FLASH_ZBIT=y
++# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_SPI_FLASH_MTD=y
++CONFIG_MTD_UBI_FASTMAP=y
++CONFIG_PHY_ETHERNET_ID=y
++CONFIG_MEDIATEK_ETH=y
++CONFIG_PCIE_MEDIATEK=y
++CONFIG_PHY=y
++CONFIG_PHY_MTK_TPHY=y
++CONFIG_PINCTRL=y
++CONFIG_PINCONF=y
++CONFIG_PINCTRL_MT7987=y
++CONFIG_POWER_DOMAIN=y
++CONFIG_MTK_POWER_DOMAIN=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_DM_REGULATOR_GPIO=y
++CONFIG_DM_PWM=y
++CONFIG_PWM_MTK=y
++CONFIG_RAM=y
++CONFIG_SCSI=y
++CONFIG_DM_SERIAL=y
++CONFIG_MTK_SERIAL=y
++CONFIG_SPI=y
++CONFIG_DM_SPI=y
++CONFIG_MTK_SPIM=y
++CONFIG_USB=y
++CONFIG_USB_XHCI_HCD=y
++CONFIG_USB_XHCI_MTK=y
++CONFIG_USB_STORAGE=y
++CONFIG_ZSTD=y
++CONFIG_HEXDUMP=y
++CONFIG_LMB_MAX_REGIONS=64
+diff -aurN a/configs/mt7987a_bananapi_bpi-r4-lite-sdmmc_defconfig b/configs/mt7987a_bananapi_bpi-r4-lite-sdmmc_defconfig
+--- a/configs/mt7987a_bananapi_bpi-r4-lite-sdmmc_defconfig	1970-01-01 00:00:00.000000000 +0000
++++ b/configs/mt7987a_bananapi_bpi-r4-lite-sdmmc_defconfig	2025-06-28 10:53:30.000000000 +0000
+@@ -0,0 +1,158 @@
++CONFIG_ARM=y
++CONFIG_SYS_HAS_NONCACHED_MEMORY=y
++CONFIG_POSITION_INDEPENDENT=y
++CONFIG_ARCH_MEDIATEK=y
++CONFIG_TEXT_BASE=0x41e00000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_ENV_SIZE=0x40000
++CONFIG_ENV_OFFSET=0x400000
++CONFIG_DEFAULT_DEVICE_TREE="mt7987a-bananapi_bpi-r4-lite-sd"
++CONFIG_OF_LIBFDT_OVERLAY=y
++CONFIG_TARGET_MT7987=y
++CONFIG_PRE_CON_BUF_ADDR=0x4007EF00
++CONFIG_DEBUG_UART_BASE=0x11000000
++CONFIG_DEBUG_UART_CLOCK=40000000
++CONFIG_ENV_OFFSET_REDUND=0x440000
++CONFIG_SYS_LOAD_ADDR=0x48000000
++CONFIG_PCI=y
++CONFIG_DEBUG_UART=y
++CONFIG_AHCI=y
++CONFIG_FIT=y
++CONFIG_BOOTDELAY=30
++CONFIG_AUTOBOOT_KEYED=y
++CONFIG_AUTOBOOT_MENU_SHOW=y
++CONFIG_OF_SYSTEM_SETUP=y
++CONFIG_DEFAULT_FDT_FILE="mediatek/mt7987a-bananapi_bpi-r4-lite-sd.dtb"
++CONFIG_SYS_CBSIZE=512
++CONFIG_SYS_PBSIZE=1049
++CONFIG_LOGLEVEL=7
++CONFIG_PRE_CONSOLE_BUFFER=y
++CONFIG_LOG=y
++# CONFIG_BOARD_LATE_INIT is not set
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="MT7987> "
++CONFIG_CMD_CPU=y
++CONFIG_CMD_LICENSE=y
++# CONFIG_CMD_BOOTEFI_BOOTMGR is not set
++CONFIG_CMD_BOOTMENU=y
++CONFIG_CMD_ASKENV=y
++CONFIG_CMD_ERASEENV=y
++CONFIG_CMD_ENV_FLAGS=y
++CONFIG_CMD_STRINGS=y
++CONFIG_CMD_DM=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_PWM=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_GPT=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_MTD=y
++CONFIG_CMD_PART=y
++CONFIG_CMD_PCI=y
++CONFIG_CMD_SF_TEST=y
++CONFIG_CMD_USB=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_TFTPSRV=y
++CONFIG_CMD_RARP=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_CDP=y
++CONFIG_CMD_SNTP=y
++CONFIG_CMD_DNS=y
++CONFIG_CMD_LINK_LOCAL=y
++CONFIG_CMD_PXE=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_PSTORE=y
++CONFIG_CMD_PSTORE_MEM_ADDR=0x42ff0000
++CONFIG_CMD_UUID=y
++CONFIG_CMD_HASH=y
++CONFIG_CMD_SMC=y
++CONFIG_EFI_PARTITION=y
++CONFIG_PARTITION_TYPE_GUID=y
++CONFIG_CMD_EXT4=y
++CONFIG_CMD_FAT=y
++CONFIG_CMD_FS_GENERIC=y
++CONFIG_CMD_FS_UUID=y
++CONFIG_CMD_UBI=y
++CONFIG_CMD_UBI_RENAME=y
++CONFIG_OF_EMBED=y
++CONFIG_ENV_OVERWRITE=y
++CONFIG_ENV_IS_IN_MMC=y
++CONFIG_SYS_REDUNDAND_ENVIRONMENT=y
++CONFIG_SYS_RELOC_GD_ENV_ADDR=y
++CONFIG_USE_DEFAULT_ENV_FILE=y
++CONFIG_DEFAULT_ENV_FILE="bananapi_bpi-r4-lite_sdmmc_env"
++CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG=y
++CONFIG_VERSION_VARIABLE=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_NETCONSOLE=y
++CONFIG_USE_IPADDR=y
++CONFIG_IPADDR="192.168.1.1"
++CONFIG_USE_SERVERIP=y
++CONFIG_SERVERIP="192.168.1.2"
++CONFIG_REGMAP=y
++CONFIG_SYSCON=y
++CONFIG_SCSI_AHCI=y
++CONFIG_AHCI_PCI=y
++CONFIG_MTK_AHCI=y
++CONFIG_BUTTON=y
++CONFIG_BUTTON_GPIO=y
++CONFIG_CLK=y
++CONFIG_GPIO_HOG=y
++CONFIG_LED=y
++CONFIG_LED_BLINK=y
++CONFIG_LED_GPIO=y
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_MTK=y
++CONFIG_MMC_HS200_SUPPORT=y
++CONFIG_MMC_MTK=y
++CONFIG_MTD=y
++CONFIG_DM_MTD=y
++CONFIG_MTD_SPI_NAND=y
++CONFIG_DM_SPI_FLASH=y
++CONFIG_SPI_FLASH_SFDP_SUPPORT=y
++CONFIG_SPI_FLASH_ATMEL=y
++CONFIG_SPI_FLASH_EON=y
++CONFIG_SPI_FLASH_GIGADEVICE=y
++CONFIG_SPI_FLASH_ISSI=y
++CONFIG_SPI_FLASH_MACRONIX=y
++CONFIG_SPI_FLASH_PUYA=y
++CONFIG_SPI_FLASH_SILICONKAISER=y
++CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
++CONFIG_SPI_FLASH_WINBOND=y
++CONFIG_SPI_FLASH_XMC=y
++CONFIG_SPI_FLASH_XTX=y
++CONFIG_SPI_FLASH_ZBIT=y
++# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_SPI_FLASH_MTD=y
++CONFIG_MTD_UBI_FASTMAP=y
++CONFIG_PHY_ETHERNET_ID=y
++CONFIG_MEDIATEK_ETH=y
++CONFIG_PCIE_MEDIATEK=y
++CONFIG_PHY=y
++CONFIG_PHY_MTK_TPHY=y
++CONFIG_PINCTRL=y
++CONFIG_PINCONF=y
++CONFIG_PINCTRL_MT7987=y
++CONFIG_POWER_DOMAIN=y
++CONFIG_MTK_POWER_DOMAIN=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_DM_REGULATOR_GPIO=y
++CONFIG_DM_PWM=y
++CONFIG_PWM_MTK=y
++CONFIG_RAM=y
++CONFIG_SCSI=y
++CONFIG_DM_SERIAL=y
++CONFIG_MTK_SERIAL=y
++CONFIG_SPI=y
++CONFIG_DM_SPI=y
++CONFIG_MTK_SPIM=y
++CONFIG_USB=y
++CONFIG_USB_XHCI_HCD=y
++CONFIG_USB_XHCI_MTK=y
++CONFIG_USB_STORAGE=y
++CONFIG_ZSTD=y
++CONFIG_HEXDUMP=y
++CONFIG_LMB_MAX_REGIONS=64
+diff -aurN a/configs/mt7987a_bananapi_bpi-r4-lite-snand_defconfig b/configs/mt7987a_bananapi_bpi-r4-lite-snand_defconfig
+--- a/configs/mt7987a_bananapi_bpi-r4-lite-snand_defconfig	1970-01-01 00:00:00.000000000 +0000
++++ b/configs/mt7987a_bananapi_bpi-r4-lite-snand_defconfig	2025-06-28 10:53:49.000000000 +0000
+@@ -0,0 +1,158 @@
++CONFIG_ARM=y
++CONFIG_SYS_HAS_NONCACHED_MEMORY=y
++CONFIG_POSITION_INDEPENDENT=y
++CONFIG_ARCH_MEDIATEK=y
++CONFIG_TEXT_BASE=0x41e00000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_DEFAULT_DEVICE_TREE="mt7987a-bananapi_bpi-r4-lite-spim-nand"
++CONFIG_OF_LIBFDT_OVERLAY=y
++CONFIG_TARGET_MT7987=y
++CONFIG_PRE_CON_BUF_ADDR=0x4007EF00
++CONFIG_DEBUG_UART_BASE=0x11000000
++CONFIG_DEBUG_UART_CLOCK=40000000
++CONFIG_SYS_LOAD_ADDR=0x48000000
++CONFIG_PCI=y
++CONFIG_DEBUG_UART=y
++CONFIG_AHCI=y
++CONFIG_FIT=y
++CONFIG_BOOTDELAY=30
++CONFIG_AUTOBOOT_KEYED=y
++CONFIG_AUTOBOOT_MENU_SHOW=y
++CONFIG_OF_SYSTEM_SETUP=y
++CONFIG_DEFAULT_FDT_FILE="mediatek/mt7987a-bananapi_bpi-r4-lite-spim-nand.dtb"
++CONFIG_SYS_CBSIZE=512
++CONFIG_SYS_PBSIZE=1049
++CONFIG_LOGLEVEL=7
++CONFIG_PRE_CONSOLE_BUFFER=y
++CONFIG_LOG=y
++# CONFIG_BOARD_LATE_INIT is not set
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="MT7987> "
++CONFIG_CMD_CPU=y
++CONFIG_CMD_LICENSE=y
++# CONFIG_CMD_BOOTEFI_BOOTMGR is not set
++CONFIG_CMD_BOOTMENU=y
++CONFIG_CMD_ASKENV=y
++CONFIG_CMD_ERASEENV=y
++CONFIG_CMD_ENV_FLAGS=y
++CONFIG_CMD_STRINGS=y
++CONFIG_CMD_DM=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_PWM=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_GPT=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_MTD=y
++CONFIG_CMD_PART=y
++CONFIG_CMD_PCI=y
++CONFIG_CMD_SF_TEST=y
++CONFIG_CMD_USB=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_TFTPSRV=y
++CONFIG_CMD_RARP=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_CDP=y
++CONFIG_CMD_SNTP=y
++CONFIG_CMD_DNS=y
++CONFIG_CMD_LINK_LOCAL=y
++CONFIG_CMD_PXE=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_PSTORE=y
++CONFIG_CMD_PSTORE_MEM_ADDR=0x42ff0000
++CONFIG_CMD_UUID=y
++CONFIG_CMD_HASH=y
++CONFIG_CMD_SMC=y
++CONFIG_EFI_PARTITION=y
++CONFIG_PARTITION_TYPE_GUID=y
++CONFIG_CMD_EXT4=y
++CONFIG_CMD_FAT=y
++CONFIG_CMD_FS_GENERIC=y
++CONFIG_CMD_FS_UUID=y
++CONFIG_CMD_UBI=y
++CONFIG_CMD_UBI_RENAME=y
++CONFIG_OF_EMBED=y
++CONFIG_ENV_OVERWRITE=y
++CONFIG_ENV_IS_IN_UBI=y
++CONFIG_SYS_REDUNDAND_ENVIRONMENT=y
++CONFIG_ENV_UBI_PART="ubi"
++CONFIG_ENV_UBI_VOLUME="ubootenv"
++CONFIG_ENV_UBI_VOLUME_REDUND="ubootenv2"
++CONFIG_SYS_RELOC_GD_ENV_ADDR=y
++CONFIG_USE_DEFAULT_ENV_FILE=y
++CONFIG_DEFAULT_ENV_FILE="bananapi_bpi-r4-lite_snand_env"
++CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG=y
++CONFIG_VERSION_VARIABLE=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_NETCONSOLE=y
++CONFIG_USE_IPADDR=y
++CONFIG_IPADDR="192.168.1.1"
++CONFIG_USE_SERVERIP=y
++CONFIG_SERVERIP="192.168.1.2"
++CONFIG_REGMAP=y
++CONFIG_SYSCON=y
++CONFIG_SCSI_AHCI=y
++CONFIG_AHCI_PCI=y
++CONFIG_MTK_AHCI=y
++CONFIG_BUTTON=y
++CONFIG_BUTTON_GPIO=y
++CONFIG_CLK=y
++CONFIG_GPIO_HOG=y
++CONFIG_LED=y
++CONFIG_LED_BLINK=y
++CONFIG_LED_GPIO=y
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_MTK=y
++CONFIG_MMC_HS200_SUPPORT=y
++CONFIG_MMC_MTK=y
++CONFIG_MTD=y
++CONFIG_DM_MTD=y
++CONFIG_MTD_SPI_NAND=y
++CONFIG_DM_SPI_FLASH=y
++CONFIG_SPI_FLASH_SFDP_SUPPORT=y
++CONFIG_SPI_FLASH_ATMEL=y
++CONFIG_SPI_FLASH_EON=y
++CONFIG_SPI_FLASH_GIGADEVICE=y
++CONFIG_SPI_FLASH_ISSI=y
++CONFIG_SPI_FLASH_MACRONIX=y
++CONFIG_SPI_FLASH_PUYA=y
++CONFIG_SPI_FLASH_SILICONKAISER=y
++CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
++CONFIG_SPI_FLASH_WINBOND=y
++CONFIG_SPI_FLASH_XMC=y
++CONFIG_SPI_FLASH_XTX=y
++CONFIG_SPI_FLASH_ZBIT=y
++# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_SPI_FLASH_MTD=y
++CONFIG_MTD_UBI_FASTMAP=y
++CONFIG_PHY_ETHERNET_ID=y
++CONFIG_MEDIATEK_ETH=y
++CONFIG_PCIE_MEDIATEK=y
++CONFIG_PHY=y
++CONFIG_PHY_MTK_TPHY=y
++CONFIG_PINCTRL=y
++CONFIG_PINCONF=y
++CONFIG_PINCTRL_MT7987=y
++CONFIG_POWER_DOMAIN=y
++CONFIG_MTK_POWER_DOMAIN=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_DM_REGULATOR_GPIO=y
++CONFIG_DM_PWM=y
++CONFIG_PWM_MTK=y
++CONFIG_RAM=y
++CONFIG_SCSI=y
++CONFIG_DM_SERIAL=y
++CONFIG_MTK_SERIAL=y
++CONFIG_SPI=y
++CONFIG_DM_SPI=y
++CONFIG_MTK_SPIM=y
++CONFIG_USB=y
++CONFIG_USB_XHCI_HCD=y
++CONFIG_USB_XHCI_MTK=y
++CONFIG_USB_STORAGE=y
++CONFIG_ZSTD=y
++CONFIG_HEXDUMP=y
++CONFIG_LMB_MAX_REGIONS=64
+diff -aurN a/configs/mt7987a_bananapi_bpi-r4-lite-snor_defconfig b/configs/mt7987a_bananapi_bpi-r4-lite-snor_defconfig
+--- a/configs/mt7987a_bananapi_bpi-r4-lite-snor_defconfig	1970-01-01 00:00:00.000000000 +0000
++++ b/configs/mt7987a_bananapi_bpi-r4-lite-snor_defconfig	2025-07-01 11:49:59.472423115 +0000
+@@ -0,0 +1,161 @@
++CONFIG_ARM=y
++CONFIG_SYS_HAS_NONCACHED_MEMORY=y
++CONFIG_POSITION_INDEPENDENT=y
++CONFIG_ARCH_MEDIATEK=y
++CONFIG_TEXT_BASE=0x41e00000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_DEFAULT_DEVICE_TREE="mt7987a-bananapi_bpi-r4-lite-snor"
++CONFIG_OF_LIBFDT_OVERLAY=y
++CONFIG_TARGET_MT7987=y
++CONFIG_PRE_CON_BUF_ADDR=0x4007EF00
++CONFIG_DEBUG_UART_BASE=0x11000000
++CONFIG_DEBUG_UART_CLOCK=40000000
++CONFIG_SYS_LOAD_ADDR=0x48000000
++CONFIG_PCI=y
++CONFIG_DEBUG_UART=y
++CONFIG_AHCI=y
++CONFIG_FIT=y
++CONFIG_BOOTDELAY=30
++CONFIG_AUTOBOOT_KEYED=y
++CONFIG_AUTOBOOT_MENU_SHOW=y
++CONFIG_OF_SYSTEM_SETUP=y
++CONFIG_DEFAULT_FDT_FILE="mediatek/mt7987a-bananapi_bpi-r4-lite-snor.dtb"
++CONFIG_SYS_CBSIZE=512
++CONFIG_SYS_PBSIZE=1049
++CONFIG_LOGLEVEL=7
++CONFIG_PRE_CONSOLE_BUFFER=y
++CONFIG_LOG=y
++# CONFIG_BOARD_LATE_INIT is not set
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="MT7987> "
++CONFIG_CMD_CPU=y
++CONFIG_CMD_LICENSE=y
++# CONFIG_CMD_BOOTEFI_BOOTMGR is not set
++CONFIG_CMD_BOOTMENU=y
++CONFIG_CMD_ASKENV=y
++CONFIG_CMD_ERASEENV=y
++CONFIG_CMD_ENV_FLAGS=y
++CONFIG_CMD_STRINGS=y
++CONFIG_CMD_DM=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_PWM=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_GPT=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_MTD=y
++CONFIG_CMD_PART=y
++CONFIG_CMD_PCI=y
++CONFIG_CMD_SF_TEST=y
++CONFIG_CMD_USB=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_TFTPSRV=y
++CONFIG_CMD_RARP=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_CDP=y
++CONFIG_CMD_SNTP=y
++CONFIG_CMD_DNS=y
++CONFIG_CMD_LINK_LOCAL=y
++CONFIG_CMD_PXE=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_PSTORE=y
++CONFIG_CMD_PSTORE_MEM_ADDR=0x42ff0000
++CONFIG_CMD_UUID=y
++CONFIG_CMD_HASH=y
++CONFIG_CMD_SMC=y
++CONFIG_EFI_PARTITION=y
++CONFIG_PARTITION_TYPE_GUID=y
++CONFIG_CMD_EXT4=y
++CONFIG_CMD_FAT=y
++CONFIG_CMD_FS_GENERIC=y
++CONFIG_CMD_FS_UUID=y
++CONFIG_CMD_UBI=y
++CONFIG_CMD_UBI_RENAME=y
++CONFIG_OF_EMBED=y
++CONFIG_ENV_OVERWRITE=y
++CONFIG_MTDIDS_DEFAULT="nor0=nor0"
++CONFIG_MTDPARTS_DEFAULT="nor0:320k(bl2),64k(u-boot-env),2048k(factory),1280k(fip),-(firmware)"
++CONFIG_ENV_IS_IN_MTD=y
++CONFIG_ENV_MTD_NAME="u-boot-env"
++CONFIG_ENV_SIZE=0x10000
++CONFIG_ENV_OFFSET=0x0
++CONFIG_ENV_SIZE_REDUND=0
++CONFIG_SYS_RELOC_GD_ENV_ADDR=y
++CONFIG_USE_DEFAULT_ENV_FILE=y
++CONFIG_DEFAULT_ENV_FILE="bananapi_bpi-r4-lite_snor_env"
++CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG=y
++CONFIG_VERSION_VARIABLE=y
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_NETCONSOLE=y
++CONFIG_USE_IPADDR=y
++CONFIG_IPADDR="192.168.1.1"
++CONFIG_USE_SERVERIP=y
++CONFIG_SERVERIP="192.168.1.2"
++CONFIG_REGMAP=y
++CONFIG_SYSCON=y
++CONFIG_SCSI_AHCI=y
++CONFIG_AHCI_PCI=y
++CONFIG_MTK_AHCI=y
++CONFIG_BUTTON=y
++CONFIG_BUTTON_GPIO=y
++CONFIG_CLK=y
++CONFIG_GPIO_HOG=y
++CONFIG_LED=y
++CONFIG_LED_BLINK=y
++CONFIG_LED_GPIO=y
++CONFIG_SUPPORT_EMMC_BOOT=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_MTK=y
++CONFIG_MMC_HS200_SUPPORT=y
++CONFIG_MMC_MTK=y
++CONFIG_MTD_PARTITIONS=y
++CONFIG_MTD=y
++CONFIG_DM_MTD=y
++CONFIG_MTD_SPI_NAND=y
++CONFIG_DM_SPI_FLASH=y
++CONFIG_SPI_FLASH_SFDP_SUPPORT=y
++CONFIG_SPI_FLASH_ATMEL=y
++CONFIG_SPI_FLASH_EON=y
++CONFIG_SPI_FLASH_GIGADEVICE=y
++CONFIG_SPI_FLASH_ISSI=y
++CONFIG_SPI_FLASH_MACRONIX=y
++CONFIG_SPI_FLASH_PUYA=y
++CONFIG_SPI_FLASH_SILICONKAISER=y
++CONFIG_SPI_FLASH_SPANSION=y
++CONFIG_SPI_FLASH_STMICRO=y
++CONFIG_SPI_FLASH_WINBOND=y
++CONFIG_SPI_FLASH_XMC=y
++CONFIG_SPI_FLASH_XTX=y
++CONFIG_SPI_FLASH_ZBIT=y
++# CONFIG_SPI_FLASH_USE_4K_SECTORS is not set
++CONFIG_SPI_FLASH_MTD=y
++CONFIG_MTD_UBI_FASTMAP=y
++CONFIG_PHY_ETHERNET_ID=y
++CONFIG_MEDIATEK_ETH=y
++CONFIG_PCIE_MEDIATEK=y
++CONFIG_PHY=y
++CONFIG_PHY_MTK_TPHY=y
++CONFIG_PINCTRL=y
++CONFIG_PINCONF=y
++CONFIG_PINCTRL_MT7987=y
++CONFIG_POWER_DOMAIN=y
++CONFIG_MTK_POWER_DOMAIN=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_DM_REGULATOR_GPIO=y
++CONFIG_DM_PWM=y
++CONFIG_PWM_MTK=y
++CONFIG_RAM=y
++CONFIG_SCSI=y
++CONFIG_DM_SERIAL=y
++CONFIG_MTK_SERIAL=y
++CONFIG_SPI=y
++CONFIG_DM_SPI=y
++CONFIG_MTK_SPIM=y
++CONFIG_USB=y
++CONFIG_USB_XHCI_HCD=y
++CONFIG_USB_XHCI_MTK=y
++CONFIG_USB_STORAGE=y
++CONFIG_ZSTD=y
++CONFIG_HEXDUMP=y
++CONFIG_LMB_MAX_REGIONS=64
+diff -aurN a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+--- a/drivers/mtd/nand/spi/core.c	2025-06-29 09:17:03.000000000 +0000
++++ b/drivers/mtd/nand/spi/core.c	2025-06-29 09:17:35.000000000 +0000
+@@ -10,10 +10,12 @@
+ #define pr_fmt(fmt)	"spi-nand: " fmt
+ 
+ #ifndef __UBOOT__
++#include <linux/bitfield.h>
+ #include <linux/device.h>
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/mtd/casn.h>
+ #include <linux/mtd/spinand.h>
+ #include <linux/of.h>
+ #include <linux/slab.h>
+@@ -28,8 +30,10 @@
+ #include <ubi_uboot.h>
+ #include <dm/device_compat.h>
+ #include <dm/devres.h>
++#include <linux/bitfield.h>
+ #include <linux/bitops.h>
+ #include <linux/bug.h>
++#include <linux/mtd/casn.h>
+ #include <linux/mtd/spinand.h>
+ #include <linux/printk.h>
+ #endif
+@@ -496,6 +500,62 @@
+ 	return spinand_write_reg_op(spinand, REG_BLOCK_LOCK, lock);
+ }
+ 
++static size_t eccsr_none_op(size_t val, size_t mask) { return val; }
++static size_t eccsr_and_op(size_t val, size_t mask) { return val & mask; }
++static size_t eccsr_add_op(size_t val, size_t mask) { return val + mask; }
++static size_t eccsr_minus_op(size_t val, size_t mask) { return val - mask; }
++static size_t eccsr_mul_op(size_t val, size_t mask) { return val * mask; }
++
++static void spinand_read_adv_ecc(struct spinand_device *spinand,
++				 struct spi_mem_op *ops, u16 *eccsr,
++				 u16 mask, u8 shift,
++				 u8 pre_op, u8 pre_mask)
++{
++	u8 *p = spinand->scratchbuf;
++
++	spi_mem_exec_op(spinand->slave, ops);
++
++	if (likely(mask <= 0xff))
++		*eccsr += (*p & mask) >> shift;
++	else
++		*eccsr += (((*p << 8) | (*p+1)) & mask) >> shift;
++
++	*eccsr = spinand->eccsr_math_op[pre_op](*eccsr, pre_mask);
++}
++
++static int spinand_casn_get_ecc_status(struct spinand_device *spinand, u8 status)
++{
++	struct mtd_info *mtd = spinand_to_mtd(spinand);
++	struct CASN_ADVECC *ah = spinand->advecc_high;
++	struct CASN_ADVECC *al = spinand->advecc_low;
++	u16 eccsr_high = 0;
++	u16 eccsr_low = 0;
++	u32 eccsr = 0;
++
++	if (al->cmd) {
++		spinand_read_adv_ecc(spinand,
++				     spinand->advecc_low_ops, &eccsr_low,
++				     al->mask, al->shift,
++				     al->pre_op, al->pre_mask);
++		eccsr += eccsr_low;
++	}
++	if (ah->cmd) {
++		spinand_read_adv_ecc(spinand,
++				     spinand->advecc_high_ops, &eccsr_high,
++				     ah->mask, ah->shift,
++				     ah->pre_op, ah->pre_mask);
++		eccsr += eccsr_high << spinand->advecc_low_bitcnt;
++	}
++
++	if (eccsr == spinand->advecc_noerr_status)
++		return 0;
++	else if (eccsr == spinand->advecc_uncor_status)
++		return -EBADMSG;
++	eccsr = spinand->eccsr_math_op[spinand->advecc_post_op](eccsr, spinand->advecc_post_mask);
++
++	return eccsr > mtd->ecc_strength ? mtd->ecc_strength : eccsr;
++}
++
+ static int spinand_check_ecc_status(struct spinand_device *spinand, u8 status)
+ {
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+@@ -827,6 +887,7 @@
+ 
+ static const struct spinand_manufacturer *spinand_manufacturers[] = {
+ 	&etron_spinand_manufacturer,
++	&fudan_spinand_manufacturer,
+ 	&gigadevice_spinand_manufacturer,
+ 	&macronix_spinand_manufacturer,
+ 	&micron_spinand_manufacturer,
+@@ -834,7 +895,6 @@
+ 	&toshiba_spinand_manufacturer,
+ 	&winbond_spinand_manufacturer,
+ 	&esmt_c8_spinand_manufacturer,
+-	&foresee_spinand_manufacturer,
+ 	&xtx_spinand_manufacturer,
+ };
+ 
+@@ -865,6 +925,300 @@
+ 	return -ENOTSUPP;
+ }
+ 
++static u16 nanddev_crc16(u16 crc, u8 const *p, size_t len)
++{
++	int i;
++	while (len--) {
++		crc ^= *p++ << 8;
++		for (i = 0; i < 8; i++)
++			crc = (crc << 1) ^ ((crc & 0x8000) ? 0x8005 : 0);
++	}
++
++	return crc;
++}
++
++/* Sanitize ONFI strings so we can safely print them */
++static void sanitize_string(char *s, size_t len)
++{
++	ssize_t i;
++
++	/* Null terminate */
++	s[len - 1] = 0;
++
++	/* Remove non printable chars */
++	for (i = 0; i < len - 1; i++) {
++		if (s[i] < ' ' || s[i] > 127)
++			s[i] = '?';
++	}
++
++	/* Remove trailing spaces */
++	strim(s);
++}
++
++/*
++ * Recover data with bit-wise majority
++ */
++static void nanddev_bit_wise_majority(const void **srcbufs,
++				   unsigned int nsrcbufs,
++				   void *dstbuf,
++				   unsigned int bufsize)
++{
++	int i, j, k;
++
++	for (i = 0; i < bufsize; i++) {
++		u8 val = 0;
++
++		for (j = 0; j < 8; j++) {
++			unsigned int cnt = 0;
++
++			for (k = 0; k < nsrcbufs; k++) {
++				const u8 *srcbuf = srcbufs[k];
++
++				if (srcbuf[i] & BIT(j))
++					cnt++;
++			}
++
++			if (cnt > nsrcbufs / 2)
++				val |= BIT(j);
++		}
++
++		((u8 *)dstbuf)[i] = val;
++	}
++}
++
++static int spinand_check_casn_validity(struct spinand_device *spinand,
++				       struct nand_casn *casn)
++{
++	struct udevice *dev = spinand->slave->dev;
++
++	if (be32_to_cpu(casn->bits_per_cell) != 1) {
++		dev_err(dev, "[CASN] bits-per-cell must be 1\n");
++		return -EINVAL;
++	}
++
++	switch (be32_to_cpu(casn->bytes_per_page)) {
++	case 2048:
++	case 4096:
++		break;
++	default:
++		dev_err(dev, "[CASN] page size must be 2048/4096\n");
++		return -EINVAL;
++	}
++
++	switch (be32_to_cpu(casn->spare_bytes_per_page)) {
++	case 64:
++	case 96:
++	case 128:
++	case 256:
++		break;
++	default:
++		dev_err(dev, "[CASN] spare size must be 64/128/256\n");
++		return -EINVAL;
++	}
++
++	switch (be32_to_cpu(casn->pages_per_block)) {
++	case 64:
++	case 128:
++		break;
++	default:
++		dev_err(dev, "[CASN] pages_per_block must be 64/128\n");
++		return -EINVAL;
++	}
++
++	switch (be32_to_cpu(casn->blocks_per_lun)) {
++	case 1024:
++		if (be32_to_cpu(casn->max_bb_per_lun) != 20) {
++			dev_err(dev, "[CASN] max_bb_per_lun must be 20 when blocks_per_lun is 1024\n");
++			return -EINVAL;
++		}
++		break;
++	case 2048:
++		if (be32_to_cpu(casn->max_bb_per_lun) != 40) {
++			dev_err(dev, "[CASN] max_bb_per_lun must be 40 when blocks_per_lun is 2048\n");
++			return -EINVAL;
++		}
++		break;
++	case 4096:
++		if (be32_to_cpu(casn->max_bb_per_lun) != 80) {
++			dev_err(dev, "[CASN] max_bb_per_lun must be 80 when blocks_per_lun is 4096\n");
++			return -EINVAL;
++		}
++		break;
++	default:
++		dev_err(dev, "[CASN] blocks_per_lun must be 1024/2048/4096\n");
++		return -EINVAL;
++	}
++
++	switch (be32_to_cpu(casn->planes_per_lun)) {
++	case 1:
++	case 2:
++		break;
++	default:
++		dev_err(dev, "[CASN] planes_per_lun must be 1/2\n");
++		return -EINVAL;
++	}
++
++	switch (be32_to_cpu(casn->luns_per_target)) {
++	case 1:
++	case 2:
++		break;
++	default:
++		dev_err(dev, "[CASN] luns_per_target must be 1/2\n");
++		return -EINVAL;
++	}
++
++	switch (be32_to_cpu(casn->total_target)) {
++	case 1:
++	case 2:
++		break;
++	default:
++		dev_err(dev, "[CASN] ntargets must be 1/2\n");
++		return -EINVAL;
++	}
++
++	if (casn->casn_oob.layout_type != OOB_CONTINUOUS &&
++	    casn->casn_oob.layout_type != OOB_DISCRETE) {
++		dev_err(dev, "[CASN] OOB layout type isn't correct.\n");
++		return -EINVAL;
++	}
++
++	if (casn->ecc_status_high.status_nbytes > 2 ||
++	    casn->ecc_status_low.status_nbytes > 2) {
++		dev_err(dev, "[CASN] ADVECC status nbytes must be no more than 2\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int spinand_check_casn(struct spinand_device *spinand,
++			struct nand_casn *casn, unsigned int *sel)
++{
++	struct udevice *dev = spinand->slave->dev;
++	uint16_t crc = be16_to_cpu(casn->crc);
++	uint16_t crc_compute;
++	int ret = 0;
++	int i;
++
++	/* There are 3 copies of CASN Pages V1. Choose one avabilable copy
++	 * first. If none of the copies is available, try to recover.
++	 */
++	for (i = 0; i < CASN_PAGE_V1_COPIES; i++) {
++		if (be32_to_cpu(casn[i].signature) != CASN_SIGNATURE) {
++			ret = -EINVAL;
++			continue;
++		}
++		crc_compute = nanddev_crc16(CASN_CRC_BASE, (u8 *)(casn + i),
++					    SPINAND_CASN_V1_CRC_OFS);
++		dev_dbg(dev, "CASN COPY %d CRC read: 0x%x, compute: 0x%x\n",
++			i, crc, crc_compute);
++		if (crc != crc_compute) {
++			ret = -EBADMSG;
++			continue;
++		}
++		ret = spinand_check_casn_validity(spinand, casn + i);
++		if (ret < 0)
++			continue;
++		*sel = i;
++		break;
++	}
++
++	if (i == CASN_PAGE_V1_COPIES && ret == -EBADMSG) {
++		const void *srcbufs[CASN_PAGE_V1_COPIES];
++		int j;
++
++		for (j = 0; j < CASN_PAGE_V1_COPIES; j++)
++			srcbufs[j] = casn + j;
++		dev_info(dev, "Couldn't find a valid CASN page, try bitwise majority to recover it\n");
++		nanddev_bit_wise_majority(srcbufs, CASN_PAGE_V1_COPIES, casn,
++					  sizeof(*casn));
++		crc_compute = nanddev_crc16(CASN_CRC_BASE, (uint8_t *)casn,
++					    SPINAND_CASN_V1_CRC_OFS);
++		if (crc_compute != crc) {
++			dev_err(dev, "CASN page recovery failed, aborting\n");
++			return -EBADMSG;
++		}
++		ret = spinand_check_casn_validity(spinand, casn + i);
++		if (ret < 0)
++			return ret;
++		dev_info(dev, "CASN page recovery succeeded\n");
++		*sel = 0;
++	}
++
++	return ret;
++}
++
++static int spinand_casn_detect(struct spinand_device *spinand,
++			       struct nand_casn *casn, unsigned int *sel)
++{
++	struct udevice *dev = spinand->slave->dev;
++	uint8_t casn_offset[3] = {0x0, 0x1, 0x4};
++	struct nand_page_io_req req;
++	struct spi_mem_op op;
++	struct nand_pos pos;
++	int check_ret = 0;
++	uint8_t status;
++	int final_ret;
++	int ret = 0;
++	u8 cfg_reg;
++	int i;
++
++	ret = spinand_read_reg_op(spinand, REG_CFG, &cfg_reg);
++	if (ret)
++		return ret;
++
++	ret = spinand_write_reg_op(spinand, REG_CFG, cfg_reg | BIT(6));
++	if (ret)
++		return ret;
++
++	memset(&pos, 0, sizeof(pos));
++
++	req = (struct nand_page_io_req){
++		.pos = pos,
++		.dataoffs = 0,
++		.datalen = 256 * CASN_PAGE_V1_COPIES,
++		.databuf.in = (u8 *)casn,
++		.mode = MTD_OPS_AUTO_OOB,
++	};
++
++	for (i = 0; i < sizeof(casn_offset)/sizeof(uint8_t); i++) {
++		req.pos.page = casn_offset[i];
++		ret = spinand_load_page_op(spinand, &req);
++		if (ret)
++			goto finish;
++
++		ret = spinand_wait(spinand, &status);
++		if (ret < 0)
++			goto finish;
++
++		op = (struct spi_mem_op) SPINAND_PAGE_READ_FROM_CACHE_OP(
++			false, 768, 1, (u8 *)casn, 256 * CASN_PAGE_V1_COPIES);
++		ret = spi_mem_exec_op(spinand->slave, &op);
++		if (ret < 0)
++			goto finish;
++
++		check_ret = spinand_check_casn(spinand, casn, sel);
++		if (!check_ret)
++			break;
++	}
++
++finish:
++	/* We need to restore configuration register. */
++	final_ret = spinand_write_reg_op(spinand, REG_CFG, cfg_reg);
++	if (final_ret)
++		return final_ret;
++
++	if (check_ret) {
++		dev_err(dev, "CASN page check failed\n");
++		return check_ret;
++	}
++
++	if (ret)
++		dev_err(dev, "CASN page read failed\n");
++
++	return ret;
++}
++
+ static int spinand_id_detect(struct spinand_device *spinand)
+ {
+ 	u8 *id = spinand->id.data;
+@@ -896,7 +1250,7 @@
+ 
+ static int spinand_manufacturer_init(struct spinand_device *spinand)
+ {
+-	if (spinand->manufacturer->ops->init)
++	if (!spinand->use_casn && spinand->manufacturer->ops->init)
+ 		return spinand->manufacturer->ops->init(spinand);
+ 
+ 	return 0;
+@@ -905,7 +1259,7 @@
+ static void spinand_manufacturer_cleanup(struct spinand_device *spinand)
+ {
+ 	/* Release manufacturer private data */
+-	if (spinand->manufacturer->ops->cleanup)
++	if (!spinand->use_casn && spinand->manufacturer->ops->cleanup)
+ 		return spinand->manufacturer->ops->cleanup(spinand);
+ }
+ 
+@@ -943,6 +1297,19 @@
+ 	return NULL;
+ }
+ 
++static int spinand_setup_slave(struct spinand_device *spinand,
++			       const struct spinand_info *spinand_info)
++{
++	struct spi_slave *slave = spinand->slave;
++	struct udevice *bus = slave->dev->parent;
++	struct dm_spi_ops *ops = spi_get_ops(bus);
++
++	if (!ops->setup_for_spinand)
++		return 0;
++
++	return ops->setup_for_spinand(slave, spinand_info);
++}
++
+ /**
+  * spinand_match_and_init() - Try to find a match between a device ID and an
+  *			      entry in a spinand_info table
+@@ -966,6 +1333,7 @@
+ 	u8 *id = spinand->id.data;
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	unsigned int i;
++	int ret;
+ 
+ 	for (i = 0; i < table_size; i++) {
+ 		const struct spinand_info *info = &table[i];
+@@ -977,6 +1345,10 @@
+ 		if (memcmp(id + 1, info->devid.id, info->devid.len))
+ 			continue;
+ 
++		ret = spinand_setup_slave(spinand, info);
++		if (ret)
++			return ret;
++
+ 		nand->memorg = table[i].memorg;
+ 		nand->eccreq = table[i].eccreq;
+ 		spinand->eccinfo = table[i].eccinfo;
+@@ -1008,37 +1380,455 @@
+ 	return -ENOTSUPP;
+ }
+ 
++static int spinand_casn_ooblayout_ecc(struct mtd_info *mtd, int section,
++				       struct mtd_oob_region *region)
++{
++	struct spinand_device *spinand = mtd_to_spinand(mtd);
++	int sectionp;
++	struct CASN_OOB *co = spinand->casn_oob;
++
++	sectionp = spinand->base.memorg.pagesize/mtd->ecc_step_size;
++	if (section >= sectionp)
++		return -ERANGE;
++
++	if (co->layout_type == OOB_DISCRETE) {
++		region->offset = co->ecc_parity_start +
++				 (co->free_length + co->ecc_parity_space)
++				 * section;
++	} else if (co->layout_type == OOB_CONTINUOUS) {
++		region->offset = co->ecc_parity_start + co->ecc_parity_space * section;
++	}
++	region->length = co->ecc_parity_real_length;
++
++	return 0;
++}
++
++static int spinand_casn_ooblayout_free(struct mtd_info *mtd, int section,
++					struct mtd_oob_region *region)
++{
++	struct spinand_device *spinand = mtd_to_spinand(mtd);
++	int sectionp;
++	struct CASN_OOB *co = spinand->casn_oob;
++
++	sectionp = spinand->base.memorg.pagesize/mtd->ecc_step_size;
++	if (section >= sectionp)
++		return -ERANGE;
++
++	if (!section) {
++		region->offset = co->free_start + co->bbm_length;
++		region->length = co->free_length - co->bbm_length;
++	} else {
++		if (co->layout_type == OOB_DISCRETE) {
++			region->offset = co->free_start +
++					 (co->free_length +
++					  co->ecc_parity_space) * section;
++		} else if (co->layout_type == OOB_CONTINUOUS) {
++			region->offset = co->free_start +
++					 co->free_length * section;
++		}
++		region->length = co->free_length;
++	}
++
++	return 0;
++}
++
++static const struct mtd_ooblayout_ops spinand_casn_ooblayout = {
++	.ecc = spinand_casn_ooblayout_ecc,
++	.rfree = spinand_casn_ooblayout_free,
++};
++
++static int spinand_set_read_op_variants(struct spinand_device *spinand,
++					struct nand_casn *casn)
++{
++	struct spinand_op_variants casn_read_cache_variants;
++	u16 sdr_read_cap = be16_to_cpu(casn->sdr_read_cap);
++	struct spi_mem_op *read_ops;
++	const struct spi_mem_op *op;
++	int i = 0;
++
++	read_ops = devm_kzalloc(spinand->slave->dev,
++				sizeof(struct spi_mem_op) *
++				hweight16(sdr_read_cap),
++				GFP_KERNEL);
++	if (!read_ops)
++		return -ENOMEM;
++
++	if (FIELD_GET(SDR_READ_1_4_4, sdr_read_cap)) {
++		read_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PAGE_READ_FROM_CACHE_QUADIO_OP(
++				casn->sdr_read_1_4_4.addr_nbytes, 0,
++				casn->sdr_read_1_4_4.dummy_nbytes, NULL, 0
++			);
++		i++;
++	}
++	if (FIELD_GET(SDR_READ_1_1_4, sdr_read_cap)) {
++		read_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PAGE_READ_FROM_CACHE_X4_OP(
++				casn->sdr_read_1_1_4.addr_nbytes, 0,
++				casn->sdr_read_1_1_4.dummy_nbytes, NULL, 0
++			);
++		i++;
++	}
++	if (FIELD_GET(SDR_READ_1_2_2, sdr_read_cap)) {
++		read_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PAGE_READ_FROM_CACHE_DUALIO_OP(
++				casn->sdr_read_1_2_2.addr_nbytes, 0,
++				casn->sdr_read_1_2_2.dummy_nbytes, NULL, 0
++			);
++		i++;
++	}
++	if (FIELD_GET(SDR_READ_1_1_2, sdr_read_cap)) {
++		read_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PAGE_READ_FROM_CACHE_X2_OP(
++				casn->sdr_read_1_1_2.addr_nbytes, 0,
++				casn->sdr_read_1_1_2.dummy_nbytes, NULL, 0
++			);
++		i++;
++	}
++	if (FIELD_GET(SDR_READ_1_1_1_FAST, sdr_read_cap)) {
++		read_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PAGE_READ_FROM_CACHE_OP(
++				true, casn->sdr_read_1_1_1_fast.addr_nbytes, 0,
++				casn->sdr_read_1_1_1_fast.dummy_nbytes, NULL, 0
++			);
++		i++;
++	}
++	if (FIELD_GET(SDR_READ_1_1_1, sdr_read_cap)) {
++		read_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PAGE_READ_FROM_CACHE_OP(
++				false, casn->sdr_read_1_1_1.addr_nbytes, 0,
++				casn->sdr_read_1_1_1.dummy_nbytes, NULL, 0
++			);
++		i++;
++	}
++
++	casn_read_cache_variants = (struct spinand_op_variants){
++		.ops = read_ops,
++		.nops = hweight16(sdr_read_cap),
++	};
++
++	op = spinand_select_op_variant(spinand, &casn_read_cache_variants);
++	if (!op) {
++		devm_kfree(spinand->slave->dev, read_ops);
++		return -ENOTSUPP;
++	}
++	spinand->op_templates.read_cache = op;
++
++	return 0;
++}
++
++static int spinand_set_write_op_variants(struct spinand_device *spinand,
++					 struct nand_casn *casn)
++{
++	struct spinand_op_variants casn_write_cache_variants;
++	struct spi_mem_op *write_ops;
++	const struct spi_mem_op *op;
++	int i = 0;
++
++	write_ops = devm_kzalloc(spinand->slave->dev,
++				 sizeof(struct spi_mem_op) *
++				 hweight8(casn->sdr_write_cap),
++				 GFP_KERNEL);
++	if (!write_ops)
++		return -ENOMEM;
++
++	if (FIELD_GET(SDR_WRITE_1_1_4, casn->sdr_write_cap)) {
++		write_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PROG_LOAD_X4(
++				true, casn->sdr_write_1_1_4.addr_nbytes, 0,
++				NULL, 0);
++		i++;
++	}
++	if (FIELD_GET(SDR_WRITE_1_1_1, casn->sdr_write_cap)) {
++		write_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PROG_LOAD(
++				true, casn->sdr_write_1_1_1.addr_nbytes, 0,
++				NULL, 0);
++		i++;
++	}
++
++	casn_write_cache_variants = (struct spinand_op_variants){
++		.ops = write_ops,
++		.nops = hweight8(casn->sdr_write_cap),
++	};
++
++	op = spinand_select_op_variant(spinand, &casn_write_cache_variants);
++	if (!op) {
++		devm_kfree(spinand->slave->dev, write_ops);
++		return -ENOTSUPP;
++	}
++	spinand->op_templates.write_cache = op;
++
++	return 0;
++}
++
++static int spinand_set_update_op_variants(struct spinand_device *spinand,
++					  struct nand_casn *casn)
++{
++	struct spinand_op_variants casn_update_cache_variants;
++	struct spi_mem_op *update_ops;
++	const struct spi_mem_op *op;
++	int i = 0;
++
++	update_ops = devm_kzalloc(spinand->slave->dev,
++				  sizeof(struct spi_mem_op) *
++				  hweight8(casn->sdr_update_cap),
++				  GFP_KERNEL);
++	if (!update_ops)
++		return -ENOMEM;
++
++	if (FIELD_GET(SDR_UPDATE_1_1_4, casn->sdr_update_cap)) {
++		update_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PROG_LOAD_X4(
++				false, casn->sdr_update_1_1_4.addr_nbytes, 0,
++				NULL, 0);
++		i++;
++	}
++	if (FIELD_GET(SDR_UPDATE_1_1_1, casn->sdr_update_cap)) {
++		update_ops[i] = (struct spi_mem_op)
++			SPINAND_CASN_PROG_LOAD(
++				false, casn->sdr_update_1_1_1.addr_nbytes, 0,
++				NULL, 0);
++		i++;
++	}
++
++	casn_update_cache_variants = (struct spinand_op_variants){
++		.ops = update_ops,
++		.nops = hweight8(casn->sdr_update_cap),
++	};
++
++	op = spinand_select_op_variant(spinand, &casn_update_cache_variants);
++	if (!op) {
++		devm_kfree(spinand->slave->dev, update_ops);
++		return -ENOTSUPP;
++	}
++	spinand->op_templates.update_cache = op;
++
++	return 0;
++}
++
++static int spinand_init_via_casn(struct spinand_device *spinand,
++				 struct nand_casn *casn)
++{
++	struct nand_device *nand = spinand_to_nand(spinand);
++	u32 val;
++	int ret;
++	int i;
++
++	/* Set members of nand->memorg via CASN. */
++	for (i = 0; i < 9; i++) {
++		val = be32_to_cpu(*(&casn->bits_per_cell + i));
++		memcpy((u32 *)&nand->memorg.bits_per_cell + i, &val, sizeof(u32));
++	}
++	nand->eccreq.strength = be32_to_cpu(casn->ecc_strength);
++	nand->eccreq.step_size = be32_to_cpu(casn->ecc_step_size);
++	spinand->flags = casn->flags;
++
++	if (spinand->flags & SPINAND_SUP_ADV_ECC_STATUS) {
++		spinand->eccinfo = (struct spinand_ecc_info) {
++			&spinand_casn_get_ecc_status, &spinand_casn_ooblayout};
++	} else {
++		spinand->eccinfo = (struct spinand_ecc_info) {
++			NULL, &spinand_casn_ooblayout };
++	}
++
++	spinand->advecc_high_ops = devm_kzalloc(spinand->slave->dev,
++						sizeof(struct spi_mem_op),
++						GFP_KERNEL);
++	if (!spinand->advecc_high_ops)
++		return -ENOMEM;
++	spinand->advecc_low_ops = devm_kzalloc(spinand->slave->dev,
++					       sizeof(struct spi_mem_op),
++					       GFP_KERNEL);
++	if (!spinand->advecc_low_ops)
++		return -ENOMEM;
++	spinand->casn_oob = devm_kzalloc(spinand->slave->dev,
++					 sizeof(struct CASN_OOB),
++					 GFP_KERNEL);
++	if (!spinand->casn_oob)
++		return -ENOMEM;
++	spinand->advecc_high = devm_kzalloc(spinand->slave->dev,
++					    sizeof(struct CASN_ADVECC),
++					    GFP_KERNEL);
++	if (!spinand->advecc_high)
++		return -ENOMEM;
++	spinand->advecc_low = devm_kzalloc(spinand->slave->dev,
++					   sizeof(struct CASN_ADVECC),
++					   GFP_KERNEL);
++	if (!spinand->advecc_low)
++		return -ENOMEM;
++
++	*spinand->advecc_high_ops = (struct spi_mem_op)
++		SPINAND_CASN_ADVECC_OP(casn->ecc_status_high, spinand->scratchbuf);
++	*spinand->advecc_low_ops = (struct spi_mem_op)
++		SPINAND_CASN_ADVECC_OP(casn->ecc_status_low, spinand->scratchbuf);
++
++	memcpy(spinand->casn_oob, &casn->casn_oob, sizeof(struct CASN_OOB));
++
++	spinand->advecc_high->cmd = casn->ecc_status_high.cmd;
++	spinand->advecc_high->mask = be16_to_cpu(casn->ecc_status_high.status_mask);
++	spinand->advecc_high->shift = spinand->advecc_high->mask ?
++				      ffs(spinand->advecc_high->mask)-1 : 0;
++	spinand->advecc_high->pre_op = casn->ecc_status_high.pre_op;
++	spinand->advecc_high->pre_mask = casn->ecc_status_high.pre_mask;
++
++	spinand->advecc_low->cmd = casn->ecc_status_low.cmd;
++	spinand->advecc_low->mask = be16_to_cpu(casn->ecc_status_low.status_mask);
++	spinand->advecc_low->shift = spinand->advecc_low->mask ?
++				     ffs(spinand->advecc_low->mask)-1 : 0;
++	spinand->advecc_low->pre_op = casn->ecc_status_low.pre_op;
++	spinand->advecc_low->pre_mask = casn->ecc_status_low.pre_mask;
++
++	spinand->advecc_low_bitcnt = hweight16(spinand->advecc_low->mask);
++
++	spinand->advecc_noerr_status = casn->advecc_noerr_status;
++	spinand->advecc_uncor_status = casn->advecc_uncor_status;
++	spinand->advecc_post_op = casn->advecc_post_op;
++	spinand->advecc_post_mask = casn->advecc_post_mask;
++	spinand->eccsr_math_op[0] = eccsr_none_op;
++	spinand->eccsr_math_op[1] = eccsr_and_op;
++	spinand->eccsr_math_op[2] = eccsr_add_op;
++	spinand->eccsr_math_op[3] = eccsr_minus_op;
++	spinand->eccsr_math_op[4] = eccsr_mul_op;
++
++	ret = spinand_set_read_op_variants(spinand, casn);
++	if (ret < 0)
++		return ret;
++	ret = spinand_set_write_op_variants(spinand, casn);
++	if (ret < 0)
++		return ret;
++	ret = spinand_set_update_op_variants(spinand, casn);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static void spinand_dump_casn(struct spinand_device *spinand, struct nand_casn *casn)
++{
++	int i;
++
++	dev_dbg(spinand->slave->dev,
++		"---Start dumping full CASN page---\n");
++	for (i = 0; i < 64; i++)
++		pr_debug("0x%08x", *((u32 *)casn + i));
++
++	pr_debug("** Dump critical fields **\n");
++	pr_debug("signature: 0x%04x\n", be32_to_cpu(casn->signature));
++	pr_debug("version: v%u.%u\n", casn->version >> 4, casn->version & 0xf);
++	pr_debug("[Memory Organization]\n");
++	pr_debug("  bits_per_cell: %d\n", be32_to_cpu(casn->bits_per_cell));
++	pr_debug("  bytes_per_page: %d\n", be32_to_cpu(casn->bytes_per_page));
++	pr_debug("  spare_bytes_per_page: %d\n",
++		 be32_to_cpu(casn->spare_bytes_per_page));
++	pr_debug("  pages_per_block: %d\n",
++		 be32_to_cpu(casn->pages_per_block));
++	pr_debug("  blocks_per_lun: %d\n", be32_to_cpu(casn->blocks_per_lun));
++	pr_debug("  max_bb_per_lun: %d\n", be32_to_cpu(casn->max_bb_per_lun));
++	pr_debug("  planes_per_lun: %d\n", be32_to_cpu(casn->planes_per_lun));
++	pr_debug("  luns_per_target: %d\n",
++		 be32_to_cpu(casn->luns_per_target));
++	pr_debug("  total_target: %d\n", be32_to_cpu(casn->total_target));
++	pr_debug("[flags]\n");
++	pr_debug("  0. Have QE bit? %s\n",
++		casn->flags & SPINAND_HAS_QE_BIT ? "Yes" : "No");
++	pr_debug("  1. Have continuous read feature bit? %s\n",
++		casn->flags & SPINAND_HAS_CR_FEAT_BIT ? "Yes" : "No");
++	pr_debug("  2. Support continuous read? %s\n",
++		casn->flags & SPINAND_SUP_CR ? "Yes" : "No");
++	pr_debug("  3. Support on-die ECC? %s\n",
++		casn->flags & SPINAND_SUP_ON_DIE_ECC ? "Yes" : "No");
++	pr_debug("  4. Support legacy ECC status? %s\n",
++		casn->flags & SPINAND_SUP_LEGACY_ECC_STATUS ? "Yes" : "No");
++	pr_debug("  5. Support advanced ECC status? %s\n",
++		casn->flags & SPINAND_SUP_ADV_ECC_STATUS ? "Yes" : "No");
++	pr_debug("  6. ECC parity readable? %s\n",
++		casn->flags & SPINAND_ECC_PARITY_READABLE ? "Yes" : "No");
++	pr_debug("[R/W ability]\n");
++	pr_debug("  read ability: %x\n", be16_to_cpu(casn->sdr_read_cap));
++	pr_debug("  write ability: %x\n", casn->sdr_write_cap);
++	pr_debug("  update ability: %x\n", casn->sdr_update_cap);
++	pr_debug("advanced ECC no error state: %x\n",
++		 casn->advecc_noerr_status);
++	pr_debug("advecced ECC uncorrectable state: %x\n",
++		 casn->advecc_uncor_status);
++	pr_debug("CRC: 0x%04x\n", be16_to_cpu(casn->crc));
++
++	dev_dbg(spinand->slave->dev,
++		"---Dumping full CASN page ends here.---\n");
++}
++
+ static int spinand_detect(struct spinand_device *spinand)
+ {
+ 	struct nand_device *nand = spinand_to_nand(spinand);
++	struct udevice *dev = spinand->slave->dev;
++	struct nand_casn *casn;
++	char manufacturer[14];
++	unsigned int sel = 0;
++	char model[17];
+ 	int ret;
+ 
+ 	ret = spinand_reset_op(spinand);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = spinand_id_detect(spinand);
+-	if (ret) {
+-		dev_err(spinand->slave->dev, "unknown raw ID %02x %02x %02x %02x\n",
+-			spinand->id.data[0], spinand->id.data[1],
+-			spinand->id.data[2], spinand->id.data[3]);
+-		return ret;
++	spinand->use_casn = false;
++	casn = kzalloc((sizeof(struct nand_casn) * CASN_PAGE_V1_COPIES), GFP_KERNEL);
++	if (!casn)
++		return -ENOMEM;
++
++	ret = spinand_casn_detect(spinand, casn, &sel);
++	if (!ret) {
++		spinand->use_casn = true;
++		strncpy(manufacturer, casn[sel].manufacturer, sizeof(manufacturer)-1);
++		sanitize_string(manufacturer, sizeof(manufacturer));
++		strncpy(model, casn[sel].model, sizeof(model)-1);
++		sanitize_string(model, sizeof(model));
++
++		spinand_dump_casn(spinand, casn + sel);
++
++		ret = spinand_init_via_casn(spinand, casn + sel);
++		if (ret)
++			dev_err(dev, "Initilize spinand via CASN failed: %d\n", ret);
++	}
++
++	if (ret < 0) {
++		dev_warn(dev, "Fallback to read ID\n");
++
++		ret = spinand_reset_op(spinand);
++		if (ret)
++			goto free_casn;
++		ret = spinand_id_detect(spinand);
++		if (ret) {
++			dev_err(dev, "unknown raw ID %*phN\n", SPINAND_MAX_ID_LEN,
++				spinand->id.data);
++			goto free_casn;
++		}
+ 	}
+ 
+ 	if (nand->memorg.ntargets > 1 && !spinand->select_target) {
+-		dev_err(spinand->slave->dev,
++		dev_err(dev,
+ 			"SPI NANDs with more than one die must implement ->select_target()\n");
+ 		return -EINVAL;
++		goto free_casn;
++	}
++
++	if (spinand->use_casn) {
++		dev_info(spinand->slave->dev,
++			 "%s %s SPI NAND was found.\n", manufacturer, model);
++	} else {
++		dev_info(spinand->slave->dev,
++			 "%s SPI NAND was found.\n", spinand->manufacturer->name);
+ 	}
+ 
+-	dev_info(spinand->slave->dev,
+-		 "%s SPI NAND was found.\n", spinand->manufacturer->name);
+-	dev_info(spinand->slave->dev,
+-		 "%llu MiB, block size: %zu KiB, page size: %zu, OOB size: %u\n",
++	dev_info(dev, "%llu MiB, block size: %zu KiB, page size: %zu, OOB size: %u\n",
+ 		 nanddev_size(nand) >> 20, nanddev_eraseblock_size(nand) >> 10,
+ 		 nanddev_page_size(nand), nanddev_per_page_oobsize(nand));
+ 
+-	return 0;
++free_casn:
++	kfree(casn);
++
++	return ret;
+ }
+ 
+ static int spinand_noecc_ooblayout_ecc(struct mtd_info *mtd, int section,
+diff -aurN a/drivers/mtd/nand/spi/foresee.c b/drivers/mtd/nand/spi/foresee.c
+--- a/drivers/mtd/nand/spi/foresee.c	2025-06-29 09:17:03.000000000 +0000
++++ b/drivers/mtd/nand/spi/foresee.c	1970-01-01 00:00:00.000000000 +0000
+@@ -1,107 +0,0 @@
+-// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+-/*
+- * Copyright (c) 2023, SberDevices. All Rights Reserved.
+- *
+- * Author: Martin Kurbanov <mmkurbanov@salutedevices.com>
+- */
+-
+-#ifndef __UBOOT__
+-#include <linux/device.h>
+-#include <linux/kernel.h>
+-#endif
+-#include <linux/mtd/spinand.h>
+-
+-#define SPINAND_MFR_FORESEE		0xCD
+-
+-static SPINAND_OP_VARIANTS(read_cache_variants,
+-		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
+-
+-static SPINAND_OP_VARIANTS(write_cache_variants,
+-		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+-		SPINAND_PROG_LOAD(true, 0, NULL, 0));
+-
+-static SPINAND_OP_VARIANTS(update_cache_variants,
+-		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
+-		SPINAND_PROG_LOAD(false, 0, NULL, 0));
+-
+-static int f35sqa002g_ooblayout_ecc(struct mtd_info *mtd, int section,
+-				    struct mtd_oob_region *region)
+-{
+-	return -ERANGE;
+-}
+-
+-static int f35sqa002g_ooblayout_free(struct mtd_info *mtd, int section,
+-				     struct mtd_oob_region *region)
+-{
+-	if (section)
+-		return -ERANGE;
+-
+-	/* Reserve 2 bytes for the BBM. */
+-	region->offset = 2;
+-	region->length = 62;
+-
+-	return 0;
+-}
+-
+-static const struct mtd_ooblayout_ops f35sqa002g_ooblayout = {
+-	.ecc = f35sqa002g_ooblayout_ecc,
+-	.rfree = f35sqa002g_ooblayout_free,
+-};
+-
+-static int f35sqa002g_ecc_get_status(struct spinand_device *spinand, u8 status)
+-{
+-	struct nand_device *nand = spinand_to_nand(spinand);
+-
+-	switch (status & STATUS_ECC_MASK) {
+-	case STATUS_ECC_NO_BITFLIPS:
+-		return 0;
+-
+-	case STATUS_ECC_HAS_BITFLIPS:
+-		return 1;
+-
+-	default:
+-		break;
+-	}
+-
+-	/* More than 1-bit error was detected in one or more sectors and
+-	 * cannot be corrected.
+-	 */
+-	return -EBADMSG;
+-}
+-
+-static const struct spinand_info foresee_spinand_table[] = {
+-	SPINAND_INFO("F35SQA002G",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x72, 0x72),
+-		     NAND_MEMORG(1, 2048, 64, 64, 2048, 40, 1, 1, 1),
+-		     NAND_ECCREQ(1, 512),
+-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
+-					      &write_cache_variants,
+-					      &update_cache_variants),
+-		     SPINAND_HAS_QE_BIT,
+-		     SPINAND_ECCINFO(&f35sqa002g_ooblayout,
+-				     f35sqa002g_ecc_get_status)),
+-	SPINAND_INFO("F35SQA001G",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x71, 0x71),
+-		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
+-		     NAND_ECCREQ(1, 512),
+-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
+-					      &write_cache_variants,
+-					      &update_cache_variants),
+-		     SPINAND_HAS_QE_BIT,
+-		     SPINAND_ECCINFO(&f35sqa002g_ooblayout,
+-				     f35sqa002g_ecc_get_status)),
+-};
+-
+-static const struct spinand_manufacturer_ops foresee_spinand_manuf_ops = {
+-};
+-
+-const struct spinand_manufacturer foresee_spinand_manufacturer = {
+-	.id = SPINAND_MFR_FORESEE,
+-	.name = "FORESEE",
+-	.chips = foresee_spinand_table,
+-	.nchips = ARRAY_SIZE(foresee_spinand_table),
+-	.ops = &foresee_spinand_manuf_ops,
+-};
+diff -aurN a/drivers/mtd/nand/spi/fudanmicro.c b/drivers/mtd/nand/spi/fudanmicro.c
+--- a/drivers/mtd/nand/spi/fudanmicro.c	1970-01-01 00:00:00.000000000 +0000
++++ b/drivers/mtd/nand/spi/fudanmicro.c	2025-06-29 09:17:35.000000000 +0000
+@@ -0,0 +1,107 @@
++#ifndef __UBOOT__
++#include <malloc.h>
++#include <linux/device.h>
++#include <linux/kernel.h>
++#endif
++#include <linux/bitops.h>
++#include <linux/mtd/spinand.h>
++
++#define SPINAND_MFR_FUDAN		0xA1
++
++#define FM25S01B_STATUS_ECC_MASK		(7 << 4)
++#define STATUS_ECC_1_3_BITFLIPS	(1 << 4)
++#define STATUS_ECC_4_6_BITFLIPS	(3 << 4)
++#define STATUS_ECC_7_8_BITFLIPS	(5 << 4)
++
++static SPINAND_OP_VARIANTS(read_cache_variants,
++		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
++
++static SPINAND_OP_VARIANTS(write_cache_variants,
++		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
++		SPINAND_PROG_LOAD(true, 0, NULL, 0));
++
++static SPINAND_OP_VARIANTS(update_cache_variants,
++		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
++		SPINAND_PROG_LOAD(false, 0, NULL, 0));
++
++static int fm25s01b_ooblayout_ecc(struct mtd_info *mtd, int section,
++				      struct mtd_oob_region *region)
++{
++	if (section)
++		return -ERANGE;
++
++	region->offset = 64;
++	region->length = 64;
++
++	return 0;
++}
++
++static int fm25s01b_ooblayout_free(struct mtd_info *mtd, int section,
++				       struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section) + 4;
++	region->length = 12;
++
++	return 0;
++}
++
++static const struct mtd_ooblayout_ops fm25s01b_ooblayout = {
++	.ecc = fm25s01b_ooblayout_ecc,
++	.rfree = fm25s01b_ooblayout_free,
++};
++
++static int fm25s01b_ecc_get_status(struct spinand_device *spinand,
++				       u8 status)
++{
++	switch (status & FM25S01B_STATUS_ECC_MASK) {
++	case STATUS_ECC_NO_BITFLIPS:
++		return 0;
++
++	case STATUS_ECC_UNCOR_ERROR:
++		return -EBADMSG;
++
++	case STATUS_ECC_1_3_BITFLIPS:
++		return 3;
++
++	case STATUS_ECC_4_6_BITFLIPS:
++		return 6;
++
++	case STATUS_ECC_7_8_BITFLIPS:
++		return 8;
++
++	default:
++		break;
++	}
++
++	return -EINVAL;
++}
++
++static const struct spinand_info fudan_spinand_table[] = {
++	SPINAND_INFO("FM25s01B",
++			 SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xD4),
++		     NAND_MEMORG(1, 2048, 128, 64, 1024, 20, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&fm25s01b_ooblayout,
++				     fm25s01b_ecc_get_status)),
++};
++
++static const struct spinand_manufacturer_ops fudan_spinand_manuf_ops = {
++};
++
++const struct spinand_manufacturer fudan_spinand_manufacturer = {
++	.id = SPINAND_MFR_FUDAN,
++	.name = "FUDAN Micron",
++	.chips = fudan_spinand_table,
++	.nchips = ARRAY_SIZE(fudan_spinand_table),
++	.ops = &fudan_spinand_manuf_ops,
++};
+diff -aurN a/drivers/mtd/nand/spi/gigadevice.c b/drivers/mtd/nand/spi/gigadevice.c
+--- a/drivers/mtd/nand/spi/gigadevice.c	2025-06-29 09:17:03.000000000 +0000
++++ b/drivers/mtd/nand/spi/gigadevice.c	2025-06-29 09:17:35.000000000 +0000
+@@ -27,6 +27,7 @@
+ #define GD5FXGQ4UXFXXG_STATUS_ECC_1_3_BITFLIPS	(1 << 4)
+ #define GD5FXGQ4UXFXXG_STATUS_ECC_UNCOR_ERROR	(7 << 4)
+ 
++/* Q4 devices, QUADIO: Dummy bytes valid for 1 and 2 GBit variants */
+ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+@@ -43,17 +44,15 @@
+ 		SPINAND_PAGE_READ_FROM_CACHE_OP_3A(true, 0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_OP_3A(false, 0, 0, NULL, 0));
+ 
+-/* Q5 1Gb */
+-static SPINAND_OP_VARIANTS(dummy2_read_cache_variants,
++static SPINAND_OP_VARIANTS(read_cache_variants_1gq5,
+ 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_X2_OP_3A(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP_3A(true, 0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_OP_3A(false, 0, 0, NULL, 0));
+ 
+-/* Q5 2Gb & 4Gb */
+-static SPINAND_OP_VARIANTS(dummy4_read_cache_variants,
++static SPINAND_OP_VARIANTS(read_cache_variants_2gq5,
+ 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 4, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 2, NULL, 0),
+@@ -313,16 +312,16 @@
+ static const struct mtd_ooblayout_ops esmt_1_ooblayout = {
+ 	.ecc = esmt_1_ooblayout_ecc,
+ 	.rfree = esmt_1_ooblayout_free,
+- };
++};
+ 
+ static const struct spinand_info gigadevice_spinand_table[] = {
+ 	SPINAND_INFO("F50L1G41LB",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0x01),
+ 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
+ 		     NAND_ECCREQ(8, 512),
+-		     SPINAND_INFO_OP_VARIANTS(&dummy2_read_cache_variants,
+-		          &write_cache_variants,
+-		          &update_cache_variants),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
++					      &write_cache_variants,
++					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&esmt_1_ooblayout, NULL)),
+ 	SPINAND_INFO("GD5F1GQ4xA",
+@@ -385,6 +384,36 @@
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+ 				     gd5fxgq4uexxg_ecc_get_status)),
++	SPINAND_INFO("GD5F1GQ4RExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0xc1),
++		     NAND_MEMORG(1, 2048, 128, 64, 1024, 20, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq4uexxg_ecc_get_status)),
++	SPINAND_INFO("GD5F2GQ4UExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0xd2),
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq4uexxg_ecc_get_status)),
++	SPINAND_INFO("GD5F2GQ4RExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0xc2),
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq4uexxg_ecc_get_status)),
+ 	SPINAND_INFO("GD5F1GQ4UFxxG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE, 0xb1, 0x48),
+ 		     NAND_MEMORG(1, 2048, 128, 64, 1024, 20, 1, 1, 1),
+@@ -399,93 +428,122 @@
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x51),
+ 		     NAND_MEMORG(1, 2048, 128, 64, 1024, 20, 1, 1, 1),
+ 		     NAND_ECCREQ(4, 512),
+-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq5xexxg_ecc_get_status)),
++	SPINAND_INFO("GD5F1GQ5RExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x41),
++		     NAND_MEMORG(1, 2048, 128, 64, 1024, 20, 1, 1, 1),
++		     NAND_ECCREQ(4, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+ 				     gd5fxgq5xexxg_ecc_get_status)),
+ 	SPINAND_INFO("GD5F2GQ5UExxG",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0x52),
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x52),
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
++		     NAND_ECCREQ(4, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_2gq5,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq5xexxg_ecc_get_status)),
++	SPINAND_INFO("GD5F2GQ5RExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x42),
+ 		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
+ 		     NAND_ECCREQ(4, 512),
+-		     SPINAND_INFO_OP_VARIANTS(&dummy4_read_cache_variants,
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_2gq5,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+ 				     gd5fxgq5xexxg_ecc_get_status)),
+ 	SPINAND_INFO("GD5F4GQ6UExxG",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0x55),
+-		     NAND_MEMORG(1, 2048, 128, 64, 4096, 80, 1, 1, 1),
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x55),
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 2, 1),
++		     NAND_ECCREQ(4, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_2gq5,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq5xexxg_ecc_get_status)),
++	SPINAND_INFO("GD5F4GQ6RExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x45),
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 2, 1),
+ 		     NAND_ECCREQ(4, 512),
+-		     SPINAND_INFO_OP_VARIANTS(&dummy4_read_cache_variants,
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_2gq5,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+ 				     gd5fxgq5xexxg_ecc_get_status)),
+ 	SPINAND_INFO("GD5F1GM7UExxG",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0x91),
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x91),
+ 		     NAND_MEMORG(1, 2048, 128, 64, 1024, 20, 1, 1, 1),
+ 		     NAND_ECCREQ(8, 512),
+-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+ 				     gd5fxgq4uexxg_ecc_get_status)),
+-	SPINAND_INFO("GD5F2GM7UExxG",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0x92),
+-			 NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
+-			 NAND_ECCREQ(8, 512),
+-			 SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++	SPINAND_INFO("GD5F1GM7RExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x81),
++		     NAND_MEMORG(1, 2048, 128, 64, 1024, 20, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+-			 SPINAND_HAS_QE_BIT,
+-			 SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+ 				     gd5fxgq4uexxg_ecc_get_status)),
+-	SPINAND_INFO("GD5F4GM8UExxG",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_ADDR, 0x95),
+-			 NAND_MEMORG(1, 2048, 128, 64, 4096, 80, 1, 1, 1),
+-			 NAND_ECCREQ(8, 512),
+-			 SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++	SPINAND_INFO("GD5F2GM7UExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x92),
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+-			 SPINAND_HAS_QE_BIT,
+-			 SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+ 				     gd5fxgq4uexxg_ecc_get_status)),
+-	SPINAND_INFO("GD5F1GQ5UExxH",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x31),
+-			 NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
+-			 NAND_ECCREQ(4, 512),
+-			 SPINAND_INFO_OP_VARIANTS(&dummy2_read_cache_variants,
++	SPINAND_INFO("GD5F2GM7RExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x82),
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+-			 SPINAND_HAS_QE_BIT,
+-			 SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+-				     gd5fxgq5xexxg_ecc_get_status)),
+-	SPINAND_INFO("GD5F2GQ5UExxH",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x32),
+-			 NAND_MEMORG(1, 2048, 64, 64, 2048, 40, 1, 1, 1),
+-			 NAND_ECCREQ(4, 512),
+-			 SPINAND_INFO_OP_VARIANTS(&dummy4_read_cache_variants,
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq4uexxg_ecc_get_status)),
++	SPINAND_INFO("GD5F4GM8UExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x95),
++		     NAND_MEMORG(1, 2048, 128, 64, 4096, 80, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+-			 SPINAND_HAS_QE_BIT,
+-			 SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+-				     gd5fxgq5xexxg_ecc_get_status)),
+-	SPINAND_INFO("GD5F4GQ6UExxH",
+-		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x35),
+-			 NAND_MEMORG(1, 2048, 64, 64, 4096, 40, 1, 1, 1),
+-			 NAND_ECCREQ(4, 512),
+-			 SPINAND_INFO_OP_VARIANTS(&dummy4_read_cache_variants,
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq4uexxg_ecc_get_status)),
++	SPINAND_INFO("GD5F4GM8RExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x85),
++		     NAND_MEMORG(1, 2048, 128, 64, 4096, 80, 1, 1, 1),
++		     NAND_ECCREQ(8, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+-			 SPINAND_HAS_QE_BIT,
+-			 SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+-			     gd5fxgq5xexxg_ecc_get_status)),
+-
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq4uexxg_ecc_get_status)),
+ };
+ 
+ static const struct spinand_manufacturer_ops gigadevice_spinand_manuf_ops = {
+diff -aurN a/drivers/mtd/nand/spi/Makefile b/drivers/mtd/nand/spi/Makefile
+--- a/drivers/mtd/nand/spi/Makefile	2025-06-29 09:17:03.000000000 +0000
++++ b/drivers/mtd/nand/spi/Makefile	2025-06-29 09:17:35.000000000 +0000
+@@ -1,5 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-spinand-objs := core.o esmt.o foresee.o etron.o gigadevice.o macronix.o micron.o paragon.o
++spinand-objs := core.o esmt.o gigadevice.o macronix.o micron.o paragon.o
+ spinand-objs += toshiba.o winbond.o xtx.o
++spinand-objs += etron.o
++spinand-objs += fudanmicro.o
+ obj-$(CONFIG_MTD_SPI_NAND) += spinand.o
+diff -aurN a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+--- a/drivers/mtd/nand/spi/winbond.c	2025-06-29 09:17:03.000000000 +0000
++++ b/drivers/mtd/nand/spi/winbond.c	2025-06-29 09:17:35.000000000 +0000
+@@ -51,35 +51,6 @@
+ 		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
+ 		SPINAND_PROG_LOAD(false, 0, NULL, 0));
+ 
+-static int w25n02kv_n04kv_ooblayout_ecc(struct mtd_info *mtd, int section,
+-				  struct mtd_oob_region *region)
+-{
+-	if (section > 3)
+-		return -ERANGE;
+-
+-	region->offset = (16 * section) + 64;
+-	region->length = 16;
+-
+-	return 0;
+-}
+-
+-static int w25n02kv_n04kv_ooblayout_free(struct mtd_info *mtd, int section,
+-				   struct mtd_oob_region *region)
+-{
+-	if (section > 3)
+-		return -ERANGE;
+-
+-	region->offset = (16 * section) + 2;
+-	region->length = 14;
+-
+-	return 0;
+-}
+-
+-static const struct mtd_ooblayout_ops w25n02kv_n04kv_ooblayout = {
+-	.ecc = w25n02kv_n04kv_ooblayout_ecc,
+-	.rfree = w25n02kv_n04kv_ooblayout_free,
+-};
+-
+ static int w25m02gv_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 				  struct mtd_oob_region *region)
+ {
+@@ -123,7 +94,7 @@
+ 	return spi_mem_exec_op(spinand->slave, &op);
+ }
+ 
+-static int w25n02kv_ooblayout_ecc(struct mtd_info *mtd, int section,
++static int w25n0xkv_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 				  struct mtd_oob_region *region)
+ {
+ 	if (section > 3)
+@@ -135,7 +106,7 @@
+ 	return 0;
+ }
+ 
+-static int w25n02kv_ooblayout_free(struct mtd_info *mtd, int section,
++static int w25n0xkv_ooblayout_free(struct mtd_info *mtd, int section,
+ 				   struct mtd_oob_region *region)
+ {
+ 	if (section > 3)
+@@ -147,98 +118,29 @@
+ 	return 0;
+ }
+ 
+-static const struct mtd_ooblayout_ops w25n02kv_ooblayout = {
+-	.ecc = w25n02kv_ooblayout_ecc,
+-	.rfree = w25n02kv_ooblayout_free,
++static const struct mtd_ooblayout_ops w25n0xkv_ooblayout = {
++	.ecc = w25n0xkv_ooblayout_ecc,
++	.rfree = w25n0xkv_ooblayout_free,
+ };
+ 
+-static int w25n01kv_ecc_get_status(struct spinand_device *spinand,
+-					u8 status)
+-{
+-	switch (status & W25N01KV_STATUS_ECC_MASK) {
+-	case W25N01KV_STATUS_ECC_NO_BITFLIPS:
+-		return 0;
+-
+-	case W25N01KV_STATUS_ECC_1_3_BITFLIPS:
+-		return 3;
+-
+-	case W25N01KV_STATUS_ECC_4_BITFLIPS:
+-		return 4;
+-
+-	case W25N01KV_STATUS_ECC_UNCOR_ERROR:
+-		return -EBADMSG;
+-
+-	default:
+-		break;
+-	}
+-
+-	return -EINVAL;
+-}
+-
+-static int w25n02kv_n04kv_ecc_get_status(struct spinand_device *spinand,
+-					u8 status)
+-{
+-	switch (status & W25N02_N04KV_STATUS_ECC_MASK) {
+-	case W25N02_N04KV_STATUS_ECC_NO_BITFLIPS:
+-		return 0;
+-
+-	case W25N02_N04KV_STATUS_ECC_1_4_BITFLIPS:
+-		return 3;
+-
+-	case W25N02_N04KV_STATUS_ECC_5_8_BITFLIPS:
+-		return 4;
+-
+-	/* W25N02_N04KV_use internal 8bit ECC algorithm.
+-	 * But the ECC strength is 4 bit requried.
+-	 * Return 3 if the bit bit flip count less than 5.
+-	 * Return 4 if the bit bit flip count more than 5 to 8.
+-	*/
+-
+-	case W25N02_N04KV_STATUS_ECC_UNCOR_ERROR:
+-		return -EBADMSG;
+-
+-	default:
+-		break;
+-	}
+-
+-	return -EINVAL;
+-}
+-
+-static int w25n02kv_ecc_get_status(struct spinand_device *spinand,
++static int w25n0xkv_ecc_get_status(struct spinand_device *spinand,
+ 				   u8 status)
+ {
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	u8 mbf = 0;
+ 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, &mbf);
+ 
+-	switch (status & STATUS_ECC_MASK) {
+-	case STATUS_ECC_NO_BITFLIPS:
+-		return 0;
+-
+-	case STATUS_ECC_UNCOR_ERROR:
+-		return -EBADMSG;
+-
+-	case STATUS_ECC_HAS_BITFLIPS:
+-		/*
+-		 * Let's try to retrieve the real maximum number of bitflips
+-		 * in order to avoid forcing the wear-leveling layer to move
+-		 * data around if it's not necessary.
+-		 */
+-		if (spi_mem_exec_op(spinand->slave, &op))
+-			return nand->eccreq.strength;
+-
+-		mbf >>= 4;
++	if (spi_mem_exec_op(spinand->slave, &op))
++		return nand->eccreq.strength;
+ 
+-		if (WARN_ON(mbf > nand->eccreq.strength || !mbf))
+-			return nand->eccreq.strength;
++	mbf >>= 4;
+ 
++	if(!mbf) {
++		return 0;
++	} else if(mbf > nand->eccreq.strength) {
++		return -EBADMSG;
++	} else
+ 		return mbf;
+-
+-	default:
+-		break;
+-	}
+-
+-	return -EINVAL;
+ }
+ 
+ static const struct spinand_info winbond_spinand_table[] = {
+@@ -269,7 +171,7 @@
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25n02kv_n04kv_ooblayout, w25n01kv_ecc_get_status)),
++		     SPINAND_ECCINFO(&w25n0xkv_ooblayout, w25n0xkv_ecc_get_status)),
+ 	SPINAND_INFO("W25N02KV",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa, 0x22),
+ 		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
+@@ -278,17 +180,19 @@
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
++		     SPINAND_ECCINFO(&w25n0xkv_ooblayout, w25n0xkv_ecc_get_status)),
++	/* W25N04KV has 2-die(lun), however, it can select die automatically.
++	 * Treat it as single die here and double block size.
++	 */
+ 	SPINAND_INFO("W25N04KV",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa, 0x23),
+-		     NAND_MEMORG(1, 2048, 128, 64, 4096, 80, 2, 1, 1),
+-		     NAND_ECCREQ(4, 512),
++		     NAND_MEMORG(1, 2048, 128, 64, 4096, 40, 2, 1, 1),
++		     NAND_ECCREQ(8, 512),
+ 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25n02kv_n04kv_ooblayout,
+-				     w25n02kv_n04kv_ecc_get_status)),
++		     SPINAND_ECCINFO(&w25n0xkv_ooblayout, w25n0xkv_ecc_get_status)),
+ };
+ 
+ static int winbond_spinand_init(struct spinand_device *spinand)
+diff -aurN a/include/linux/mtd/casn.h b/include/linux/mtd/casn.h
+--- a/include/linux/mtd/casn.h	1970-01-01 00:00:00.000000000 +0000
++++ b/include/linux/mtd/casn.h	2025-06-29 09:22:58.000000000 +0000
+@@ -0,0 +1,191 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2023 MediaTek Inc. All Rights Reserved.
++ *
++ * Author: SkyLake.Huang <skylake.huang@mediatek.com>
++ */
++
++#ifndef __LINUX_MTD_CASN_H
++#define __LINUX_MTD_CASN_H
++
++#define CASN_CRC_BASE	0x4341
++#define CASN_SIGNATURE	0x4341534EU
++#define SPINAND_CASN_V1_CRC_OFS (254)
++#define CASN_PAGE_V1_COPIES     (3)
++
++#define SDR_READ_1_1_1		BIT(0)
++#define SDR_READ_1_1_1_FAST	BIT(1)
++#define SDR_READ_1_1_2		BIT(2)
++#define SDR_READ_1_2_2		BIT(3)
++#define SDR_READ_1_1_4		BIT(4)
++#define SDR_READ_1_4_4		BIT(5)
++#define SDR_READ_1_1_8		BIT(6)
++#define SDR_READ_1_8_8		BIT(7)
++
++#define SDR_WRITE_1_1_1		BIT(0)
++#define SDR_WRITE_1_1_4		BIT(1)
++
++#define SDR_UPDATE_1_1_1	BIT(0)
++#define SDR_UPDATE_1_1_4	BIT(1)
++
++struct op_slice {
++	u8 cmd_opcode;
++#if defined(__LITTLE_ENDIAN_BITFIELD)
++	u8 dummy_nbytes : 4;
++	u8 addr_nbytes : 4;
++#elif defined(__BIG_ENDIAN_BITFIELD)
++	u8 addr_nbytes : 4;
++	u8 dummy_nbytes : 4;
++#endif
++};
++
++struct SPINAND_FLAGS {
++#if defined(__LITTLE_ENDIAN_BITFIELD)
++	u8 has_qe_bit : 1;
++	u8 has_cr_feat_bit : 1;
++	u8 conti_read_cap : 1;
++	u8 on_die_ecc : 1;
++	u8 legacy_ecc_status : 1;
++	u8 adv_ecc_status : 1;
++	u8 ecc_parity_readable : 1;
++	u8 ecc_alg : 1; /* ECC algorithm */
++#elif defined(__BIG_ENDIAN_BITFIELD)
++	u8 ecc_alg : 1; /* ECC algorithm */
++	u8 ecc_parity_readable : 1;
++	u8 adv_ecc_status : 1;
++	u8 legacy_ecc_status : 1;
++	u8 on_die_ecc : 1;
++	u8 conti_read_cap : 1;
++	u8 has_cr_feat_bit : 1;
++	u8 has_qe_bit : 1;
++#endif
++};
++
++struct ADV_ECC_STATUS {
++	u8 cmd;
++	u8 addr;
++	u8 addr_nbytes;
++	u8 addr_buswidth;
++	u8 dummy_nbytes;
++	u8 dummy_buswidth;
++	u8 status_nbytes;
++	u16 status_mask;
++	u8 pre_op; /* pre-process operator */
++	u8 pre_mask; /* pre-process mask */
++} __packed;
++
++struct CASN_OOB {
++	u8 layout_type;
++
++	/* OOB free layout */
++	u8 free_start;
++	u8 free_length;
++	u8 bbm_length;
++
++	/* ECC parity layout */
++	u8 ecc_parity_start;
++	u8 ecc_parity_space;
++	u8 ecc_parity_real_length;
++};
++
++enum oob_overall {
++	OOB_DISCRETE = 0,
++	OOB_CONTINUOUS,
++};
++
++struct nand_casn {
++	/* CASN signature must be 4 chars: 'C','A','S','N'  */
++	union {
++		u8 sig[4];
++		u32 signature;
++	};
++
++	u8 version;
++	char manufacturer[13];
++	char model[16];
++
++	__be32 bits_per_cell;
++	__be32 bytes_per_page;
++	__be32 spare_bytes_per_page;
++	__be32 pages_per_block;
++	__be32 blocks_per_lun;
++	__be32 max_bb_per_lun;
++	__be32 planes_per_lun;
++	__be32 luns_per_target;
++	__be32 total_target;
++
++	__be32 ecc_strength;
++	__be32 ecc_step_size;
++
++	u8 flags;
++	u8 reserved1;
++
++	__be16 sdr_read_cap;
++	struct op_slice sdr_read_1_1_1;
++	struct op_slice sdr_read_1_1_1_fast;
++	struct op_slice sdr_read_1_1_2;
++	struct op_slice sdr_read_1_2_2;
++	struct op_slice sdr_read_1_1_4;
++	struct op_slice sdr_read_1_4_4;
++	struct op_slice sdr_read_1_1_8;
++	struct op_slice sdr_read_1_8_8;
++
++	struct op_slice sdr_cont_read_1_1_1;
++	struct op_slice sdr_cont_read_1_1_1_fast;
++	struct op_slice sdr_cont_read_1_1_2;
++	struct op_slice sdr_cont_read_1_2_2;
++	struct op_slice sdr_cont_read_1_1_4;
++	struct op_slice sdr_cont_read_1_4_4;
++	struct op_slice sdr_cont_read_1_1_8;
++	struct op_slice sdr_cont_read_1_8_8;
++
++	__be16 ddr_read_cap;
++	struct op_slice ddr_read_1_1_1;
++	struct op_slice ddr_read_1_1_1_fast;
++	struct op_slice ddr_read_1_1_2;
++	struct op_slice ddr_read_1_2_2;
++	struct op_slice ddr_read_1_1_4;
++	struct op_slice ddr_read_1_4_4;
++	struct op_slice ddr_read_1_1_8;
++	struct op_slice ddr_read_1_8_8;
++
++	struct op_slice ddr_cont_read_1_1_1;
++	struct op_slice ddr_cont_read_1_1_1_fast;
++	struct op_slice ddr_cont_read_1_1_2;
++	struct op_slice ddr_cont_read_1_2_2;
++	struct op_slice ddr_cont_read_1_1_4;
++	struct op_slice ddr_cont_read_1_4_4;
++	struct op_slice ddr_cont_read_1_1_8;
++	struct op_slice ddr_cont_read_1_8_8;
++
++	u8 sdr_write_cap;
++	struct op_slice sdr_write_1_1_1;
++	struct op_slice sdr_write_1_1_4;
++	struct op_slice reserved2[6];
++	u8 ddr_write_cap;
++	struct op_slice reserved3[8];
++
++	u8 sdr_update_cap;
++	struct op_slice sdr_update_1_1_1;
++	struct op_slice sdr_update_1_1_4;
++	struct op_slice reserved4[6];
++	u8 ddr_update_cap;
++	struct op_slice reserved5[8];
++
++	struct CASN_OOB casn_oob;
++
++	/* Advanced ECC status CMD0 (higher bits) */
++	struct ADV_ECC_STATUS ecc_status_high;
++	/* Advanced ECC status CMD1 (lower bits) */
++	struct ADV_ECC_STATUS ecc_status_low;
++
++	u8 advecc_noerr_status;
++	u8 advecc_uncor_status;
++	u8 advecc_post_op;
++	u8 advecc_post_mask;
++
++	u8 reserved6[5];
++	__be16 crc;
++} __packed;
++
++#endif /* __LINUX_MTD_CASN_H */
+diff -aurN a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
+--- a/include/linux/mtd/rawnand.h	2025-06-29 09:34:36.000000000 +0000
++++ b/include/linux/mtd/rawnand.h	2025-06-29 09:35:15.000000000 +0000
+@@ -132,6 +132,17 @@
+ #define NAND_DATA_IFACE_CHECK_ONLY	-1
+ 
+ /*
++ * There are different places where the manufacturer stores the factory bad
++ * block markers.
++ *
++ * Position within the block: Each of these pages needs to be checked for a
++ * bad block marking pattern.
++ */
++#define NAND_BBM_FIRSTPAGE	BIT(24)
++#define NAND_BBM_SECONDPAGE	BIT(25)
++#define NAND_BBM_LASTPAGE	BIT(26)
++
++/*
+  * Constants for ECC_MODES
+  */
+ typedef enum {
+@@ -981,6 +992,7 @@
+ 	struct nand_bbt_descr *bbt_md;
+ 
+ 	struct nand_bbt_descr *badblock_pattern;
++	int cur_cs;
+ 
+ 	void *priv;
+ 
+diff -aurN a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+--- a/include/linux/mtd/spinand.h	2025-06-29 09:34:45.000000000 +0000
++++ b/include/linux/mtd/spinand.h	2025-06-29 09:35:23.000000000 +0000
+@@ -17,7 +17,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi-mem.h>
+ #else
+-#include <spi.h>
++#include <linux/bitops.h>
+ #include <spi-mem.h>
+ #include <linux/mtd/nand.h>
+ #endif
+@@ -68,6 +68,59 @@
+ 		   SPI_MEM_OP_NO_DUMMY,					\
+ 		   SPI_MEM_OP_NO_DATA)
+ 
++/* Macros for CASN */
++#define SPINAND_CASN_PAGE_READ_FROM_CACHE_OP(fast, naddr, addr, ndummy, buf, len) \
++	SPI_MEM_OP(SPI_MEM_OP_CMD(fast ? 0x0b : 0x03, 1),		\
++		   SPI_MEM_OP_ADDR(naddr, addr, 1),			\
++		   SPI_MEM_OP_DUMMY(ndummy, 1),				\
++		   SPI_MEM_OP_DATA_IN(len, buf, 1))
++
++#define SPINAND_CASN_PAGE_READ_FROM_CACHE_X2_OP(naddr, addr, ndummy, buf, len)	\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(0x3b, 1),				\
++		   SPI_MEM_OP_ADDR(naddr, addr, 1),			\
++		   SPI_MEM_OP_DUMMY(ndummy, 1),				\
++		   SPI_MEM_OP_DATA_IN(len, buf, 2))
++
++#define SPINAND_CASN_PAGE_READ_FROM_CACHE_DUALIO_OP(naddr, addr, ndummy, buf, len)	\
++		SPI_MEM_OP(SPI_MEM_OP_CMD(0xbb, 1),			\
++			   SPI_MEM_OP_ADDR(naddr, addr, 2),		\
++			   SPI_MEM_OP_DUMMY(ndummy, 2),			\
++			   SPI_MEM_OP_DATA_IN(len, buf, 2))
++
++#define SPINAND_CASN_PAGE_READ_FROM_CACHE_X4_OP(naddr, addr, ndummy, buf, len)	\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(0x6b, 1),				\
++		   SPI_MEM_OP_ADDR(naddr, addr, 1),			\
++		   SPI_MEM_OP_DUMMY(ndummy, 1),				\
++		   SPI_MEM_OP_DATA_IN(len, buf, 4))
++
++#define SPINAND_CASN_PAGE_READ_FROM_CACHE_QUADIO_OP(naddr, addr, ndummy, buf, len)	\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(0xeb, 1),				\
++		   SPI_MEM_OP_ADDR(naddr, addr, 4),			\
++		   SPI_MEM_OP_DUMMY(ndummy, 4),				\
++		   SPI_MEM_OP_DATA_IN(len, buf, 4))
++
++#define SPINAND_CASN_PROG_LOAD(reset, naddr, addr, buf, len)		\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(reset ? 0x02 : 0x84, 1),		\
++		   SPI_MEM_OP_ADDR(naddr, addr, 1),			\
++		   SPI_MEM_OP_NO_DUMMY,					\
++		   SPI_MEM_OP_DATA_OUT(len, buf, 1))
++
++#define SPINAND_CASN_PROG_LOAD_X4(reset, naddr, addr, buf, len)		\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(reset ? 0x32 : 0x34, 1),		\
++		   SPI_MEM_OP_ADDR(naddr, addr, 1),			\
++		   SPI_MEM_OP_NO_DUMMY,					\
++		   SPI_MEM_OP_DATA_OUT(len, buf, 4))
++
++#define SPINAND_CASN_ADVECC_OP(casn_adv_ecc_status, buf)			\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(casn_adv_ecc_status.cmd, 1),			\
++		   SPI_MEM_OP_ADDR(casn_adv_ecc_status.addr_nbytes,		\
++				   casn_adv_ecc_status.addr,			\
++				   casn_adv_ecc_status.addr_buswidth),		\
++		   SPI_MEM_OP_DUMMY(casn_adv_ecc_status.dummy_nbytes,		\
++				    casn_adv_ecc_status.dummy_buswidth),	\
++		   SPI_MEM_OP_DATA_IN(casn_adv_ecc_status.status_nbytes, buf, 1))
++/* Macros for CASN end */
++
+ #define SPINAND_PAGE_READ_FROM_CACHE_OP(fast, addr, ndummy, buf, len)	\
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(fast ? 0x0b : 0x03, 1),		\
+ 		   SPI_MEM_OP_ADDR(2, addr, 1),				\
+@@ -245,6 +298,7 @@
+ 
+ /* SPI NAND manufacturers */
+ extern const struct spinand_manufacturer etron_spinand_manufacturer;
++extern const struct spinand_manufacturer fudan_spinand_manufacturer;
+ extern const struct spinand_manufacturer gigadevice_spinand_manufacturer;
+ extern const struct spinand_manufacturer macronix_spinand_manufacturer;
+ extern const struct spinand_manufacturer micron_spinand_manufacturer;
+@@ -252,7 +306,6 @@
+ extern const struct spinand_manufacturer toshiba_spinand_manufacturer;
+ extern const struct spinand_manufacturer winbond_spinand_manufacturer;
+ extern const struct spinand_manufacturer esmt_c8_spinand_manufacturer;
+-extern const struct spinand_manufacturer foresee_spinand_manufacturer;
+ extern const struct spinand_manufacturer xtx_spinand_manufacturer;
+ 
+ /**
+@@ -295,6 +348,11 @@
+ 
+ #define SPINAND_HAS_QE_BIT		BIT(0)
+ #define SPINAND_HAS_CR_FEAT_BIT		BIT(1)
++#define SPINAND_SUP_CR			BIT(2)
++#define SPINAND_SUP_ON_DIE_ECC		BIT(3)
++#define SPINAND_SUP_LEGACY_ECC_STATUS	BIT(4)
++#define SPINAND_SUP_ADV_ECC_STATUS	BIT(5)
++#define SPINAND_ECC_PARITY_READABLE	BIT(6)
+ 
+ /**
+  * struct spinand_info - Structure used to describe SPI NAND chips
+@@ -366,6 +424,28 @@
+ 	}
+ 
+ /**
++ * struct CASN_ADVECC - CASN's advanced ECC description
++ * @cmd: Command to access SPI-NAND on-chip ECC status registers
++ * @mask: Mask to access SPI-NAND on-chip ECC status registers.
++ *	  ADV_ECC_STATUS->status_nbytes | CASN_ADVECC->mask
++ *			1		|      0 to 0xff
++ *			2		|     0 to 0xffff
++ * @shift: How many bits to shift to get on-chip ECC status
++ * @pre_op: This comes from CASN page's ADV_ECC_STATUS's pre_op.
++ *	    After reading on-chip ECC status, we need to do some math
++ *	    operations if this is specified.
++ * @pre_mask: This comes from CASN page's ADV_ECC_STATUS's pre_mask.
++ *	      This is used in companion with pre_op above.
++ */
++struct CASN_ADVECC {
++	u8 cmd;
++	u16 mask;
++	u8 shift;
++	u8 pre_op;
++	u8 pre_mask;
++};
++
++/**
+  * struct spinand_device - SPI NAND device instance
+  * @base: NAND device instance
+  * @slave: pointer to the SPI slave object
+@@ -419,6 +499,23 @@
+ 	u8 *oobbuf;
+ 	u8 *scratchbuf;
+ 	const struct spinand_manufacturer *manufacturer;
++
++	bool use_casn;
++	struct nand_casn *casn;
++	struct spi_mem_op *advecc_high_ops; /* ops to read higher part of advanced ECC status*/
++	struct spi_mem_op *advecc_low_ops;
++	struct CASN_OOB *casn_oob;
++	struct CASN_ADVECC *advecc_high;
++	struct CASN_ADVECC *advecc_low;
++
++	u8 advecc_low_bitcnt;
++	u8 advecc_noerr_status;
++	u8 advecc_uncor_status;
++	u8 advecc_post_op;
++	u8 advecc_post_mask;
++
++	size_t (*eccsr_math_op[4])(size_t, size_t);
++
+ 	void *priv;
+ };
+ 
+diff -aurN a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+--- a/include/linux/mtd/spi-nor.h	2025-06-29 09:34:53.000000000 +0000
++++ b/include/linux/mtd/spi-nor.h	2025-06-29 09:35:29.000000000 +0000
+@@ -570,7 +570,7 @@
+ 	u8			rdsr_dummy;
+ 	u8			rdsr_addr_nbytes;
+ 	u8			addr_mode_nbytes;
+-#ifdef CONFIG_SPI_FLASH_BAR
++#if CONFIG_IS_ENABLED(SPI_FLASH_BAR)
+ 	u8			bank_read_cmd;
+ 	u8			bank_write_cmd;
+ 	u8			bank_curr;
+diff -aurN a/include/spi.h b/include/spi.h
+--- a/include/spi.h	2025-06-29 09:40:23.000000000 +0000
++++ b/include/spi.h	2025-06-29 09:40:40.000000000 +0000
+@@ -11,6 +11,8 @@
+ 
+ #include <linux/bitops.h>
+ 
++struct spinand_info;
++
+ /* SPI mode flags */
+ #define SPI_CPHA	BIT(0)	/* clock phase (1 = SPI_CLOCK_PHASE_SECOND) */
+ #define SPI_CPOL	BIT(1)	/* clock polarity (1 = SPI_POLARITY_HIGH) */
+@@ -537,6 +539,16 @@
+ 	 */
+ 	int (*get_mmap)(struct udevice *dev, ulong *map_basep,
+ 			uint *map_sizep, uint *offsetp);
++
++	/**
++	 * setup_for_spinand() - Setup the SPI for attached SPI NAND
++	 *
++	 * @dev:	The SPI flash slave device
++	 * @spinand_info: The SPI NAND info to configure for
++	 * @return 0 if OK, -ve value on error
++	 */
++	int (*setup_for_spinand)(struct spi_slave *slave,
++				 const struct spinand_info *spinand_info);
+ };
+ 
+ struct dm_spi_emul_ops {

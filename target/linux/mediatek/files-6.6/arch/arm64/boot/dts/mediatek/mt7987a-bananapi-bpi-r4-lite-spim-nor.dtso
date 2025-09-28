@@ -1,0 +1,99 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	fragment@0 {
+		target-path = "/soc/spi@11009800";
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&spi2_flash_pins>;
+			status = "okay";
+
+			flash@0 {
+				#address-cells = <1>;
+				#size-cells = <1>;
+				compatible = "jedec,spi-nor";
+				spi-cal-enable;
+				spi-cal-mode = "read-data";
+				spi-cal-datalen = <7>;
+				spi-cal-data = /bits/ 8 <
+					0x53 0x46 0x5F 0x42 0x4F 0x4F 0x54>;
+				spi-cal-addrlen = <1>;
+				spi-cal-addr = /bits/ 32 <0x0>;
+				reg = <0>;
+				spi-max-frequency = <52000000>;
+				spi-tx-bus-width = <4>;
+				spi-rx-bus-width = <4>;
+
+				partition@00000 {
+					label = "BL2";
+					reg = <0x00000 0x0050000>;
+				};
+				partition@40000 {
+					label = "u-boot-env";
+					reg = <0x50000 0x0010000>;
+				};
+				partition@50000 {
+					label = "Factory";
+					reg = <0x60000 0x0200000>;
+				};
+				partition@250000 {
+					label = "FIP";
+					reg = <0x260000 0x0140000>;
+				};
+				nor_rootdisk: partition@2D0000 {
+					label = "firmware";
+					reg = <0x3A0000 0x1C60000>;
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target-path = "/chosen";
+		__overlay__ {
+			rootdisk = <&nor_rootdisk>;
+			rootdisk-nor = <&nor_rootdisk>;
+		};
+	};
+
+        fragment@2 {
+                target-path = "/";
+                __overlay__ {
+                        reg_3p3v: regulator-3p3v {
+                                compatible = "regulator-fixed";
+                                regulator-name = "fixed-3.3V";
+                                regulator-min-microvolt = <3300000>;
+                                regulator-max-microvolt = <3300000>;
+                                regulator-boot-on;
+                                regulator-always-on;
+                        };  
+                };  
+        };
+
+        fragment@3 {
+                target-path = "/soc/spi@11007800";
+                __overlay__ {
+                        status = "disabled";
+                };  
+        };
+
+        fragment@4 {
+                target-path = "/soc/mmc@11230000";
+                __overlay__ {
+                        pinctrl-names = "default", "state_uhs";
+                        pinctrl-0 = <&mmc_pins_default>;
+                        pinctrl-1 = <&mmc_pins_uhs>;
+                        bus-width = <8>;
+                        max-frequency = <48000000>;
+                        cap-mmc-highspeed;
+                        vmmc-supply = <&reg_3p3v>;
+                        non-removable;
+                        status = "okay"; 
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+		};
+	};
+};
